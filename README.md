@@ -15,6 +15,7 @@ This is a web tool for Kafka Connect for setting up and managing connectors for 
 
 
 ## Build from source
+
 ```
     git clone https://github.com/Landoop/kafka-topics-ui.git
     cd kafka-topics-ui
@@ -58,14 +59,14 @@ var clusters = [
 
 ```
 ### Supported Connectors
-For all our DM connectors we have a template of metadata within the `supported-connectors.js`. However this optional and depends on your setup. In any case the UI will show all the connectors appear in your classpath kai give you all the required fields to set it up. 
+For our [DM connectors](http://www.landoop.com/capabilities/kafka-connectors/)  we have a template of metadata within the `supported-connectors.js`. In any case you will be shown any connector exists in your classpath with all the required fields to set them up.
 
 ## Changelog
 [Here](https://github.com/Landoop/kafka-connect-ui/wiki/Release-Changelog)
 
 ## License
 
-The project is licensed under the [BSL](www.landoop.com/bsl) license.
+The project is licensed under the [BSL](http://www.landoop.com/bsl) license.
 
 ## Relevant Projects
 
