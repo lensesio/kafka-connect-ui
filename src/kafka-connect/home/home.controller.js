@@ -27,6 +27,8 @@ angularAPP.controller('HomeCtrl', function ($scope, $log, $http, env, constants,
 
 
                 angular.forEach(topics, function(t) {
+                     t = t + ' '
+
                     if(isSource) {
                        row = {c: [ {v: connector.name}, {v: t}, {v: 1}, {v: workers + ' workers'} ]};
                        row2 = {c: [ {v: t}, {v: getRandomName()}, {v: 0.0001}, {v: ''} ]};
