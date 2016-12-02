@@ -65,7 +65,7 @@ For our [DM connectors](http://www.landoop.com/capabilities/kafka-connectors/)  
 
 ## License
 
-The project is licensed under the [BSL](www.landoop.com/bsl) license.
+The project is licensed under the [BSL](http://www.landoop.com/bsl) license.
 
 ## Relevant Projects
 
