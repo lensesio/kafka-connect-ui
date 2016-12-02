@@ -4,7 +4,7 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
   var runningConnector = $routeParams.runningConnector;
   var selectedConnector =  $routeParams.runningConnector;
   $scope.invalidSyntaxMessage = constants.VIEW_EDITOR_INVALID_SYNTAX;
-  $scope.kafkaTopicsUI = env.KAFKA_TOPICS_UI;
+  $scope.kafkaTopicsUI = env.KAFKA_TOPICS_UI();
   $scope.kafkaTopicsUIEnabled = env.KAFKA_TOPICS_UI_ENABLED();
   $scope.aceReady = false;
   $scope.connectorConfigurationEditable = true;

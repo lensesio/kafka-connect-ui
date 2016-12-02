@@ -3,7 +3,6 @@ var clusters = [
    {
      NAME:"prod",
      KAFKA_CONNECT: "http://kafka-connect.prod.url",
-     KAFKA_REST: "http://kafka-rest.url",
      KAFKA_TOPICS_UI: "http://kafka-topics-ui.url",
      KAFKA_TOPICS_UI_ENABLED: true
    },

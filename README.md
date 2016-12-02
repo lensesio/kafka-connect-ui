@@ -42,7 +42,6 @@ var clusters = [
    {
      NAME:"prod", //unique name is required
      KAFKA_CONNECT: "http://kafka-connect.prod.url", //required
-     KAFKA_REST: "http://kafka-rest.url", //optional
      KAFKA_TOPICS_UI: "http://kafka-topics-ui.url", //optional
      KAFKA_TOPICS_UI_ENABLED: true //optional
    },
@@ -58,6 +57,8 @@ var clusters = [
 ]
 
 ```
+With the use of KAFKA_TOPICS_UI you will be able to navigate to your selected connector topics.
+
 ### Supported Connectors
 For our [DM connectors](http://www.landoop.com/capabilities/kafka-connectors/)  we have a template of metadata within the `supported-connectors.js`. In any case you will be shown all the existing connectors in your classpath with all the required fields to set them up.
 
