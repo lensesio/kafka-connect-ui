@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kafka Connect UI</title>
+  <!--<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">-->
+  <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
+  <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="src/assets/css/styles.css">
+  <!--<script src="src/go.js"></script>-->
+  <!--<script src="src/connector-visualization.js"></script>-->
+  <meta charset=utf-8/>
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Kafka Connect UI">
+  <meta name="keywords"
+        content="kafka,schema registry,topics,kafka-topic,kafka-rest,kafka-rest-proxy,kafka management,avro">
+  <meta name="author" content="Landoop Team">
+  <link rel="shortcut icon" href="src/assets/icons/favicon.png">
+</head>
+
+<body ng-app="angularAPP" ngCloak>
+<md-progress-linear md-mode="indeterminate" ng-show="loading || rebalancing"></md-progress-linear>
+<header class="header" ng-controller="HeaderCtrl" >
+  <div layout="row" layout-xs="column">
+    <div flex>
+      <h5><a href="{{cluster ? '#/cluster/'+cluster.NAME : '#/'}}">KAFKA CONNECT</a></h5>
+    </div>
+    <label ng-show="!missingEnvJS" style="color:#ccc; font-size:12px"><b>SELECT CLUSTER :</b></label>
+    <md-input-container ng-show="!missingEnvJS" class="selectCluster">
+      <md-select ng-model="connectEndPoint">
+        <md-option ng-repeat="connectEndPoint in connectRestArray track by $index"
+                   ng-click="updateEndPoint(connectEndPoint.NAME)"
+                   value="{{connectEndPoint.NAME}}" ng-selected="{{cluster.NAME == connectEndPoint.NAME}}"
+                   >{{connectEndPoint.NAME}}</md-option>
+      </md-select>
+      </md-input-container>
+  </div>
+</header>
+
+<!--if env.js is not properly defined-->
+<div layout="row" flex="100" ng-show="missingEnvJS">
+  <md-card>
+    <md-card-content>
+      <h3 style="font-weight:300; color:red"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Missing Cluster Configuration</h3>
+      <br>
+      In order to configure <code>kafka-connect-ui</code> you need to add <code>env.js</code> file in the root directory of the app.
+      <br>
+      Example <b>env.js</b> structure:
+      <pre>
+        <code>
+var clusters = [
+   {
+     NAME:"prod", //Required
+     KAFKA_CONNECT: "http://kafka-connect.url", //Required
+     KAFKA_REST: "http://kafka-rest.url", //Optional
+     KAFKA_TOPICS_UI: "http://kafka-topics-ui.url", //Optional
+     KAFKA_TOPICS_UI_ENABLED: true //Optional
+   },
+   {
+     NAME:"dev",
+     KAFKA_CONNECT: "https://kafka-connec.dev.url",
+     KAFKA_TOPICS_UI_ENABLED: false
+   },
+   {
+     NAME:"local",
+     KAFKA_CONNECT: "http://localhost:8083"
+   }
+]
+        </code>
+      </pre>
+    </md-card-content>
+  </md-card>
+</div>
+
+<!--Main Content Starts here-->
+<div layout="row" layout-sm="column" layout-xs="column" ng-hide="missingEnvJS">
+  <div flex-gt-sm="33">
+    <div ng-controller="KafkaConnectListCtrl" ng-include="'src/kafka-connect/list/list-connectors.html'"></div>
+    <div ng-include="'src/kafka-connect/config/config.html'"></div>
+  </div>
+  <div flex-gt-sm="66" flex>
+    <ng-view></ng-view>
+  </div>
+</div>
+
+<!-- Landoop team promo -->
+<div layout-margin flex>
+  <div flex="nogrow">
+    <img ng-src="src/assets/icons/landoop-dark.svg" style="width:20px;float: left;padding-right:5px;"></div>
+  <div flex>
+    <p class="md-caption">Powered by <a href="http://www.landoop.com/capabilities/kafka" target="_blank">LANDOOP</a></p>
+  </div>
+</div>
+
+<!--CUSTOM-FOOTER-->
+
+<script src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-ui-ace/ui-ace.min.js"></script>
+<script src="bower_components/spin.js/spin.min.js"></script>
+<script src="bower_components/angular-spinner/angular-spinner.min.js"></script>
+<script src="bower_components/angular-route/angular-route.min.js"></script>
+<script src="bower_components/angular-material/angular-material.min.js"></script>
+<script src="bower_components/angularUtils-pagination/dirPagination.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-aria/angular-aria.min.js"></script>
+<script src="bower_components/angular-messages/angular-messages.min.js"></script>
+<script src="bower_components/angular-google-chart/ng-google-chart.min.js"></script>
+
+<!--TODO-->
+<!--<script src="//npmcdn.com/angular-formly@latest/dist/formly.js"></script>-->
+
+<!--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
+<script src="env.js"></script>
+<!-- build:js src/combined.js -->
+<script src="src/app.js"></script>
+<script src="src/factories/http-interceptor.factory.js"></script>
+
+<script src="src/supported-connectors.js"></script>
+
+<script src="src/factories/spinner.factory.js"></script>
+<script src="src/factories/env.factory.js"></script>
+<script src="src/factories/constants.factory.js"></script>
+<script src="src/factories/supported-connectors.factory.js"></script>
+<script src="src/factories/connector-objects.factory.js"></script>
+<script src="src/kafka-connect/home/home.controller.js"></script>
+<script src="src/kafka-connect/config/config.controller.js"></script>
+<script src="src/kafka-connect/view/view.controller.js"></script>
+<script src="src/kafka-connect/list/list.controller.js"></script>
+<script src="src/kafka-connect/export-configs/export-configs.controller.js"></script>
+<script src="src/kafka-connect/select-type/sink-or-source.controller.js"></script>
+<script src="src/kafka-connect/create-connector/create-connector.controller.js"></script>
+<script src="src/factories/kafka-connect-api.factory.js"></script>
+<script src="src/factories/new-connector-helpers-factory.js"></script>
+
+<!-- endbuild -->
+</body>
+</html>

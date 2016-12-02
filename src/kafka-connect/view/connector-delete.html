@@ -1,0 +1,25 @@
+<md-dialog aria-label="Confirm deletion of connector">
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Delete connector</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content class="view-dialog-delete-content">
+      a: {{xx}}
+      <p>
+        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+        This will halt all tasks, and delete the connector and it's configuration
+      </p>
+    </md-dialog-content>
+    <md-dialog-actions layout="row" layout-align="space-between">
+      <md-button ng-click="cancel()" class="md-raised" md-autofocus> Cancel </md-button>
+      <md-button ng-click="answer('useful')" class="md-raised"> Delete </md-button>
+    </md-dialog-actions>
+
+  </form>
+</md-dialog>

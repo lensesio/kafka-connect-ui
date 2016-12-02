@@ -1,0 +1,36 @@
+<input name="{{name}}"
+       ng-model="element.value"
+       type="{{element.type}}"
+       ng-required="{{element.required}}"
+       ng-pattern="{{element.pattern}}"
+       placeholder="{{element.placeholder}}"
+       min="{{element.min}}"
+       max="{{element.max}}"
+       step="{{element.step}}"
+       unique-controller-name="{{element.key}}"
+       ng-model-options="{ debounce: 100 }">
+
+<tt class="hint" ng-if="showHints">{{element.tooltip}}</tt>
+
+<div ng-messages="forms.cForm[name].$error">
+
+    <div ng-message="required" style="color:red">
+        {{element.errorMessage}}
+    </div>
+
+    <div ng-message="pattern" style="color:red">
+        pattern is wrong
+    </div>
+
+    <div ng-message="unique" style="color:red">
+        Not unique
+    </div>
+
+    <div ng-message="max" style="color:red">
+        Max value is {{element.max}}
+    </div>
+
+    <div ng-message="min" style="color:red">
+        Min value is {{element.min}}
+    </div>
+</div>

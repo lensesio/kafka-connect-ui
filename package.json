@@ -1,0 +1,37 @@
+{
+  "name": "kafka-connect-ui",
+  "version": "0.1.0",
+  "description": "A user interface for managing Kafka Connectors",
+  "readme": "README.md",
+  "main": "Gruntfile.js",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-bower-task": "^0.4.0",
+    "grunt-cache-breaker": "^2.0.1",
+    "grunt-cli": "^1.2.0",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-usemin": "^3.1.1",
+    "jit-grunt": "^0.10.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Landoop/kafka-connect-ui.git"
+  },
+  "keywords": [
+    "kafka",
+    "kafka connect"
+  ],
+  "author": "Landoop team",
+  "license": "BSL",
+  "bugs": {
+    "url": "https://github.com/Landoop/kafka-connect-ui/issues"
+  },
+  "homepage": "https://github.com/Landoop/kafka-connect-ui#readme"
+}

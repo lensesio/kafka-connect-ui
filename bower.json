@@ -1,0 +1,32 @@
+{
+  "name": "kafka-connect-ui",
+  "authors": [
+    "Christina Daskalaki <christina@landoop.com>",
+    "Antonios Chalkiopoulos <antonios@landoop.com>",
+    "Marios Andreopoulos <marios@landoop.com>",
+    "John Glampedakis <john@landoop.com>"
+  ],
+  "description": "A user interface for Kafka Connect",
+  "license": "BSL",
+  "main": "index.html",
+  "homepage": "http://kafka-connect-ui.landoop.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "angular": "~1.5.*",
+    "angular-route": "^1.5.*",
+    "angular-animate": "^1.5.*",
+    "angular-aria": "^1.5.*",
+    "angular-ui-ace": "bower",
+    "bootstrap": "^3.3.6",
+    "angular-spinner": "^0.8.1",
+    "angular-material": "^1.1.1",
+    "angularUtils-pagination": "angular-utils-pagination#^0.11.1",
+    "components-font-awesome": "^4.6.3",
+    "angular-messages": "^1.5.8",
+    "angular-google-chart": "^0.1.0"
+  }
+}

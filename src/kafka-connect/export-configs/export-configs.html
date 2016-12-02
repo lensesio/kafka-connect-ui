@@ -1,0 +1,58 @@
+{{propertiesStr = properties.join("\n\n"); ""}}
+{{curlsStr = curls.join("\n\n"); ""}}
+<md-card ng-hide="connectionFailure || rebalancing">
+
+    <div layout="row" layout-xs="column">
+        <h2 flex style="font-weight:300; padding-left:20px; margin-bottom:10px">Export Connectors configs</h2>
+    </div>
+
+    <hr style="margin-left:0px; margin-right:0px; background-color:#E0E0E0;border: 0;
+          height: 0;border-bottom: 1px solid rgba(255, 255, 255, 0.3);" size="1">
+
+<div ng-cloak>
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="MODE: Properties">
+                <md-content class="md-padding">
+                    <md-button download="allConnectors.properties" ng-href="{{propertiesURL}}">
+                        <i class="fa fa-download" aria-hidden="true"></i> download
+                    </md-button>
+                    <div id="propertyFile"
+                         ng-readonly="true"
+                         ng-style="{'background-color':aceBackgroundColor }"
+                         ng-model="propertiesStr"
+                         ui-ace="{ mode: 'properties', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged }"
+                         valid-json>
+                    </div>
+                </md-content>
+
+            </md-tab>
+            <md-tab label="MODE: JSON">
+                <md-content class="md-padding">
+                    <md-button download="allConnectors.txt" ng-href="{{jsonsURL}}"><i class="fa fa-download" aria-hidden="true"></i> download</md-button>
+                    <div id="jsonFile"
+                         ng-readonly="true"
+                         ng-style="{'background-color':aceBackgroundColor }"
+                         ng-model="jsons"
+                         ui-ace="{ mode: 'batchfile', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged }"
+                         valid-json>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="MODE: cURL">
+                <md-content class="md-padding">
+                    <md-button download="allConnectors.sh" ng-href="{{curlsURL}}"><i class="fa fa-download" aria-hidden="true"></i> download</md-button>
+                    <div id="curlsFile"
+                         ng-readonly="true"
+                         ng-style="{'background-color':aceBackgroundColor }"
+                         ng-model="curlsStr"
+                         ui-ace="{ mode: 'batchfile', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged }"
+                         valid-json>
+                    </div>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+</md-content>
+</div>
+</md-card>
+<!--TODO hide me in case of rebalancing-->

@@ -1,0 +1,83 @@
+{{statuses}}
+<md-card ng-hide="connectionFailure || rebalancing">
+  <md-toolbar class="md-hue-2">
+    <div class="md-toolbar-tools">
+      <h3>
+        <span><b>{{allConnectors.length}}</b> Connectors</span>
+      </h3>
+      <span flex></span>
+      <a md-ink-ripple ng-show="true" ng-href="#/cluster/{{cluster}}/select-connector"
+         class="md-raised md-primary md-button md-ink-ripple"
+         style="background-color: rgb(65, 191, 236);color: white;" type="button"
+         aria-label="new connector">New</a>
+    </div>
+  </md-toolbar>
+
+  <md-content>
+    <md-input-container class="md-block" style="margin-bottom:0;padding-bottom:0;" ng-show="allConnectors.length == 0">
+      <p>{{noConnectorsFoundMessage}}</p>
+    </md-input-container>
+
+    <md-input-container class="md-block" style="margin-bottom:0;padding-bottom:0;" ng-show="allConnectors.length > 0">
+      <label>Search connectors</label>
+      <input ng-model="search">
+    </md-input-container>
+
+    <md-list class="connectors-list" flex>
+      <md-list-item class="md-list-item-text"
+                    style="background-color: {{connector.name == selectedConnector ? '#DADADA' : '' }}"
+                    dir-paginate="connector in allConnectors | orderBy:'name' | filter : search | itemsPerPage: 50"
+                    ng-href="#/cluster/{{cluster}}/connector/{{connector.name}}">
+        <!--Status icon-->
+        <span style="padding-right:10px">
+          <i ng-show="connector.connectorState[connector.name] == 'PAUSED'" class="fa fa-pause-circle grey" aria-hidden="true"></i>
+          <i ng-show="connector.connectorState[connector.name] == 'RUNNING'" class="fa fa-cog green" aria-hidden="true"></i>
+          <i ng-show="connector.connectorState[connector.name] == 'FAILED'" class="fa fa-exclamation-circle red" aria-hidden="true"></i>
+          <i ng-show="connector.connectorState[connector.name] == 'UNASSIGNED'" class="fa fa-ban" aria-hidden="true"></i>
+        </span>
+
+        <!--Connector name-->
+        <p  class="connectorname">{{connector.name}}</p>
+
+        <!--Source-->
+        <div ng-show="{{connector.isSource}}" class="descr-container">
+          <div class="descr">
+            <i ng-if="!getTaskStates(connector)" class="fa fa-check-square" aria-hidden="true" style="color:green;"></i>
+            <i ng-if="getTaskStates(connector)" class="fa fa-exclamation-circle red" aria-hidden="true"></i>
+            <b>{{connector.workers}}</b>
+            <b>&times;</b>
+            <span class="label" ng-style="{'background-color':connector.color}">{{connector.type}}</span>
+            <b><i class="fa fa-long-arrow-right" aria-hidden="true"></i></b>
+            <img src="src/assets/icons/kafka.png" class="label-img" style="background-color: #ccc"/>
+          </div>
+        </div>
+
+        <!--Sink-->
+        <div ng-hide="{{connector.isSource}}" class="descr-container">
+          <div class="descr">
+            <span><img src="src/assets/icons/kafka.png" class="label-img" style="background-color: #ccc"/></span>
+            <b><i class="fa fa-long-arrow-right" aria-hidden="true"></i></b>
+            <i ng-if="!getTaskStates(connector)" class="fa fa-check-square" aria-hidden="true" style="color:green;"></i>
+            <i ng-if="getTaskStates(connector)" class="fa fa-exclamation-circle red" aria-hidden="true"></i>
+            <b>{{connector.workers}}</b>
+            <b>&times;</b>
+            <span class="label" ng-style="{'background-color':connector.color}">{{connector.type}}</span>
+          </div>
+        </div>
+      </md-list-item>
+    </md-list>
+
+    <dir-pagination-controls style="margin: 20px 20px;"></dir-pagination-controls>
+  </md-content>
+</md-card>
+<md-card ng-show="rebalancing">
+  <md-toolbar class="md-hue-2">
+    <div class="md-toolbar-tools">
+    <h3>Rebalancing...</h3>
+    </div>
+  </md-toolbar>
+  <md-content>
+    <div style="margin:20px;" >Rebalancing wont take more than 2 minutes, pleace wait</div>
+
+</md-content>
+</md-card>

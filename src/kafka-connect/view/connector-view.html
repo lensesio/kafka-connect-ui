@@ -1,0 +1,166 @@
+<!--Workaround for Status -->
+{{connectorStatus = connectorDetails.connectorState[connectorDetails.name]; ""}}
+
+<md-card ng-show="connectorDetails != undefined" class="view">
+  <!--TOOLBAR-->
+  <md-toolbar class="md-hue-2">
+    <div class="md-toolbar-tools">
+        <span style="font-size: 20px;margin-right:10px;">
+        <i ng-show="connectorStatus == 'PAUSED'" class="fa fa-pause-circle grey" aria-label="Paused" aria-hidden="true"></i>
+        <i ng-show="connectorStatus == 'RUNNING'" class="fa fa-cogs green" aria-label="Running" aria-hidden="true"></i>
+        <i ng-show="connectorStatus == 'FAILED'" class="fa fa-exclamation-circle red" aria-label="Failed" aria-hidden="true"></i>
+        <i ng-show="connectorStatus == 'UNASSIGNED'" class="fa fa-ban" aria-label="Unassigned" aria-hidden="true"></i>
+        </span>
+      <h4>{{connectorDetails.isSource ? 'SOURCE : ' : 'SINK : '}} {{connectorDetails.name}}</h4>
+      <span flex></span>
+
+      <md-button ng-show="connectorStatus !='PAUSED'"   ng-disabled="showTaskSpinner" ng-click="pauseConnector(connectorDetails.name);" >
+        <i class="fa fa-pause" aria-hidden="true"></i> Pause
+      </md-button>
+
+      <md-button ng-show="connectorStatus =='PAUSED'"  ng-disabled="showTaskSpinner" ng-click="resumeConnector(connectorDetails.name)" >
+        <i class="fa fa-play" aria-hidden="true"></i> Resume
+      </md-button>
+
+      <md-button ng-hide="connectorStatus =='PAUSED'" ng-disabled="showTaskSpinner" ng-click="restartConnector(connectorDetails.name)">
+
+        <i class="fa fa-repeat" aria-hidden="true"></i> Restart
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <!--INFO BOX-->
+  <div class="connector-sum">
+    <div layout="row"  layout-align="start center" layout-padding>
+      <div><i class="fa fa-info-circle grey" aria-hidden="true"></i></div>
+      <div>
+        <div ng-show="connectorDetails.isSource">
+          Connector <b>{{connectorDetails.name}}</b> gets data from
+          <span class="label" ng-style="{'background-color':connectorDetails.color}">{{connectorDetails.type}}</span>
+          and the status is <span class="grey">{{connectorStatus}}</span>
+        </div>
+        <div ng-show="!connectorDetails.isSource">
+          Connector <b>{{connectorDetails.name}}</b> writes kafka data to
+          <span class="label" ng-style="{'background-color':connectorDetails.color}">{{connectorDetails.type}}</span>
+          and the status is <span class="grey">{{connectorStatus}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</md-card>
+
+<!--TOPICS-->
+<md-card ng-show="connectorDetails != undefined" class="view">
+  <md-card-content style="padding-bottom: 0px;">
+    <div layout="row">
+      <h4 style="padding-right: 20px;margin-top: 6px;"><i class="fa fa-bullhorn grey" aria-hidden="true"></i> TOPICS</h4>
+      <div layout="column">
+          <h5 ng-show="connectorDetails.topics.length == 0" class="red" style="padding:0px; margin:0px;">
+            Something went wrong! No related topics found for this connector.
+          </h5>
+          <md-chips style="float:left;">
+              <md-chip ng-if="kafkaTopicsUIEnabled" ng-repeat="topic in connectorDetails.topics">
+                <a style="text-decoration:none;" ng-href="{{kafkaTopicsUI}}/#/topic/n/{{topic}}/"
+                   target="_blank">
+                <img src="src/assets/icons/kafka.png" class="kafka-icon-view">
+                {{topic}}
+                </a>
+              </md-chip>
+
+              <md-chip ng-if="!kafkaTopicsUIEnabled" ng-repeat="topic in connectorDetails.topics">
+                <img src="src/assets/icons/kafka.png" class="kafka-icon-view">
+                {{topic}}
+            </md-chip>
+          </md-chips>
+        </div>
+      </div>
+    </md-card-content>
+  </md-card>
+
+<!--TASKS-->
+<md-card ng-show="connectorDetails != undefined" class="view">
+  <md-progress-linear md-mode="indeterminate" ng-show="showTaskSpinner && rebalancing != true"></md-progress-linear>
+  <md-card-content style="padding-bottom: 0px;" >
+    <div layout="row">
+      <h4 style="padding-right: 20px;margin-top: 6px;"><i class="fa fa-cogs grey" aria-hidden="true"></i> TASKS</h4>
+      <div layout="column">
+        <p ng-show="showTaskSpinner"> Reloading configuration wont take more than 2 minutes. Please wait... </p>
+        <md-chips style="float:left;" ng-hide="showTaskSpinner">
+          <md-chip ng-repeat="task in connectorDetails.tasks" ng-click="showTaskDetails(task)"
+                   style="margin-bottom:5px;background-color: {{ task.id == selectedTask.taskStatus.id ? 'rgb(55, 71, 79);color:white' : '' }}">
+            <i ng-show="task.state == 'PAUSED'" class="fa fa-pause-circle grey" aria-hidden="true" aria-label="Running"></i>
+            <i ng-show="task.state == 'RUNNING'"  class="fa fa-cog fa-spin green" aria-hidden="true" aria-label="Paused"></i>
+            <i ng-show="task.state == 'FAILED'" class="fa fa-exclamation-circle red" aria-hidden="true" aria-label="Failed"></i>
+            <i ng-show="task.state == 'UNASSIGNED'" class="fa fa-ban" aria-hidden="true" aria-label="Unassigned"></i>
+            {{task.id}} <b>[{{task.worker_id}}] </b>
+          </md-chip>
+        </md-chips>
+      </div>
+    </div>
+      <div ng-if="selectedTask" style="font-size:11px;padding-bottom:20px;">
+        <!--TODO styles-->
+        <hr style="margin-left:-15px; margin-right:-15px; background-color:#E0E0E0;border: 0;
+          height: 0;border-bottom: 1px solid rgba(255, 255, 255, 0.3);" size="1">
+
+        <md-button class="md-mini md-primary" ng-click="invalidateSelectedTask()" style="float:right;">close</md-button>
+
+        <h5>ID: {{selectedTask.taskStatus.id}}</h5>
+        <h5> STATE: {{selectedTask.taskStatus.state}}</h5>
+        <h5 ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'">CONFIG:</h5>
+
+        <table style="border:0px solid #ccc;width:100%; background:#fff;" ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'">
+          <tbody>
+          <tr ng-repeat="(key, value) in selectedTask.taskConfig.config">
+            <td>{{key}}</td>
+            <td>{{value}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+        <h5 ng-if="selectedTask.taskStatus.trace">TRACE:</h5>
+        <div ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'" style="border:1px solid #ccc;width:100%;background:#f2f2f2;" ng-show="selectedTask">
+          <code style="word-wrap:break-word; white-space: pre-wrap;">{{selectedTask.taskStatus.trace}}</code>
+        </div>
+      </div>
+  </md-card-content>
+</md-card>
+
+<!--CONFIGURATION-->
+<md-card ng-show="connectorDetails != undefined" class="view">
+  <md-progress-linear md-mode="indeterminate" ng-show="showConfigSpinner"></md-progress-linear>
+  <md-toolbar class="md-hue-2" style="background-color: transparent;color:#333;height: 20px;">
+    <div class="md-toolbar-tools">
+      <h4 style="font-size:14px"> <span><i class="fa fa-file-text-o" aria-hidden="true"></i> CONFIGURATION</span></h4>
+      <span flex></span>
+      <md-button ng-show="!connectorConfigurationEditable" ng-click="cancelEditor()"> <i class="fa fa-ban" aria-hidden="true"></i> Cancel </md-button>
+      <md-button ng-show="connectorConfigurationEditable" ng-disabled="showTaskSpinner || rebalancing" ng-click="toggleEditor()"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-card-content>
+    <div layout="column">
+      <!-- Trick in order to control when ace is loaded - due to configuring height in the aceLoaded  -->
+      <div ng-if="aceReady" ng-include="'src/kafka-connect/view/connector-edit.html'"></div>
+    </div>
+  </md-card-content>
+</md-card>
+
+<!--ADVANCED OPTIONS-->
+<md-card ng-show="connectorDetails != undefined" class="view">
+  <md-card-content>
+    <md-button ng-disabled="showTaskSpinner || rebalancing" ng-click="deleteConnector(connectorDetails.name, $event);">
+      <i class="fa fa-trash" aria-hidden="true" style="color:red"></i> Delete Connector
+    </md-button>
+  </md-card-content>
+</md-card>
+
+<!-- When no such connnector exists -->
+<md-card ng-show="connectorDetails == undefined">
+  <md-card-title>
+    <md-card-title-text>
+      <span ng-hide ="notExists" class="md-headline" style="padding-bottom:10px;">Loading connector...</span>
+      <span ng-show ="notExists" class="md-headline" style="padding-bottom:10px;">No such connector exists</span>
+    </md-card-title-text>
+  </md-card-title>
+</md-card>
+
