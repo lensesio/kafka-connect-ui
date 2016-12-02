@@ -15,7 +15,7 @@ This is a web tool for Kafka Connect for setting up and managing connectors for 
 
 
 ## Build from source
-You will require `bower` to be installed : `$ npm install -g bower` 
+
 ```
     git clone https://github.com/Landoop/kafka-topics-ui.git
     cd kafka-topics-ui
