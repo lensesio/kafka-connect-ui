@@ -20,7 +20,7 @@
 
 <body ng-app="angularAPP" ngCloak>
 <md-progress-linear md-mode="indeterminate" ng-show="loading || rebalancing"></md-progress-linear>
-<header class="header" ng-controller="HeaderCtrl" >
+<header class="header" ng-controller="HeaderCtrl" style="background-color:{{color}}">
   <div layout="row" layout-xs="column">
     <div flex>
       <h5><a href="{{cluster ? '#/cluster/'+cluster.NAME : '#/'}}">KAFKA CONNECT</a></h5>
@@ -53,7 +53,9 @@ var clusters = [
      NAME:"prod", //Required
      KAFKA_CONNECT: "http://kafka-connect.url", //Required
      KAFKA_TOPICS_UI: "http://kafka-topics-ui.url", //Optional
-     KAFKA_TOPICS_UI_ENABLED: true //Optional
+     KAFKA_TOPICS_UI_ENABLED: true, //Optional
+     COLOR: "#141414" // Optional
+
    },
    {
      NAME:"dev",
@@ -87,7 +89,7 @@ var clusters = [
   <div flex="nogrow">
     <img ng-src="src/assets/icons/landoop-dark.svg" style="width:20px;float: left;padding-right:5px;"></div>
   <div flex>
-    <p class="md-caption">Powered by <a href="http://www.landoop.com/capabilities/kafka" target="_blank">LANDOOP</a></p>
+    <p class="md-caption">Powered by <a href="http://www.landoop.com/" target="_blank">LANDOOP</a></p>
   </div>
 </div>
 

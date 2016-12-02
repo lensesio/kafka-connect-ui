@@ -1,6 +1,7 @@
 <md-card ng-controller="KafkaConnectConfigCtrl" class="config">
   <md-content flex layout-padding>
       <b>Kafka Connect :</b> {{kafkaConnectURL}} <br>
+      <span ng-show="showVersion"> <b>Kafka Connect Version :</b> {{version}} <br></span>
       <span ng-show="connectionFailure" class="red">{{connectivityError}}</span><br>
   </md-content>
 </md-card>
