@@ -1,0 +1,5 @@
+0.0.0.0:8000
+tls off
+
+root /kafka-connect-ui
+log /access.log
