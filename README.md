@@ -44,6 +44,7 @@ var clusters = [
      KAFKA_CONNECT: "http://kafka-connect.prod.url", //required
      KAFKA_TOPICS_UI: "http://kafka-topics-ui.url", //optional
      KAFKA_TOPICS_UI_ENABLED: true //optional
+     COLOR: "#141414" //optional
    },
    {
      NAME:"dev",
@@ -57,8 +58,8 @@ var clusters = [
 ]
 
 ```
-With the use of KAFKA_TOPICS_UI you will be able to navigate to your selected connector topics.
-With the use of COLOR you can set different colors for each cluster.
+* Use `KAFKA_TOPICS_UI` and `KAFKA_TOPICS_UI_ENABLED` to navigate to the relevant topic when you have [kafka-topics-ui](https://github.com/Landoop/kafka-topics-ui) installed.
+* Use `COLOR` to set different header colors for each set up cluster.
 
 ### Supported Connectors
 For our [DM connectors](http://www.landoop.com/capabilities/kafka-connectors/)  we have a template of metadata within the `supported-connectors.js`. In any case you will be shown all the existing connectors in your classpath with all the required fields to set them up.
