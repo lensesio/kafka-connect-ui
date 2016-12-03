@@ -11,7 +11,12 @@ This is a web tool for Kafka Connect for setting up and managing connectors for 
 
 ## Run standalone with docker
 
-<--TODO-->
+```
+docker run --rm -it -p 8000:8000 \
+           -e "CONNECT_URL=http://connect.distributed.url" \
+           landoop/kafka-topics-ui
+```
+Web UI will be available at `http://localhost:8000`
 
 
 ## Build from source
