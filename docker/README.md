@@ -11,7 +11,7 @@ URL:
 
     docker run --rm -it -p 8000:8000 \
                -e "CONNECT_URL=http://connect.distributed.url" \
-               landoop/kafka-topics-ui
+               landoop/kafka-connect-ui
 
 Visit http://localhost:8000 to see the UI.
 
