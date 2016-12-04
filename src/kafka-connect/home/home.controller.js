@@ -27,6 +27,7 @@ angularAPP.controller('HomeCtrl', function ($scope, $log, $http, env, constants,
 
 
                 angular.forEach(topics, function(t) {
+                     // We are adding one space to the topic names when we add them to the diagram to avoid cyclic references when the topic name matches a connector name
                      t = t + ' '
 
                     if(isSource) {
