@@ -17,7 +17,7 @@ angularAPP.controller('HeaderCtrl', function ($rootScope, $scope, $location, env
 
 
   $scope.$on('$routeChangeSuccess', function() {
-     $scope.connectRestArray = env.getClusters();
+     $rootScope.clusters = env.getClusters();
      $scope.cluster = env.getSelectedCluster();
      $scope.color = $scope.cluster.COLOR;
   });
