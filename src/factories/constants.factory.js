@@ -1,7 +1,7 @@
 angularAPP.factory('constants', function () {
 
   return {
-    MESSAGE_REBALANCING : "Rebalancing wont take more than 2 minutes, pleace wait.",
+    MESSAGE_REBALANCING : "Rebalancing won’t take more than 2 minutes, please wait.",
     MESSAGE_WELCOME : "Dashboard",
 
     CONFIG_CONNECTIVITY_ERROR : "CONNECTIVITY ERROR",
