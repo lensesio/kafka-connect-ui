@@ -4,6 +4,8 @@ angularAPP.controller('ExportConfigsCtrl', function ($scope, $rootScope, env, Ka
     $scope.properties = [];
     $scope.jsons = ''
     $scope.curls = [];
+    var d = new Date()
+ 		$scope.date = '-'+d.getDate()+''+(d.getMonth()+1)+''+d.getFullYear()+''+d.getHours()+''+d.getMinutes()
     $http.get(env.KAFKA_CONNECT() + '/connectors').then(function(response){
         angular.forEach(response.data, function(con){
            $http.get(env.KAFKA_CONNECT() + '/connectors/' + con).then(function(response){
