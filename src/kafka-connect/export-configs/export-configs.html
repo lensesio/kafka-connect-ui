@@ -14,7 +14,7 @@
         <md-tabs md-dynamic-height md-border-bottom>
             <md-tab label="MODE: Properties">
                 <md-content class="md-padding">
-                    <md-button download="allConnectors.properties" ng-href="{{propertiesURL}}">
+                    <md-button download="allConnectors{{date}}.properties" ng-href="{{propertiesURL}}">
                         <i class="fa fa-download" aria-hidden="true"></i> download
                     </md-button>
                     <div id="propertyFile"
@@ -29,7 +29,7 @@
             </md-tab>
             <md-tab label="MODE: JSON">
                 <md-content class="md-padding">
-                    <md-button download="allConnectors.txt" ng-href="{{jsonsURL}}"><i class="fa fa-download" aria-hidden="true"></i> download</md-button>
+                    <md-button download="allConnectors{{date}}.txt" ng-href="{{jsonsURL}}"><i class="fa fa-download" aria-hidden="true"></i> download</md-button>
                     <div id="jsonFile"
                          ng-readonly="true"
                          ng-style="{'background-color':aceBackgroundColor }"
@@ -41,7 +41,7 @@
             </md-tab>
             <md-tab label="MODE: cURL">
                 <md-content class="md-padding">
-                    <md-button download="allConnectors.sh" ng-href="{{curlsURL}}"><i class="fa fa-download" aria-hidden="true"></i> download</md-button>
+                    <md-button download="allConnectors{{date}}.sh" ng-href="{{curlsURL}}"><i class="fa fa-download" aria-hidden="true"></i> download</md-button>
                     <div id="curlsFile"
                          ng-readonly="true"
                          ng-style="{'background-color':aceBackgroundColor }"
