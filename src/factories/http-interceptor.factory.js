@@ -39,7 +39,7 @@ angularAPP.factory('myHttpInterceptor', function($q, $injector, $log, $rootScope
             $rootScope.connectionFailure = true;
         } else if ((response.status === 409 || response.status === 504 || response.status === 502)) {
             $rootScope.loading = true;
-            if(response.status === 409 || response.status === 502) {
+            if(response.status === 409) {
                 $log.error("409 - cluster rebalance or restart is in process.")
                 $rootScope.rebalancing = true;
                 $rootScope.connectionFailure = false;
