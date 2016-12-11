@@ -29,10 +29,6 @@ module.exports = function (grunt) {
           'env.js',
           'bower_components/angular/angular.min.js',
           'bower_components/angular/angular.min.js.map',                 // Include source-maps
-          'bower_components/angular-spinner/angular-spinner.min.js',
-          'bower_components/angular-spinner/angular-spinner.min.js.map', // Include source-maps
-          'bower_components/bootstrap/dist/css/bootstrap.min.css',
-          'bower_components/bootstrap/dist/css/bootstrap.min.css.map',   // Include source-maps
           'bower_components/angular-route/angular-route.min.js',
           'bower_components/angular-route/angular-route.min.js.map',     // Include source-maps
           'bower_components/angular-animate/angular-animate.min.js',
@@ -50,7 +46,6 @@ module.exports = function (grunt) {
           'bower_components/ace-builds/src-min-noconflict/theme-chrome.js',
           'bower_components/ace-builds/src-min-noconflict/worker-json.js',
           'bower_components/angular-ui-ace/ui-ace.min.js',
-          'bower_components/spin.js/spin.min.js',
           'bower_components/angular-material/angular-material.min.js',
           'bower_components/angularUtils-pagination/dirPagination.js',
           'bower_components/angular-google-chart/ng-google-chart.min.js',

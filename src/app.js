@@ -2,7 +2,6 @@
 
 var angularAPP = angular.module('angularAPP', [
   'ui.ace',
-  'angularSpinner',
   'angularUtils.directives.dirPagination',
   'ngRoute',
   'ngMaterial',

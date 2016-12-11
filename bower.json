@@ -16,17 +16,15 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular": "~1.6.*",
-    "angular-route": "^1.6.*",
-    "angular-animate": "^1.6.*",
-    "angular-aria": "^1.6.*",
+    "angular": "1.5.9",
+    "angular-route": "1.5.9",
+    "angular-animate": "1.5.9",
+    "angular-aria": "1.5.9",
     "angular-ui-ace": "bower",
-    "bootstrap": "^3.3.6",
-    "angular-spinner": "^0.8.1",
-    "angular-material": "^1.1.1",
+    "angular-material": "1.1.1",
     "angularUtils-pagination": "angular-utils-pagination#^0.11.1",
     "components-font-awesome": "^4.6.3",
-    "angular-messages": "^1.5.8",
+    "angular-messages": "1.5.9",
     "angular-google-chart": "^0.1.0"
   }
 }
