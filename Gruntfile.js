@@ -45,6 +45,7 @@ module.exports = function (grunt) {
           'bower_components/ace-builds/src-min-noconflict/mode-batchfile.js',
           'bower_components/ace-builds/src-min-noconflict/theme-chrome.js',
           'bower_components/ace-builds/src-min-noconflict/worker-json.js',
+          'bower_components/ace-builds/src-min-noconflict/mode-properties.js',
           'bower_components/angular-ui-ace/ui-ace.min.js',
           'bower_components/angular-material/angular-material.min.js',
           'bower_components/angularUtils-pagination/dirPagination.js',
