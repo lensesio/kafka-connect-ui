@@ -15,6 +15,14 @@ URL:
 
 Visit http://localhost:8000 to see the UI.
 
+| **Important**: For the `CONNECT_URL` you have to use an IP address or a domain
+    that can be resolved to it. **You can't use** `localhost` even if you serve
+    Connect's REST port at your localhost. The reason for this is that a docker
+    container has its own network, so your _localhost_ is different from the
+    container's _localhost_. As an example, if you are in your home network and
+    have an IP address of `192.168.5.65` and run Connect from your computer,
+    instead of `http://127.0.1:8083` you must use `http://192.168.5.65:8083`.
+
 Please note that because Connect does not send CORS headers, we have to proxy
 it. What this means for you, is that Connect, while running the container, is
 accessible via `http://your.address:8000/api/kafka-connect`. If this is a
