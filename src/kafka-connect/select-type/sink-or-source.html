@@ -34,7 +34,7 @@
             <md-subheader class="md-no-sticky">Sinks</md-subheader>
             <md-list-item ng-repeat='sink in sinks  | filter : search2' class="md-2-line"
                           ng-if="classesInClasspath.indexOf(sink.class) !=-1"
-                          ng-href="{{ classesInClasspath.indexOf(sink.class) !==-1 && '#/cluster/'+cluster+'/create-connector/source/' + sink.name || '' }}"
+                          ng-href="{{ classesInClasspath.indexOf(sink.class) !==-1 && '#/cluster/'+cluster+'/create-connector/sink/' + sink.name || '' }}"
                           ng-class="classesInClasspath.indexOf(sink.class) ==-1 && 'notavailable' || '' ">
                 <img ng-src="src/assets/icons/{{sink.icon}}" class="md-avatar" style="width:40px;height:40px;" />
                 <div class="md-list-item-text">
