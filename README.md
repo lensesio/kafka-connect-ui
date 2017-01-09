@@ -22,8 +22,8 @@ Web UI will be available at `http://localhost:8000`
 ## Build from source
 
 ```
-    git clone https://github.com/Landoop/kafka-topics-ui.git
-    cd kafka-topics-ui
+    git clone https://github.com/Landoop/kafka-connect-ui.git
+    cd kafka-connect-ui
     npm install
     http-server .
 ```
