@@ -2187,7 +2187,7 @@ var supportedConnectorsTemplates = [{
   name: "jdbc",
   icon: "jdbc.png",
   class: "io.confluent.connect.jdbc.JdbcSourceConnector",
-  description: "The HDFS sink connector allows you to write data from a Kafka topic into HDFS",
+  description: "The jdbc source connector allows you to write data from a Kafka topic into HDFS",
   type: "Source",
   uiEnabled: true,
   color: "#b1b1b1",
@@ -2268,6 +2268,177 @@ var supportedConnectorsTemplates = [{
      }]
     }] //end of sections
   }]
+ },
+ {
+  name: "mqtt",
+  icon: "mqtt.png",
+  class: "com.datamountaineer.streamreactor.connect.mqtt.source.MqttSourceConnector",
+  description: "The MQTT source connector allows you to read from MQTT and stream data into a kafka topic",
+  type: "Source",
+  uiEnabled: true,
+  color: "#5B346C",
+  template: [{
+   step: "Basic Info",
+   id: "step1",
+   sections: [{
+     section: "Basic connector information",
+     elements: [{
+      key: 'name',
+      value: 'test-mqtt-source',
+      label: 'Connector Name',
+      tooltip: ' The (unique) connector name',
+      type: 'text',
+      placeholder: 'ie.test-mqtt-source',
+      required: true,
+      flex: "100",
+      errorMessage: "Connector Name is required field and must be unique"
+     }, {
+      key: 'connect.mqtt.hosts',
+      value: 'localhost:9595',
+      element: 'input',
+      label: 'Mqtt connection endpoints',
+      tooltip: 'Contains the MQTT connection end points',
+      type: 'text',
+      required: true,
+      errorMessage: "Must use a host",
+      flex: "50"
+     }, {
+      key: 'connect.mqtt.user',
+      value: 'Username',
+      element: 'input',
+      label: 'Username',
+      tooltip: 'Contains the Mqtt connection user name',
+      type: 'text',
+      placeholder: 'i.e.Username',
+      required: true,
+      flex: "50",
+      errorMessage: "You need to select a username"
+     }, {
+      key: 'connect.mqtt.password',
+      value: 'passwrod',
+      element: 'input',
+      label: 'Password',
+      tooltip: 'Contains the Mqtt connection password',
+      type: 'password',
+      placeholder: 'ie.password',
+      required: true,
+      flex: "50"
+     }, {
+      key: 'connect.mqtt.service.quality',
+      value: '0',
+      element: 'input',
+      label: 'Mqtt quality of service',
+      tooltip: 'The Quality of Service (QoS) level is an agreement between sender and receiver of a message regarding the guarantees of delivering a message. There are 3 QoS levels in MQTT: 0 = At most once; 1 = At least once; 2 = Exactly once',
+      type: 'text',
+      placeholder: 'ie.0,1,2',
+      required: true,
+      flex: "50"
+     }, {
+      key: 'tasks.max',
+      value: 1,
+      element: 'input',
+      label: 'Max Tasks',
+      tooltip: 'The number of tasks the connector is allowed to start (max is 5)',
+      type: 'number',
+      max: 5,
+      min: 1,
+      required: true,
+      flex: 50,
+      errorMessage: "Max 5 tasks"
+     }, {
+      key: 'connector.class',
+      value: "com.datamountaineer.streamreactor.connect.mqtt.source.MqttSourceConnector",
+      type: 'hidden',
+      required: true,
+      flex: "100"
+     }]
+    }] //end of sections
+  },
+  {
+    step: "Advanced Options",
+    id: "step2",
+    sections: [{
+       section: "Advanced Configuration",
+       elements: [{
+        key: 'connect.mqtt.client.id',
+        value: 'dm_source_id',
+        label: 'Client id',
+        tooltip: 'Contains the Mqtt session client id.',
+        type: 'text',
+        placeholder: 'dm_source_id',
+        required: true,
+        flex: "100"
+       }, {
+        key: 'connect.mqtt.connection.timeout',
+        value: '1000',
+        label: 'Connection timeout',
+        tooltip: 'Provides the time interval to establish the mqtt connection.',
+        type: 'text',
+        placeholder: '1000',
+        required: false,
+        flex: "50"
+       }, {
+        key: 'connect.mqtt.connection.clean',
+        value: 'true',
+        label: 'Clean session',
+        tooltip: 'true / false',
+        placeholder: 'true / false',
+        required: false,
+        flex: "50"
+       },
+       {
+        key: 'connect.mqtt.source.kcql',
+        value: '',
+        label: 'KCQL',
+        tooltip: 'Contains the Kafka Connect Query Language describing the sourced MQTT source and the target Kafka topics',
+        type: 'text',
+        placeholder: 'INSERT INTO position-reports SELECT * FROM /ais',
+        errorMessage: "KCQL required",
+        required: false,
+        flex: "100"
+       }, {
+        key: 'connect.mqtt.connection.keep.alive',
+        value: '',
+        label: 'Keep alive interval',
+        tooltip: 'The keep alive functionality assures that the connection is still open and both broker and client are connected to one another. Therefore the client specifies a time interval in seconds and communicates it to the broker during the establishment of the connection. The interval is the longest possible period of time, which broker and client can endure without sending a message.',
+        type: 'text',
+        placeholder: '5000',
+        required: false,
+        flex: "50"
+       }, {
+        key: 'connect.mqtt.connection.ssl.ca.cert',
+        value: '',
+        label: 'CA certificate file path',
+        tooltip: 'Provides the path to the CA certificate file to use with the Mqtt connection',
+        type: 'text',
+        placeholder: 'CA/certificate/path',
+        required: false,
+        flex: "50"
+       }, {
+        key: 'connect.mqtt.converter.throw.on.error',
+        value: '',
+        label: 'Throw error on conversion',
+        tooltip: 'If set to false the conversion exception will be swallowed and everything carries on BUT the message is lost!!; true will throw the exception.Default is false.',
+        type: 'text',
+        placeholder: 'throw',
+        required: false,
+        flex: "50"
+       }, {
+        key: 'connect.mqtt.source.converters',
+        value: '',
+        label: 'Converter class',
+        tooltip: 'Contains a tuple (Mqtt source topic and the canonical class name for the converter of a raw Mqtt message bytes to a SourceRecord).If the source topic is not matched it will default to the BytesConverter/i.e. $mqtt_source1=com.datamountaineer.streamreactor.connect.mqtt.source.converters.AvroConverter;$mqtt_source2=com.datamountaineer.streamreactor.connect.mqtt.source.converters.JsonConverter""".stripMargin',
+        type: 'text',
+        placeholder: 'com.datamountaineer.streamreactor.connect.converters.source.AvroConverter',
+        required: false,
+        flex: "50"
+       }]
+      }
+
+
+
+     ] //end of sections
+   }]
  }
 ];
 
