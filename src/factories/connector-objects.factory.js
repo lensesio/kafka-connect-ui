@@ -75,6 +75,11 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
       function extractTopicsFromConfig(connectorConfig) {
         var topics = [];
         angular.forEach(connectorConfig, function (value, key) {
+            // adding extra logic to capture information about FTP Source connectors
+            if (key.indexOf("connect.ftp.monitor") != -1) {
+                var setup = value.split(": ");
+                topics.push(setup)
+            }
             if (key.indexOf("topic") != -1) {
               var tArray = value.split(",");
               if(tArray.length > 1) {

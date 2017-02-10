@@ -151,7 +151,114 @@ var supportedConnectorsTemplates = [{
    }]
   }],
  },
-
+ {
+  name: "ftp",
+  icon: "file.png",
+  class: "com.datamountaineer.streamreactor.connect.ftp.FtpSourceConnector",
+  description: "Tail directories in remote FTP location and bring messages in Kafka",
+  type: "Source",
+  uiEnabled: true,
+  color: "#b1b1b1",
+  template: [{
+   step: "Basic Info",
+   id: "step1",
+   sections: [{
+     section: "Basic connector information",
+     elements: [{
+      key: 'name',
+      value: 'ftp-connector',
+      label: 'Connector Name',
+      tooltip: ' The (unique) connector name',
+      type: 'text',
+      placeholder: 'ie.ftp-connector',
+      required: true,
+      flex: "100",
+      errorMessage: "Connector Name is required field and must be unique"
+     }, {
+      key: 'tasks.max',
+      value: 1,
+      element: 'input',
+      label: 'Max Tasks',
+      tooltip: 'The number of tasks the connector is allowed to start (max is 5)',
+      type: 'number',
+      max: 5,
+      min: 1,
+      required: true,
+      flex: 50,
+      errorMessage: "Max 5 tasks"
+     }, {
+      key: 'connect.ftp.monitor.tail',
+      value: 'multichannel/*.csv:multichannel',
+      element: 'input',
+      label: 'Remote FTP location:topicName',
+      tooltip: 'Comma separated tuples of folders and topics',
+      type: 'text',
+      required: true,
+      errorMessage: "Must setup FTP monitor.tail or monitor.update"
+     }, {
+      key: 'connect.ftp.keystyle',
+      value: 'struct',
+      element: 'input',
+      label: 'struct or string',
+      tooltip: 'How to key your messages',
+      type: 'text',
+      required: true,
+      errorMessage: "Must setup FTP keystyle"
+     }, {
+      key: 'connect.ftp.file.maxage',
+      value: 'P14D',
+      element: 'input',
+      label: 'Do not care for files older than the particular duration',
+      tooltip: 'i.e. ignore files older than 14 days',
+      type: 'text',
+      required: true,
+      errorMessage: "Must setup FTP maxage"
+     }, {
+      key: 'connect.ftp.refresh',
+      value: 'PT1M',
+      element: 'input',
+      label: 'Poll time in iso8086 duration format',
+      tooltip: 'Poll FTP every 1 minute by default',
+      type: 'text',
+      required: true,
+      errorMessage: "Must setup FTP refresh"
+     }, {
+      key: 'connect.ftp.password',
+      value: 'xxxxxx',
+      element: 'input',
+      label: 'FTP Password',
+      tooltip: 'The FTP password',
+      type: 'text',
+      required: true,
+      errorMessage: "Must setup FTP password"
+     }, {
+      key: 'connect.ftp.user',
+      value: 'Antwnis',
+      element: 'input',
+      label: 'FTP User',
+      tooltip: 'The FTP username',
+      type: 'text',
+      required: true,
+      errorMessage: "Must setup FTP username"
+     }, {
+      key: 'connect.ftp.address',
+      value: '192.168.0.15:21',
+      element: 'input',
+      label: 'FTP Server',
+      tooltip: 'The host and port of the remote FTP server',
+      type: 'text',
+      required: true,
+      errorMessage: "Must setup FTP Address"
+     }, {
+      key: 'connector.class',
+      value: 'com.datamountaineer.streamreactor.connect.ftp.FtpSourceConnector',
+      type: 'hidden',
+      required: true,
+      flex: "100"
+     }]
+    }] //end of sections
+  }]
+ },
  {
   name: "file",
   icon: "file.png",
