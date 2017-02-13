@@ -1761,11 +1761,11 @@ var supportedConnectorsTemplates = [{
         flex: "100",
         errorMessage: "Connector Name is required field and must be unique"
        }, {
-        key: 'topic',
+        key: 'topics',
         value: 'kafka-connect-logs',
         element: 'input',
-        label: 'Topic',
-        tooltip: 'The Kafka topic to read from',
+        label: 'Topics',
+        tooltip: 'The Kafka topics to read from',
         type: 'text',
         placeholder: 'ie.kafka-connect-logs',
         required: true,
