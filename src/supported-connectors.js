@@ -90,7 +90,7 @@ var supportedConnectorsTemplates = [{
     elements: [{
      key: 'twitter.token',
      value: '',
-     label: 'Twitter Tocken',
+     label: 'Twitter Access Token',
      tooltip: '',
      type: 'text',
      placeholder: 'ie.#ApacheSpark,#ApacheFlink,#ApacheKafka',
@@ -99,7 +99,7 @@ var supportedConnectorsTemplates = [{
     }, {
      key: 'twitter.secret',
      value: '',
-     label: 'Twitter Secret Key',
+     label: 'Twitter Token Secret',
      tooltip: '',
      type: 'text',
      placeholder: '',
