@@ -32,7 +32,7 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
         if(isList) {
             enhancedConnector =  {
                 name: connectorName,
-                isSource: (connectorUiInfo.type == 'Source'),
+                isSource: isSource(connector),
                 type: connectorUiInfo.name,
                 color: connectorUiInfo.color,
                 connectorState: connectorStatus.connector,// getConnectorStatus(connectorName),
@@ -43,7 +43,7 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
             enhancedConnector =  {
                 name: connectorName,
                 config: connectorConfig,
-                isSource: (connectorUiInfo.type == 'Source'),
+                isSource: isSource(connector),
                 type: connectorUiInfo.name,
                 color: connectorUiInfo.color,
                 connectorState: connectorStatus.connector,//getConnectorStatus(connectorName),
@@ -56,6 +56,22 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
             };
         }
         return enhancedConnector;
+      }
+
+      function isSource(connector) {
+        var connectorUiInfo = supportedConnectorsFactory.getSupportedConnectorObj(connector.config["connector.class"]);
+        if (connectorUiInfo.type != '')
+          return (connectorUiInfo.type == 'Source')
+          else {
+            var isSource='';
+            var a = connector.config["connector.class"].split('.');
+            if (a[a.length-1].toLowerCase().indexOf('sink') > 0) {
+              isSource=false;
+            } else if (a[a.length-1].toLowerCase().indexOf('source') > 0) {
+              isSource=true;
+            }
+          return isSource
+          }
       }
 
       function enhanceConnectors(connectors) {

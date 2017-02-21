@@ -26,7 +26,7 @@
     <md-list class="connectors-list" flex>
       <md-list-item class="md-list-item-text"
                     style="background-color: {{connector.name == selectedConnector ? '#DADADA' : '' }}"
-                    dir-paginate="connector in allConnectors | orderBy:'name' | filter : search | itemsPerPage: 50"
+                    dir-paginate="connector in allConnectors | orderBy:'name' | filter : search | itemsPerPage: 10"
                     ng-href="#/cluster/{{cluster}}/connector/{{connector.name}}">
         <!--Status icon-->
         <span style="padding-right:10px">
@@ -67,7 +67,7 @@
       </md-list-item>
     </md-list>
 
-    <dir-pagination-controls style="margin: 20px 20px;"></dir-pagination-controls>
+    <dir-pagination-controls max-size="6" style="margin:0;"></dir-pagination-controls>
   </md-content>
 </md-card>
 <md-card ng-show="rebalancing">

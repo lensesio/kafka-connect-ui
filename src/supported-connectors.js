@@ -2083,7 +2083,7 @@ var supportedConnectorsTemplates = [{
   description: "Ultra low-latency in memory grid for strict SLAs",
   icon: "hazelcast.png",
   uiEnabled: true,
-  color: "",
+  color: "#002A36",
   class: "com.datamountaineer.streamreactor.connect.hazelcast.sink.HazelCastSinkConnector",
   template: [{
     step: "Basic Info",
