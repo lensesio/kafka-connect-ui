@@ -97,13 +97,16 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
                 topics.push(setup)
             }
             if (key.indexOf("topic") != -1) {
-              var tArray = value.split(",");
-              if(tArray.length > 1) {
-                   angular.forEach(tArray, function (t) {
-                        topics.push(t)
-                   })
-              } else {
-                topics.push(value);
+            var keyArray = key.split(".")
+              if( !( keyArray.indexOf("topics") > 0 || keyArray.indexOf("topic") > 0)) { // checking if it topic or topics and not i.e xxx.xxx.topic
+                var tArray = value.split(",");
+                if(tArray.length > 1) {
+                  angular.forEach(tArray, function (t) {
+                    topics.push(t)
+                  })
+                } else {
+                  topics.push(value);
+                }
               }
             }
         });
