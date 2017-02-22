@@ -23,8 +23,10 @@
       </md-button>
 
       <md-button ng-hide="connectorStatus =='PAUSED'" ng-disabled="showTaskSpinner" ng-click="restartConnector(connectorDetails.name)">
-
         <i class="fa fa-repeat" aria-hidden="true"></i> Restart
+      </md-button>
+      <md-button ng-disabled="showTaskSpinner || rebalancing"  ng-click="deleteConnector(connectorDetails.name, $event);">
+        <i class="fa fa-trash" aria-hidden="true"></i> Delete
       </md-button>
     </div>
   </md-toolbar>
@@ -55,73 +57,25 @@
     <div layout="row">
       <h4 style="padding-right: 20px;margin-top: 6px;"><i class="fa fa-bullhorn grey" aria-hidden="true"></i> TOPICS</h4>
       <div layout="column">
-          <h5 ng-show="connectorDetails.topics.length == 0" class="red" style="padding:0px; margin:0px;">
-            Something went wrong! No related topics found for this connector.
-          </h5>
-          <md-chips style="float:left;">
-              <md-chip ng-if="kafkaTopicsUIEnabled" ng-repeat="topic in connectorDetails.topics">
-                <a style="text-decoration:none;" ng-href="{{kafkaTopicsUI}}/#/topic/n/{{topic}}/"
-                   target="_blank">
-                <img src="src/assets/icons/kafka.png" class="kafka-icon-view">
-                {{topic}}
-                </a>
-              </md-chip>
+        <h5 ng-show="connectorDetails.topics.length == 0" style="padding:6px 0 0px; margin:0px;">
+          No related topics found for this connector.
+        </h5>
+        <md-chips style="float:left;">
+          <md-chip ng-if="kafkaTopicsUIEnabled" ng-repeat="topic in connectorDetails.topics">
+            <a style="text-decoration:none;" ng-href="{{kafkaTopicsUI}}/#/topic/n/{{topic}}/"
+               target="_blank">
+              <img src="src/assets/icons/kafka.png" class="kafka-icon-view">
+              {{topic}}
+            </a>
+          </md-chip>
 
-              <md-chip ng-if="!kafkaTopicsUIEnabled" ng-repeat="topic in connectorDetails.topics">
-                <img src="src/assets/icons/kafka.png" class="kafka-icon-view">
-                {{topic}}
-            </md-chip>
-          </md-chips>
-        </div>
-      </div>
-    </md-card-content>
-  </md-card>
-
-<!--TASKS-->
-<md-card ng-show="connectorDetails != undefined" class="view">
-  <md-progress-linear md-mode="indeterminate" ng-show="showTaskSpinner && rebalancing != true"></md-progress-linear>
-  <md-card-content style="padding-bottom: 0px;" >
-    <div layout="row">
-      <h4 style="padding-right: 20px;margin-top: 6px;"><i class="fa fa-cogs grey" aria-hidden="true"></i> TASKS</h4>
-      <div layout="column">
-        <p ng-show="showTaskSpinner"> Reloading configuration wont take more than 2 minutes. Please wait... </p>
-        <md-chips style="float:left;" ng-hide="showTaskSpinner">
-          <md-chip ng-repeat="task in connectorDetails.tasks" ng-click="showTaskDetails(task)"
-                   style="margin-bottom:5px;background-color: {{ task.id == selectedTask.taskStatus.id ? 'rgb(55, 71, 79);color:white' : '' }}">
-            <i ng-show="task.state == 'PAUSED'" class="fa fa-pause-circle grey" aria-hidden="true" aria-label="Running"></i>
-            <i ng-show="task.state == 'RUNNING'"  class="fa fa-cog fa-spin green" aria-hidden="true" aria-label="Paused"></i>
-            <i ng-show="task.state == 'FAILED'" class="fa fa-exclamation-circle red" aria-hidden="true" aria-label="Failed"></i>
-            <i ng-show="task.state == 'UNASSIGNED'" class="fa fa-ban" aria-hidden="true" aria-label="Unassigned"></i>
-            {{task.id}} <b>[{{task.worker_id}}] </b>
+          <md-chip ng-if="!kafkaTopicsUIEnabled" ng-repeat="topic in connectorDetails.topics">
+            <img src="src/assets/icons/kafka.png" class="kafka-icon-view">
+            {{topic}}
           </md-chip>
         </md-chips>
       </div>
     </div>
-      <div ng-if="selectedTask" style="font-size:11px;padding-bottom:20px;">
-        <!--TODO styles-->
-        <hr style="margin-left:-15px; margin-right:-15px; background-color:#E0E0E0;border: 0;
-          height: 0;border-bottom: 1px solid rgba(255, 255, 255, 0.3);" size="1">
-
-        <md-button class="md-mini md-primary" ng-click="invalidateSelectedTask()" style="float:right;">close</md-button>
-
-        <h5>ID: {{selectedTask.taskStatus.id}}</h5>
-        <h5> STATE: {{selectedTask.taskStatus.state}}</h5>
-        <h5 ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'">CONFIG:</h5>
-
-        <table style="border:0px solid #ccc;width:100%; background:#fff;" ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'">
-          <tbody>
-          <tr ng-repeat="(key, value) in selectedTask.taskConfig.config">
-            <td>{{key}}</td>
-            <td>{{value}}</td>
-          </tr>
-          </tbody>
-        </table>
-
-        <h5 ng-if="selectedTask.taskStatus.trace">TRACE:</h5>
-        <div ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'" style="border:1px solid #ccc;width:100%;background:#f2f2f2;" ng-show="selectedTask">
-          <code style="word-wrap:break-word; white-space: pre-wrap;">{{selectedTask.taskStatus.trace}}</code>
-        </div>
-      </div>
   </md-card-content>
 </md-card>
 
@@ -145,12 +99,51 @@
   </md-card-content>
 </md-card>
 
-<!--ADVANCED OPTIONS-->
+<!--TASKS-->
 <md-card ng-show="connectorDetails != undefined" class="view">
-  <md-card-content>
-    <md-button ng-disabled="showTaskSpinner || rebalancing" ng-click="deleteConnector(connectorDetails.name, $event);">
-      <i class="fa fa-trash" aria-hidden="true" style="color:red"></i> Delete Connector
-    </md-button>
+  <md-progress-linear md-mode="indeterminate" ng-show="showTaskSpinner && rebalancing != true"></md-progress-linear>
+  <md-card-content style="padding-bottom: 0px;" >
+    <div layout="row">
+      <h4 style="padding-right: 20px;margin-top: 6px;"><i class="fa fa-cogs grey" aria-hidden="true"></i> TASKS</h4>
+      <div layout="column">
+        <p ng-show="showTaskSpinner"> Reloading configuration wont take more than 2 minutes. Please wait... </p>
+        <md-chips style="float:left;" ng-hide="showTaskSpinner">
+          <md-chip ng-repeat="task in connectorDetails.tasks" ng-click="showTaskDetails(task)"
+                   style="margin-bottom:5px;background-color: {{ task.id == selectedTask.taskStatus.id ? 'rgb(55, 71, 79);color:white' : '' }}">
+            <i ng-show="task.state == 'PAUSED'" class="fa fa-pause-circle grey" aria-hidden="true" aria-label="Running"></i>
+            <i ng-show="task.state == 'RUNNING'"  class="fa fa-cog fa-spin green" aria-hidden="true" aria-label="Paused"></i>
+            <i ng-show="task.state == 'FAILED'" class="fa fa-exclamation-circle red" aria-hidden="true" aria-label="Failed"></i>
+            <i ng-show="task.state == 'UNASSIGNED'" class="fa fa-ban" aria-hidden="true" aria-label="Unassigned"></i>
+            {{task.id}} <b>[{{task.worker_id}}] </b>
+          </md-chip>
+        </md-chips>
+      </div>
+    </div>
+    <div ng-if="selectedTask" style="font-size:11px;padding-bottom:20px;">
+      <!--TODO styles-->
+      <hr style="margin-left:-15px; margin-right:-15px; background-color:#E0E0E0;border: 0;
+          height: 0;border-bottom: 1px solid rgba(255, 255, 255, 0.3);" size="1">
+
+      <md-button class="md-mini md-primary" ng-click="invalidateSelectedTask()" style="float:right;">close</md-button>
+
+      <h5>ID: {{selectedTask.taskStatus.id}}</h5>
+      <h5> STATE: {{selectedTask.taskStatus.state}}</h5>
+      <h5 ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'">CONFIG:</h5>
+
+      <table style="border:0px solid #ccc;width:100%; background:#fff;" ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'">
+        <tbody>
+        <tr ng-repeat="(key, value) in selectedTask.taskConfig.config">
+          <td>{{key}}</td>
+          <td>{{value}}</td>
+        </tr>
+        </tbody>
+      </table>
+
+      <h5 ng-if="selectedTask.taskStatus.trace">TRACE:</h5>
+      <div ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'" style="border:1px solid #ccc;width:100%;background:#f2f2f2;" ng-show="selectedTask">
+        <code style="word-wrap:break-word; white-space: pre-wrap;">{{selectedTask.taskStatus.trace}}</code>
+      </div>
+    </div>
   </md-card-content>
 </md-card>
 
