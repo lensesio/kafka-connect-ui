@@ -15,6 +15,9 @@ URL:
 
 Visit http://localhost:8000 to see the UI.
 
+The `CONNECT_URL` can be a comma separated array of Connect worker
+endpoints. E.g: `CONNECT_URL=http://connect.1.url,http://connect.2.url"`
+
 > **Important**: For the `CONNECT_URL` you have to use an IP address or a domain
 > that can be resolved to it. **You can't use** `localhost` even if you serve
 > Connect's REST port from your localhost. The reason for this is that a docker
