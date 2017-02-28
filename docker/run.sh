@@ -13,23 +13,36 @@ fi
 CONNECT_URL="${CONNECT_URL:-http://localhost:8083}"
 
 echo
-echo "Enabling proxy because Connect doesn't send CORS headers yet."
-cat <<EOF >>/caddy/Caddyfile
-proxy /api/kafka-connect $CONNECT_URL {
-    without /api/kafka-connect
+echo "Enabling proxy because Connect doesn't send CORS headers yet and setting up clusters."
+
+NUM_CLUSTER=0
+OLDIFS=""
+IFS=","
+for cluster in $CONNECT_URL; do
+    OPEN_CURL=",{"
+    let "NUM_CLUSTER+=1"
+    if [[ "$NUM_CLUSTER" == 1 ]]; then
+        OPEN_CURL="{"
+        cat <<EOF >/kafka-connect-ui/env.js
+var clusters = [
+EOF
+    fi
+
+    cat <<EOF >>/caddy/Caddyfile
+proxy $CONNECT_PROXY-$NUM_CLUSTER $cluster {
+    without $CONNECT_PROXY-$NUM_CLUSTER
 }
 EOF
 
-CONNECT_URL=/api/kafka-rest-proxy
-
-cat <<EOF >/kafka-connect-ui/env.js
-var clusters = [
-   {
-     NAME: "default",
-     KAFKA_CONNECT: "$CONNECT_PROXY"
+    cat <<EOF >>/kafka-connect-ui/env.js
+   $OPEN_CURL
+     NAME: "connect-$NUM_CLUSTER",
+     KAFKA_CONNECT: "$CONNECT_PROXY-$NUM_CLUSTER"
    }
-]
 EOF
+
+done
+echo "]" >> /kafka-connect-ui/env.js
 
 echo
 
