@@ -59,7 +59,7 @@ module.exports = function (grunt) {
 
     concat: {
       dist: {
-        src: ['src/supported-connectors.js', 'src/app.js', 'src/**/*-factory.js','src/**/*.factory.js', 'src/**/*.controller.js', 'src/**/**/*.controller.js', 'src/**/**/**/*.controller.js'],
+        src: ['src/supported-connectors.js', 'src/factories/dirPagination.js', 'src/app.js', 'src/**/*-factory.js','src/**/*.factory.js', 'src/**/*.controller.js', 'src/**/**/*.controller.js', 'src/**/**/**/*.controller.js'],
         dest: 'dist/src/combined.js'
       }
     },
