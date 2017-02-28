@@ -51,7 +51,7 @@ angularAPP.controller('HomeCtrl', function ($scope, $log, $location, $http, $int
       $location.path("/cluster/"+envs[0].NAME);
    }
 
-   $interval(refresh, 2000);
+   $interval(refresh, 10000);
 
    function refresh() {
     if(!$scope.stopRefresh) $scope.loadData();
