@@ -217,6 +217,7 @@ md-tab-content {
     width:100%;
     color: rgba(21, 31, 39, 0.81);
     margin-top: 20px;
+    border-spacing: 0;
 }
 
 .topics-table tbody { color: rgba(21, 31, 39, 0.81); font-weight: 400 }
@@ -224,6 +225,10 @@ md-tab-content {
 .topics-table tbody tr:nth-child(even) { background-color:transparent; }
 .topics-table tr td { padding: 10px 8px; border-top: 1px solid #e4e7ea; line-height: 1.42857143; vertical-align: top; font-size: 14px;}
 .topics-table tr th { padding: 15px 8px; line-height: 1.42857143; vertical-align: top; font-size: 14px;}
+
+[ng-click] {cursor:pointer;}
+.topics-table tbody tr[ng-click]:hover {background:rgba(0,0,0,0.5);color:#fff;}
+.topics-table tbody tr[ng-click].disabled {cursor:not-allowed;}
 
 dir-pagination-controls .md-button {min-width:0;}
 

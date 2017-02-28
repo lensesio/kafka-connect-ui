@@ -1,7 +1,6 @@
 <div layout="row" layout-sm="column" layout-xs="column">
 <div flex-gt-sm="33">
     <div ng-controller="KafkaConnectListCtrl" ng-include="'src/kafka-connect/list/list-connectors.html'"></div>
-    <div ng-include="'src/kafka-connect/config/config.html'"></div>
 </div>
 <div flex-gt-sm="66" flex>
     <md-card ng-hide="connectionFailure || rebalancing">

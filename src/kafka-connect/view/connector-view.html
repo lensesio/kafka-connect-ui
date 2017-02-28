@@ -1,5 +1,10 @@
 <!--Workaround for Status -->
-{{connectorStatus = connectorDetails.connectorState[connectorDetails.name]; ""}}
+<div layout="row" layout-sm="column" layout-xs="column">
+  <div flex-gt-sm="33">
+    <div ng-controller="KafkaConnectListCtrl" ng-include="'src/kafka-connect/list/list-connectors.html'"></div>
+  </div>
+  <div flex-gt-sm="66" flex>
+  {{connectorStatus = connectorDetails.connectorState[connectorDetails.name]; ""}}
 
 <md-card ng-show="connectorDetails != undefined" class="view">
   <!--TOOLBAR-->
@@ -156,4 +161,5 @@
     </md-card-title-text>
   </md-card-title>
 </md-card>
-
+</div>
+</div>

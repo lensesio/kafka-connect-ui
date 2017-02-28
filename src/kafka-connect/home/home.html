@@ -25,6 +25,7 @@
                         <th align="center">Connectors</th>
                     </tr>
                     <tr ng-repeat="e in envs"
+                        ng-class="(e.status >= 200 && e.status < 400) ? '' : 'disabled' "
                         ng-click="updateEndPoint(e.name, e.status)">
                         <td><b>{{e.name}}</b></td>
                         <td>{{e.connect}}</td>

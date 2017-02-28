@@ -30,6 +30,7 @@ angularAPP.controller('HeaderCtrl', function ($rootScope, $scope, $location, env
 angularAPP.run(
     function loadRoute( env, $routeParams, $rootScope ) {
         $rootScope.$on('$routeChangeSuccess', function() {
+          $rootScope.isHome = false;
           env.setSelectedCluster($routeParams.cluster);
        });
     }
