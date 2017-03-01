@@ -1056,7 +1056,7 @@ var supportedConnectorsTemplates = [{
   name: "elastic", //TODO rename elasticsearch
   color: "#5CB85C",
   icon: "elastic.png",
-  description: "A Connector and Sink to write events from Kafka to Elastic Search using Elastic4s client.",
+  description: "A Connector to sink data from Kafka into Elastic Search.",
   type: "Sink",
   uiEnabled: true,
   class: "com.datamountaineer.streamreactor.connect.elastic.ElasticSinkConnector",
@@ -2014,7 +2014,7 @@ var supportedConnectorsTemplates = [{
         errorMessage: "Max 5 tasks"
        }, {
         key: 'connector.class',
-        value: 'com.datamountaineer.streamreactor.connect.rethink.sink.ReThinkSinkConnector',
+        value: 'com.datamountaineer.streamreactor.connect.voltdb.VoltSinkConnector',
         type: 'hidden',
         required: true,
         flex: "100"
@@ -2546,6 +2546,46 @@ var supportedConnectorsTemplates = [{
 
      ] //end of sections
    }]
+ },
+ {
+  name: "rethink",
+  type: "Source",
+  icon: "rethink.png",
+  class: "com.datamountaineer.streamreactor.connect.rethink.source.ReThinkSourceConnector",
+  description: "A Connector to source records from RethinkDb into kafka.",
+  uiEnabled: true
+ },
+ {
+  name: "coap",
+  type: "Source",
+  icon: "coap.png",
+  class: "com.datamountaineer.streamreactor.connect.coap.source.CoapSourceConnector",
+  description: "A Connector to source records from Constrained Application Protocol services into Kafka.",
+  uiEnabled: true
+ },
+ {
+  name: "blockchain",
+  type: "Source",
+  icon: "blockchain-logo.jpg",
+  class: "com.datamountaineer.streamreactor.connect.blockchain.source.BlockchainSourceConnector",
+  description: "A Connector to source data from Blockchain into Kafka.",
+  uiEnabled: true
+ },
+ {
+  name: "Coap",
+  type: "Sink",
+  icon: "coap.png",
+  class: "com.datamountaineer.streamreactor.connect.coap.sink.CoapSinkConnector",
+  description: "A Connector to sink data from Kafka into Constrained Application Protocol services.",
+  uiEnabled: true
+ },
+ {
+  name: "mongo",
+  type: "Source",
+  icon: "mongodb.png",
+  class: "com.datamountaineer.streamreactor.connect.mongodb.sink.MongoSinkConnector",
+  description: "A Connector to sink data from Kafka into MongoDB",
+  uiEnabled: true
  }
 ];
 
