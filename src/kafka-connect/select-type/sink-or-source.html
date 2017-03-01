@@ -1,77 +1,85 @@
-<md-card class="new">
+<div layout="row" layout-sm="column" layout-xs="column">
 
-    <md-toolbar ng-show="!displayingControlTopics" class="md-hue-2">
-        <div class="md-toolbar-tools">
-            <h4>
-                <span>New Connector</span>
-            </h4>
-            <span flex></span>
-        </div>
-    </md-toolbar>
-
-    <md-input-container class="md-block" style="margin-bottom:0;padding-bottom:0;">
-        <label>Search</label>
-        <input ng-model="search2">
-    </md-input-container>
-
-    <md-content layout="row">
-
-        <md-list class="dense" flex ng-if="sources.length > 0">
-            <md-subheader class="md-no-sticky">Sources</md-subheader>
-            <md-list-item ng-repeat='source in sources | filter : search2' class="md-2-line"
-                          ng-if="classesInClasspath.indexOf(source.class) !=-1"
-                          ng-href="{{ classesInClasspath.indexOf(source.class) !==-1 && '#/cluster/'+cluster+'/create-connector/source/' + source.name || '' }}"
-                          ng-class="classesInClasspath.indexOf(source.class) ==-1 && 'notavailable' || '' ">
-                <img ng-src="src/assets/icons/{{source.icon}}" class="md-avatar" style="width:30px;height:30px;" />
-                <div class="md-list-item-text" >
-                    <h3><b>{{source.name}}</b></h3>
-                    <p style="font-size:12px;">{{source.description}}</p>
-                </div>
-            </md-list-item>
-        </md-list>
-
-        <md-list flex ng-if="sinks.length > 0" >
-            <md-subheader class="md-no-sticky">Sinks</md-subheader>
-            <md-list-item ng-repeat='sink in sinks  | filter : search2' class="md-2-line"
-                          ng-if="classesInClasspath.indexOf(sink.class) !=-1"
-                          ng-href="{{ classesInClasspath.indexOf(sink.class) !==-1 && '#/cluster/'+cluster+'/create-connector/sink/' + sink.name || '' }}"
-                          ng-class="classesInClasspath.indexOf(sink.class) ==-1 && 'notavailable' || '' ">
-                <img ng-src="src/assets/icons/{{sink.icon}}" class="md-avatar" style="width:40px;height:40px;" />
-                <div class="md-list-item-text">
-                    <h3><b>{{sink.name}}</b></h3>
-                    <p>{{sink.description}}</p>
-                </div>
-            </md-list-item>
-        </md-list>
-    </md-content>
-</md-card>
-<md-card ng-show = "unsupportedConnectors">
-    <!--<div style="width:100%;" class="md-toolbar-tools">-->
-        <!--<p>Not in list? Add the connector manually</p>-->
-    <!--</div>-->
-    <div layout="row"  ng-show="unsupportedConnectors">
-        <md-list flex >
-            <md-list-item ng-repeat="connector in unsupportedConnectors  | filter : search2 | filter :{type :'Source' }" class="md-2-line"
-                          ng-href="{{'#/cluster/'+cluster+'/create-connector/'  + connector.name }}">
-                <img ng-src="src/assets/icons/{{connector.icon}}" class="md-avatar" style="width:40px;height:40px;"/>
-                <div class="md-list-item-text">
-                    <h3><b>{{connector.name}}</b></h3>
-                    <p>{{connector.class}}</p>
-                    <p>{{connector.type}}</p>
-                </div>
-            </md-list-item>
-        </md-list>
-        <md-list flex >
-            <md-list-item ng-repeat="connector in unsupportedConnectors  | filter : search2 | filter :{type :'Sink' }" class="md-2-line"
-                          ng-href="{{'#/cluster/'+cluster+'/create-connector/'  + connector.name }}">
-                <img ng-src="src/assets/icons/{{connector.icon}}" class="md-avatar" style="width:40px;height:40px;"/>
-                <div class="md-list-item-text">
-                    <h3><b>{{connector.name}}</b></h3>
-                    <p>{{connector.class}}</p>
-                    <p>{{connector.type}}</p>
-                </div>
-            </md-list-item>
-        </md-list>
-
+    <div flex-gt-sm="33">
+        <div ng-controller="KafkaConnectListCtrl" ng-include="'src/kafka-connect/list/list-connectors.html'"></div>
     </div>
-</md-card>
+    <div flex-gt-sm="66">
+        <md-card  class="new">
+
+            <md-toolbar ng-show="!displayingControlTopics" class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <h4>
+                        <span>New Connector</span>
+                    </h4>
+                    <span flex></span>
+                </div>
+            </md-toolbar>
+
+            <md-input-container class="md-block" style="margin-bottom:0;padding-bottom:0;">
+                <label>Search</label>
+                <input ng-model="search2">
+            </md-input-container>
+
+            <md-content layout="row">
+
+                <md-list class="dense" flex ng-if="sources.length > 0">
+                    <md-subheader class="md-no-sticky">Sources</md-subheader>
+                    <md-list-item ng-repeat='source in sources | filter : search2' class="md-2-line"
+                                  ng-if="classesInClasspath.indexOf(source.class) !=-1"
+                                  ng-href="{{ classesInClasspath.indexOf(source.class) !==-1 && '#/cluster/'+cluster+'/create-connector/source/' + source.name || '' }}"
+                                  ng-class="classesInClasspath.indexOf(source.class) ==-1 && 'notavailable' || '' ">
+                        <img ng-src="src/assets/icons/{{source.icon}}" class="md-avatar" style="width:30px;height:30px;" />
+                        <div class="md-list-item-text" >
+                            <h3><b>{{source.name}}</b></h3>
+                            <p style="font-size:12px;">{{source.description}}</p>
+                        </div>
+                    </md-list-item>
+                </md-list>
+
+                <md-list flex ng-if="sinks.length > 0" >
+                    <md-subheader class="md-no-sticky">Sinks</md-subheader>
+                    <md-list-item ng-repeat='sink in sinks  | filter : search2' class="md-2-line"
+                                  ng-if="classesInClasspath.indexOf(sink.class) !=-1"
+                                  ng-href="{{ classesInClasspath.indexOf(sink.class) !==-1 && '#/cluster/'+cluster+'/create-connector/sink/' + sink.name || '' }}"
+                                  ng-class="classesInClasspath.indexOf(sink.class) ==-1 && 'notavailable' || '' ">
+                        <img ng-src="src/assets/icons/{{sink.icon}}" class="md-avatar" style="width:40px;height:40px;" />
+                        <div class="md-list-item-text">
+                            <h3><b>{{sink.name}}</b></h3>
+                            <p>{{sink.description}}</p>
+                        </div>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </md-card>
+        <md-card ng-show = "unsupportedConnectors">
+            <!--<div style="width:100%;" class="md-toolbar-tools">-->
+            <!--<p>Not in list? Add the connector manually</p>-->
+            <!--</div>-->
+            <div layout="row"  ng-show="unsupportedConnectors">
+                <md-list flex >
+                    <md-list-item ng-repeat="connector in unsupportedConnectors  | filter : search2 | filter :{type :'Source' }" class="md-2-line"
+                                  ng-href="{{'#/cluster/'+cluster+'/create-connector/'  + connector.name }}">
+                        <img ng-src="src/assets/icons/{{connector.icon}}" class="md-avatar" style="width:40px;height:40px;"/>
+                        <div class="md-list-item-text">
+                            <h3><b>{{connector.name}}</b></h3>
+                            <p>{{connector.class}}</p>
+                            <p>{{connector.type}}</p>
+                        </div>
+                    </md-list-item>
+                </md-list>
+                <md-list flex >
+                    <md-list-item ng-repeat="connector in unsupportedConnectors  | filter : search2 | filter :{type :'Sink' }" class="md-2-line"
+                                  ng-href="{{'#/cluster/'+cluster+'/create-connector/'  + connector.name }}">
+                        <img ng-src="src/assets/icons/{{connector.icon}}" class="md-avatar" style="width:40px;height:40px;"/>
+                        <div class="md-list-item-text">
+                            <h3><b>{{connector.name}}</b></h3>
+                            <p>{{connector.class}}</p>
+                            <p>{{connector.type}}</p>
+                        </div>
+                    </md-list-item>
+                </md-list>
+
+            </div>
+        </md-card>
+    </div>
+</div>
