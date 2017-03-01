@@ -720,7 +720,7 @@ var supportedConnectorsTemplates = [{
     }
    ] //end o
  }, {
-  name: "influxDB",
+  name: "influx",
   icon: "influxdb.jpg",
   description: "The InfluxDB sink connector allows you to write data from a Kafka topic into a influxDB table.",
   class: "com.datamountaineer.streamreactor.connect.influx.InfluxSinkConnector",
@@ -1863,7 +1863,7 @@ var supportedConnectorsTemplates = [{
    }
   ]
  }, {
-  name: "Rethink",
+  name: "rethink",
   type: "Sink",
   icon: "rethink.png",
   description: "A Connector and Sink to write events from Kafka to RethinkDb.",
@@ -1967,7 +1967,7 @@ var supportedConnectorsTemplates = [{
    }
   ]
  }, {
-  name: "VoltDB",
+  name: "voltdb",
   type: "Sink",
   icon: "voltdb.png",
   uiEnabled: true,
