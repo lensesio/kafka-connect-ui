@@ -1,6 +1,11 @@
 {{propertiesStr = properties.join("\n\n"); ""}}
 {{curlsStr = curls.join("\n\n"); ""}}
-<md-card ng-hide="connectionFailure || rebalancing">
+<div layout="row" layout-sm="column" layout-xs="column">
+
+<div flex-gt-sm="33">
+    <div ng-controller="KafkaConnectListCtrl" ng-include="'src/kafka-connect/list/list-connectors.html'"></div>
+</div>
+<md-card flex-gt-sm="66" ng-hide="connectionFailure || rebalancing">
 
     <div layout="row" layout-xs="column">
         <h2 flex style="font-weight:300; padding-left:20px; margin-bottom:10px">Export Connectors configs</h2>
@@ -55,4 +60,5 @@
 </md-content>
 </div>
 </md-card>
+</div>
 <!--TODO hide me in case of rebalancing-->

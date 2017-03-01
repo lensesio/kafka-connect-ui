@@ -1,92 +1,85 @@
-<md-card ng-hide="connectionFailure || rebalancing">
 
-    <div layout="row" layout-xs="column">
-        <h1 flex style="font-weight:300; padding-left:20px; margin-bottom:0px">{{welcomeMessage}} <span ng-show="clusters.length > 1">- {{cluster}}</span></h1>
-        <md-button flex="20" style="margin-left:10px; margin-top:20px;"
-            ng-href="#/cluster/{{cluster}}/export-configs">
-            <i class="fa fa-download" aria-hidden="true"></i> Export config
-        </md-button>
+
+<div layout="row">
+
+    <div flex="70">
+        <md-card style="box-shadow:none;">
+
+            <md-toolbar class="md-hue-2" style="color:#333;z-index:0; background-color:#FAFAFA; box-shadow:1px 0px 20px rgba(0, 0, 0, 0.08);">
+                <div class="md-toolbar-tools">
+                    <h3>
+                        Configured Clusters
+                    </h3>
+                    <span flex></span>
+                    <md-button ng-click="loadData()"><i class="fa fa-refresh" aria-hidden="true"></i></md-button>
+                </div>
+            </md-toolbar>
+
+            <md-card-content>
+                <table class="topics-table">
+                    <tr>
+                        <th align="left">Name</th>
+                        <th align="left">Endpoint</th>
+                        <th align="center">Version</th>
+                        <th align="center">Status</th>
+                        <th align="center">Connectors</th>
+                    </tr>
+                    <tr ng-repeat="e in envs"
+                        ng-class="(e.status >= 200 && e.status < 400) ? '' : 'disabled' "
+                        ng-click="updateEndPoint(e.name, e.status)">
+                        <td><b>{{e.name}}</b></td>
+                        <td>{{e.connect}}</td>
+                        <td align="center">{{e.version}}</td>
+                        <td align="center">{{e.status}}</td>
+                        <td align="center">{{e.connectors}}</td>
+                    </tr>
+                </table>
+            </md-card-content>
+        </md-card>
     </div>
-    <hr style="margin-left:0px; margin-right:0px; background-color:#E0E0E0;border: 0;
-          height: 0;border-bottom: 1px solid rgba(255, 255, 255, 0.3);" size="1">
+    <div flex="30">
+        <md-card style="margin-bottom:15px;box-shadow:none;">
+            <md-card-content>
+                <div layout="column">
+                    <div style="margin: 0px 0px 12px;font-weight: 500; text-transform: uppercase; font-size: 14px;">Connect Clusters</div>
+                    <div layout="row">
+                        <div flex="25">
+                            <i style="font-size:50px; font-weight:100; color: #9675ce; padding-top:10px" class="fa fa-hdd-o" aria-hidden="true"></i>
+                        </div>
+                        <div flex style="font-size: 50px; font-weight: 100;">{{envs.length}}</div>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
 
+        <md-card style="margin-bottom:15px;box-shadow:none;">
+            <md-card-content>
+                <div layout="column">
+                    <div style="margin: 0px 0px 12px;font-weight: 500; text-transform: uppercase; font-size: 14px;">Total Connectors</div>
+                    <div layout="row">
+                        <div flex="25">
+                            <i style="font-size:50px; font-weight:100; color: #03a9f3; padding-top:10px" class="fa fa-plug" aria-hidden="true"></i>
+                        </div>
+                        <div flex style="font-size: 50px; font-weight: 100;">{{totalConnectors}}</div>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
 
-    <md-card-content>
-    <div layout="row" layout-xs="column">
-        <div flex>
-            <md-card style="background-color: #4f6672; color: #fff; ">
-                <md-card-title style="padding-bottom:5px;">
-                    <md-card-title-text>
-                        <span class="md-headline tile-heading ">SINK CONNECTORS</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-                    <div layout="row" layout-xs="column" layout-wrap>
-                        <div flex>
-                            <p class="bigTotal">{{sinks.length}}</p>
+        <md-card ng-if="failedClusters > 0" style="margin-bottom:15px;box-shadow:none;">
+            <md-card-content>
+                <div layout="column">
+                    <div style="margin: 0px 0px 12px;font-weight: 500; text-transform: uppercase; font-size: 14px;">Not responding</div>
+                    <div layout="row">
+                        <div flex="25">
+                            <i style="font-size:50px; font-weight:100; color: red; padding-top:10px" class="fa  fa-exclamation-triangle" aria-hidden="true"></i>
                         </div>
+                        <div flex style="font-size: 50px; font-weight: 100;">{{failedClusters}}</div>
                     </div>
-                </md-card-content>
-            </md-card>
-        </div>
-        <div flex>
-            <md-card style="background-color: #4f6672; color: #fff; ">
-                <md-card-title style="padding-bottom:5px;">
-                    <md-card-title-text>
-                        <span class="md-headline tile-heading ">SOURCE CONNECTORS</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-                    <div layout="row" layout-xs="column" layout-wrap>
-                        <div flex>
-                            <p class="bigTotal">{{sources.length}}</p>
-                        </div>
-                    </div>
-                </md-card-content>
-            </md-card>
-        </div>
-        <div flex>
-            <md-card style="background-color: #4f6672; color: #fff; ">
-                <md-card-title style="padding-bottom:5px;">
-                    <md-card-title-text>
-                        <span class="md-headline tile-heading ">TOPICS used by connectors</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-                    <div layout="row" layout-xs="column" layout-wrap>
-                        <div flex>
-                            <p class="bigTotal">{{allTopics.unique().length}}</p>
-                        </div>
-                    </div>
-                </md-card-content>
-            </md-card>
-        </div>
-        <div flex ng-hide="true">
-            <md-card style="background-color: #2196F3; color: #fff; ">
-                <md-card-title style="padding-bottom:5px;">
-                    <md-card-title-text>
-                        <span class="md-headline tile-heading ">TOPICS total</span>
-                    </md-card-title-text>
-                </md-card-title>
-                <md-card-content>
-                    <div layout="row" layout-xs="column" layout-wrap>
-                        <div flex>
-                            <p class="bigTotal">{{allTopics.unique().length}}</p>
-                        </div>
-                    </div>
-                </md-card-content>
-            </md-card>
-        </div>
+                </div>
+            </md-card-content>
+        </md-card>
+
     </div>
-    </md-card-content>
 
-    <hr style="margin-left:0px; margin-right:0px; background-color:#E0E0E0;border: 0;
-          height: 0;border-bottom: 1px solid rgba(255, 255, 255, 0.3);" size="1">
-
-    <md-card-content>
-        <h2 flex style="font-weight:300;">Connect topology</h2>
-
-        <div flex="100" google-chart chart="chartObject" style="width: 100%;height:{{chartHeight}}px;border:1px solid white;"></div>
-    </md-card-content>
-</md-card>
-
+</div>

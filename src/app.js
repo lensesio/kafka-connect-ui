@@ -30,6 +30,7 @@ angularAPP.controller('HeaderCtrl', function ($rootScope, $scope, $location, env
 angularAPP.run(
     function loadRoute( env, $routeParams, $rootScope ) {
         $rootScope.$on('$routeChangeSuccess', function() {
+          $rootScope.isHome = false;
           env.setSelectedCluster($routeParams.cluster);
        });
     }
@@ -44,8 +45,8 @@ angularAPP.config(function ($routeProvider) {
        controller: 'HomeCtrl'
     })
     .when('/cluster/:cluster', {
-      templateUrl: 'src/kafka-connect/home/home.html',
-       controller: 'HomeCtrl'
+      templateUrl: 'src/kafka-connect/cluster-view/cluster-view.html',
+       controller: 'ClusterViewCtrl'
     })
     .when('/cluster/:cluster/select-connector', {
       templateUrl: 'src/kafka-connect/select-type/sink-or-source.html',

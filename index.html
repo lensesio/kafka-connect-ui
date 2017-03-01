@@ -20,10 +20,11 @@
 <header class="header" ng-controller="HeaderCtrl" style="background-color:{{color}}">
   <div layout="row" layout-xs="column">
     <div flex>
-      <h5><a href="{{cluster ? '#/cluster/'+cluster.NAME : '#/'}}">KAFKA CONNECT</a></h5>
+     <!-- <h5><a href="{{cluster ? '#/cluster/'+cluster.NAME : '#/'}}">KAFKA CONNECT</a></h5> -->
+      <h5><a href="/#/">KAFKA CONNECT</a></h5>
     </div>
-    <label ng-show="!missingEnvJS && clusters.length > 1"   style="color:#ccc; font-size:12px"><b>SELECT CLUSTER :</b></label>
-    <md-input-container ng-show="!missingEnvJS && clusters.length > 1" class="selectCluster">
+    <label ng-show="!missingEnvJS && clusters.length > 1  && !isHome"   style="color:#ccc; font-size:12px"><b>SELECT CLUSTER :</b></label>
+    <md-input-container ng-show="!missingEnvJS && clusters.length > 1 && !isHome" class="selectCluster">
       <md-select ng-model="connectEndPoint">
         <md-option ng-repeat="connectEndPoint in clusters track by $index"
                    ng-click="updateEndPoint(connectEndPoint.NAME)"
@@ -71,14 +72,8 @@ var clusters = [
 </div>
 
 <!--Main Content Starts here-->
-<div layout="row" layout-sm="column" layout-xs="column" ng-hide="missingEnvJS">
-  <div flex-gt-sm="33">
-    <div ng-controller="KafkaConnectListCtrl" ng-include="'src/kafka-connect/list/list-connectors.html'"></div>
-    <div ng-include="'src/kafka-connect/config/config.html'"></div>
-  </div>
-  <div flex-gt-sm="66" flex>
-    <ng-view></ng-view>
-  </div>
+<div ng-hide="missingEnvJS">
+  <ng-view></ng-view>
 </div>
 
 <!-- Landoop team promo -->
@@ -124,6 +119,7 @@ var clusters = [
 <script src="src/kafka-connect/config/config.controller.js"></script>
 <script src="src/kafka-connect/view/view.controller.js"></script>
 <script src="src/kafka-connect/list/list.controller.js"></script>
+<script src="src/kafka-connect/cluster-view/cluster-view.controller.js"></script>
 <script src="src/kafka-connect/export-configs/export-configs.controller.js"></script>
 <script src="src/kafka-connect/select-type/sink-or-source.controller.js"></script>
 <script src="src/kafka-connect/create-connector/create-connector.controller.js"></script>
