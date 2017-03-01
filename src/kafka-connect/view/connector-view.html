@@ -30,8 +30,8 @@
       <md-button ng-hide="connectorStatus =='PAUSED'" ng-disabled="showTaskSpinner" ng-click="restartConnector(connectorDetails.name)">
         <i class="fa fa-repeat" aria-hidden="true"></i> Restart
       </md-button>
-      <md-button ng-disabled="showTaskSpinner || rebalancing"  ng-click="deleteConnector(connectorDetails.name, $event);">
-        <i class="fa fa-trash" aria-hidden="true"></i> Delete
+      <md-button ng-disabled="showTaskSpinner || rebalancing"  ng-click="deleteConnector(connectorDetails.name, $event);" style="width: 20px!important;padding-left: 5px;padding-right: 5px;display: block;min-width: 20px;" title="delete connector">
+        <i class="fa fa-trash" style="color:red;" aria-hidden="true"></i>
       </md-button>
     </div>
   </md-toolbar>
