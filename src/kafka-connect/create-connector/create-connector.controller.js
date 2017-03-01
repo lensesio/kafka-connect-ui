@@ -31,6 +31,9 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   //If user changes config from the editor
   $scope.$watch('formValuesPerSection', function() {
  if ($scope.formValuesPerSection) {
+      console.log('test', $scope.formValuesPerSection)
+      $scope.formValuesPerSection = $scope.formValuesPerSection.replace("\r", "");
+      console.log('test', $scope.formValuesPerSection)
       var flatValuesArray = $scope.formValuesPerSection.split("\n");
       $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
   }
