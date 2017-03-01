@@ -97,8 +97,7 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
                 topics.push(setup)
             }
             if (key.indexOf("topic") != -1) {
-            var keyArray = key.split(".")
-              if( !( keyArray.indexOf("topics") > 0 || keyArray.indexOf("topic") > 0)) { // checking if it topic or topics and not i.e xxx.xxx.topic
+              if( key !== 'connect.jms.sink.export.route.topics' ) { // hardcoded exclude of this jms sink key
                 var tArray = value.split(",");
                 if(tArray.length > 1) {
                   angular.forEach(tArray, function (t) {
