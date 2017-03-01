@@ -51,35 +51,5 @@
                 </md-list>
             </md-content>
         </md-card>
-        <md-card ng-show = "unsupportedConnectors">
-            <!--<div style="width:100%;" class="md-toolbar-tools">-->
-            <!--<p>Not in list? Add the connector manually</p>-->
-            <!--</div>-->
-            <div layout="row"  ng-show="unsupportedConnectors">
-                <md-list flex >
-                    <md-list-item ng-repeat="connector in unsupportedConnectors  | filter : search2 | filter :{type :'Source' }" class="md-2-line"
-                                  ng-href="{{'#/cluster/'+cluster+'/create-connector/'  + connector.name }}">
-                        <img ng-src="src/assets/icons/{{connector.icon}}" class="md-avatar" style="width:40px;height:40px;"/>
-                        <div class="md-list-item-text">
-                            <h3><b>{{connector.name}}</b></h3>
-                            <p>{{connector.class}}</p>
-                            <p>{{connector.type}}</p>
-                        </div>
-                    </md-list-item>
-                </md-list>
-                <md-list flex >
-                    <md-list-item ng-repeat="connector in unsupportedConnectors  | filter : search2 | filter :{type :'Sink' }" class="md-2-line"
-                                  ng-href="{{'#/cluster/'+cluster+'/create-connector/'  + connector.name }}">
-                        <img ng-src="src/assets/icons/{{connector.icon}}" class="md-avatar" style="width:40px;height:40px;"/>
-                        <div class="md-list-item-text">
-                            <h3><b>{{connector.name}}</b></h3>
-                            <p>{{connector.class}}</p>
-                            <p>{{connector.type}}</p>
-                        </div>
-                    </md-list-item>
-                </md-list>
-
-            </div>
-        </md-card>
     </div>
 </div>
