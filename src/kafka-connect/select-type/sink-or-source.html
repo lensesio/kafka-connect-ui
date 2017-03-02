@@ -28,7 +28,7 @@
                                   ng-if="classesInClasspath.indexOf(source.class) !=-1"
                                   ng-href="{{ classesInClasspath.indexOf(source.class) !==-1 && '#/cluster/'+cluster+'/create-connector/source/' + source.name || '' }}"
                                   ng-class="classesInClasspath.indexOf(source.class) ==-1 && 'notavailable' || '' ">
-                        <img ng-src="src/assets/icons/{{source.icon}}" class="md-avatar" style="width:30px;height:30px;" />
+                        <img ng-src="src/assets/icons/{{source.icon}}" class="md-avatar" style="width:40px;height:40px;" />
                         <div class="md-list-item-text" >
                             <h3><b>{{source.name}}</b></h3>
                             <p style="font-size:12px;">{{source.description}}</p>
@@ -36,7 +36,7 @@
                     </md-list-item>
                 </md-list>
 
-                <md-list flex ng-if="sinks.length > 0" >
+                <md-list class="dense" flex ng-if="sinks.length > 0" >
                     <md-subheader class="md-no-sticky">Sinks</md-subheader>
                     <md-list-item ng-repeat='sink in sinks  | filter : search2' class="md-2-line"
                                   ng-if="classesInClasspath.indexOf(sink.class) !=-1"
@@ -45,7 +45,7 @@
                         <img ng-src="src/assets/icons/{{sink.icon}}" class="md-avatar" style="width:40px;height:40px;" />
                         <div class="md-list-item-text">
                             <h3><b>{{sink.name}}</b></h3>
-                            <p>{{sink.description}}</p>
+                            <p style="font-size:12px;">{{sink.description}}</p>
                         </div>
                     </md-list-item>
                 </md-list>
