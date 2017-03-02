@@ -1868,7 +1868,7 @@ var supportedConnectorsTemplates = [{
   icon: "rethink.png",
   description: "A sink connector to write Kafka data into RethinkDb",
   uiEnabled: true,
-  color: "#28684b",
+  color: "#4A3A41",
   class: "com.datamountaineer.streamreactor.connect.rethink.sink.ReThinkSinkConnector",
   template: [{
     step: "Basic Info",
@@ -2553,6 +2553,7 @@ var supportedConnectorsTemplates = [{
   icon: "rethink.png",
   class: "com.datamountaineer.streamreactor.connect.rethink.source.ReThinkSourceConnector",
   description: "A Connector to source records from RethinkDb into kafka.",
+  color: "#4A3A41",
   uiEnabled: true
  },
  {
@@ -2561,6 +2562,7 @@ var supportedConnectorsTemplates = [{
   icon: "coap.png",
   class: "com.datamountaineer.streamreactor.connect.coap.source.CoapSourceConnector",
   description: "A Connector to source records from Constrained Application Protocol services into Kafka.",
+  color: "#3A3A3A",
   uiEnabled: true
  },
  {
@@ -2569,6 +2571,7 @@ var supportedConnectorsTemplates = [{
   icon: "blockchain-logo.jpg",
   class: "com.datamountaineer.streamreactor.connect.blockchain.source.BlockchainSourceConnector",
   description: "A Connector to source data from Blockchain into Kafka.",
+  color: "#229BC7",
   uiEnabled: true
  },
  {
@@ -2577,6 +2580,7 @@ var supportedConnectorsTemplates = [{
   icon: "coap.png",
   class: "com.datamountaineer.streamreactor.connect.coap.sink.CoapSinkConnector",
   description: "A Connector to sink data from Kafka into Constrained Application Protocol services.",
+  color: "#3A3A3A",
   uiEnabled: true
  },
  {
@@ -2585,6 +2589,7 @@ var supportedConnectorsTemplates = [{
   icon: "mongodb.png",
   class: "com.datamountaineer.streamreactor.connect.mongodb.sink.MongoSinkConnector",
   description: "A Connector to sink data from Kafka into MongoDB",
+  color: "#609959",
   uiEnabled: true
  }
 ];
