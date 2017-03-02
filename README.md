@@ -16,6 +16,9 @@ docker run --rm -it -p 8000:8000 \
            -e "CONNECT_URL=http://connect.distributed.url" \
            landoop/kafka-connect-ui
 ```
+
+The CONNECT_URL can be a comma separated array of Connect worker endpoints. E.g: CONNECT_URL=http://connect.1.url,http://connect.2.url"
+
 Web UI will be available at `http://localhost:8000`
 
 

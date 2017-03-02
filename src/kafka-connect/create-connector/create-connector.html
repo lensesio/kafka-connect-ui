@@ -1,96 +1,62 @@
-<md-card class="new">
+<div layout="row" layout-sm="column" layout-xs="column">
 
-    <md-toolbar ng-show="!displayingControlTopics" class="md-hue-2">
-        <div class="md-toolbar-tools">
-            <h4>
-                <span>New Connector ({{connector.type}}): {{connector.name}}</span>
-            </h4>
-            <span flex></span>
-        </div>
-    </md-toolbar>
+    <div flex-gt-sm="33">
+        <div ng-controller="KafkaConnectListCtrl" ng-include="'src/kafka-connect/list/list-connectors.html'"></div>
+    </div>
+    <div flex-gt-sm="66">
+        <md-card class="new">
 
-        <!--Info box-->
-        <div class="connector-sum">
-            <div layout="row"  layout-align="start center" layout-padding>
-                <div>
-                    <img img ng-src="src/assets/icons/{{connector.icon}}" style="width:30px;height:30px;" />
+            <md-toolbar ng-show="!displayingControlTopics" class="md-hue-2">
+                <div class="md-toolbar-tools">
+                    <h4>
+                        <span>New Connector ({{connector.type}}): {{connector.name}}</span>
+                    </h4>
+                    <span flex></span>
                 </div>
-                <div>
-                   <h3 style="font-size:12px;padding:0px; margin:0px">{{connector.name}}</h3>
-                   <p style="font-size:12px;padding:0px; margin:0px">{{connector.description}}</p>
-                   <p style="font-size:12px;padding:0px; margin:5px 0 0 0;" class="grey">class: {{connector.class}}</p>
+            </md-toolbar>
+
+            <!--Info box-->
+            <div class="connector-sum">
+                <div layout="row"  layout-align="start center" layout-padding>
+                    <div>
+                        <img img ng-src="src/assets/icons/{{connector.icon}}" style="width:30px;height:30px;" />
+                    </div>
+                    <div>
+                        <h3 style="font-size:12px;padding:0px; margin:0px">{{connector.name}}</h3>
+                        <p style="font-size:12px;padding:0px; margin:0px">{{connector.description}}</p>
+                        <p style="font-size:12px;padding:0px; margin:5px 0 0 0;" class="grey">class: {{connector.class}}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    <md-card-content>
-
-        <md-checkbox ng-hide="connector.isUndefined" ng-model="showHints" aria-label="Show Hints">
-            Show Hints
-        </md-checkbox>
-
-        <md-checkbox ng-hide="connector.isUndefined" ng-model="toggleEditor" aria-label="Editor Mode">
-            Editor mode
-        </md-checkbox>
-
-        <form name="forms.cForm">
-            <md-tabs md-selected="selectedTabIndex" md-dynamic-height md-border-bottom>
-                <md-tab ng-repeat="step in connector.template" label="{{step.step}}" ng-if="!connector.isUndefined && !toggleEditor" md-selected="selectedTabIndex" ng-disabled="isDisabledTab(selectedTabIndex)">
-                        {{ppIndex = $index; ""}}
-                        <div ng-cloak layout="row" layout-wrap ng-repeat="section in step.sections" >
-                            <h4 ng-if="step.sections.length > 1" flex="100">{{section.section}}</h4>
-                            <md-input-container ng-if = "element.type !== 'hidden'" ng-repeat="element in section.elements" flex="{{element.flex}}" class="md-block">
-                                <label ng-hide="connector.type=='Sink' && element.key.endsWith('topic')">{{element.label}}</label>
-
-                                {{name = ppIndex+'_'+$parent.$index+'_'+$index; ""}}
-                                <div ng-include="'src/kafka-connect/create-connector/elementInput.html'"></div>
-
-                                <!--TODO-->
-                                <!--<div ng-if="connector.type=='Sink' && element.key.endsWith('topic')"-->
-                                     <!--ng-include="'src/kafka-connect/components/autocomplete.html'"></div>-->
-
-                            </md-input-container>
-                        </div>
-
-                    <hr style="height:1px;border:none;background-color:#f4f4f4;" />
-
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button ng-show="selectedTabIndex != 0" ng-disabled="forms.cForm.$invalid" ng-click="previousTab()">
-                            <i class="fa fa-angle-double-left" aria-hidden="true"></i> Back
-                        </md-button>
-                        <md-button ng-disabled="forms.cForm.$invalid" ng-click="nextTab()">
-                            Next <i class="fa fa-angle-double-right" aria-hidden="true"></i></md-button>
-                    </md-card-actions>
-
-                </md-tab>
-                <md-tab label="{{connector.isUndefined  ? 'property file' : 'finish'}}" md-selected="maxNumberOfTabs + 1"  ng-disabled="isDisabledTab(selectedTabIndex)" md-on-select="makeCommands()">
-                    <md-toolbar class="md-hue-2" style="background-color: transparent;color:#333;height: 20px;">
-                        <div class="md-toolbar-tools">
-                            <md-checkbox ng-model="showCurl" aria-label="Show cURL command">
+            <md-card-content>
+                <md-toolbar class="md-hue-2" style="background-color: transparent;color:#333;height: 20px;">
+                    <div class="md-toolbar-tools">
+                        <md-checkbox ng-model="showCurl" aria-label="Show cURL command">
                             <span style="font-size:16px;">Show cURL command</span>
-                            </md-checkbox>
+                        </md-checkbox>
 
-                            <span flex></span>
-                            <md-button ng-click="getAllConfig(connector.class)" ng-hide='showAllConfig' layout-align="right" aria-label="Show all config" style="margin-top: -15px;">
+                        <span flex></span>
+                        <md-button ng-click="getAllConfig(connector.class)" ng-hide='showAllConfig' layout-align="right" aria-label="Show all config" style="margin-top: -15px;">
                             Show Optional fields
-                            </md-button>
-                            <md-button  ng-click="getAllConfig(connector.class)" ng-show='showAllConfig' layout-align="right" aria-label="Show all config" style="margin-top: -15px;">
+                        </md-button>
+                        <md-button  ng-click="getAllConfig(connector.class)" ng-show='showAllConfig' layout-align="right" aria-label="Show all config" style="margin-top: -15px;">
                             Show Required fields
-                            </md-button>
-                        </div>
-                    </md-toolbar>
-                    <!--Show Property file-->
-                    <div id="propertyFile" ng-hide="showCurl"
-                         ng-model="formValuesPerSection" ng-readonly="false"
-                         style="background-color:rgba(0, 128, 0, 0.0392157);"
-                         ui-ace="{
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <!--Show Property file-->
+                <div id="propertyFile" ng-hide="showCurl"
+                     ng-model="formValuesPerSection" ng-readonly="false"
+                     style="background-color:rgba(0, 128, 0, 0.0392157);"
+                     ui-ace="{
                            useWrapMode: true,
                            mode: 'properties',
                            firstLineNumber: 1
                     }"></div>
-                    <!--Show Curl command-->
-                    <div id="curlCommand" ng-if="showCurl"
-                         ng-model="curlCommand" ng-readonly="true"
-                         ui-ace="{
+                <!--Show Curl command-->
+                <div id="curlCommand" ng-if="showCurl"
+                     ng-model="curlCommand" ng-readonly="true"
+                     ui-ace="{
                            useWrapMode: true,
                            showGutter: false,
                            showPrintMargin: false,
@@ -101,37 +67,35 @@
                            highlightGutterLine: false
                          }"></div>
 
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-button ng-hide="connector.isUndefined || toggleEditor " ng-disabled="forms.cForm.$invalid" ng-click="previousTab()">
-                            <i class="fa fa-angle-double-left" aria-hidden="true"></i> Back
-                        </md-button>
-                        <md-button ng-click="validateConnector(formValuesPerSection)">
-                            Validate
-                        </md-button>
-                        <md-button ng-disabled="forms.cForm.$invalid" ng-click="validateAndCreateConnector()">
-                             Validate and Create
-                        </md-button>
-                    </md-card-actions>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-hide="connector.isUndefined || toggleEditor " ng-disabled="forms.cForm.$invalid" ng-click="previousTab()">
+                        <i class="fa fa-angle-double-left" aria-hidden="true"></i> Back
+                    </md-button>
+                    <md-button ng-click="validateConnector(formValuesPerSection)">
+                        Validate
+                    </md-button>
+                    <md-button ng-disabled="forms.cForm.$invalid" ng-click="validateAndCreateConnector()">
+                        Validate and Create
+                    </md-button>
+                </md-card-actions>
 
-                    <!--{{forms.cForm.$error}}-->
+                <!--{{forms.cForm.$error}}-->
 
-                </md-tab>
-            </md-tabs>
-        </form>
-        <!--Validation OK-->
-        <div class="green">{{validConfig}}</div>
+                <!--Validation OK-->
+                <div class="green">{{validConfig}}</div>
 
-        <div class="green" ng-show="noextraconfig">There is no extra config</div>
+                <div class="green" ng-show="noextraconfig">There is no extra config</div>
 
-        <!--Validation not OK-->
-        <div ng-repeat="errorConfig in errorConfigs">
-            <div ng-repeat="error in errorConfig.errors" style="color: red">
-                {{error}}<br>
-            </div>
-        </div>
-    </md-card-content>
-</md-card>
-
+                <!--Validation not OK-->
+                <div ng-repeat="errorConfig in errorConfigs">
+                    <div ng-repeat="error in errorConfig.errors" style="color: red">
+                        {{error}}<br>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
 
 
 

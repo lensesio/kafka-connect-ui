@@ -33,7 +33,10 @@ angularAPP.controller('SelectNewConnectorCtrl', function ($scope, $http, $log, $
             isUndefined: true,
             type: type
         }
-        $scope.unsupportedConnectors.push(o);
+        if (type == "Source")
+        $scope.sources.push(o);
+        else
+        $scope.sinks.push(o);
       }
     });
   }, function (reason) {

@@ -3,16 +3,6 @@
     Config is created on the fly using the `template` models.
  */
 angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http, $log, $routeParams, $location, $filter, KafkaConnectFactory, supportedConnectorsFactory,  NewConnectorFactory, env, constants) {
-  if (NewConnectorFactory.initConnector($routeParams.name)) {
-    $scope.connector = NewConnectorFactory.initConnector($routeParams.name);
-    $scope.maxNumberOfTabs = !$scope.connector.isUndefined  ? $scope.connector.template.length + 1 : 0;
-    $scope.selectedTabIndex = !$scope.connector.isUndefined  ? $scope.connector.template.length + 1 : 0;
-    $scope.makeCommands = function () {
-      var configValues = NewConnectorFactory.flattenConnectorKeyValues($scope.connector);
-      $scope.formValuesPerSection = configValues.join("\n");
-      $scope.curlCommand = NewConnectorFactory.getCurlCommand(configValues);
-    };
-  } else {
       $http.get(env.KAFKA_CONNECT() + '/connector-plugins').then(function(allPlugins){
             angular.forEach(allPlugins.data, function (plugin) {
               if (plugin.class.indexOf($routeParams.name) > 0) {
@@ -26,7 +16,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
          $log.info('Got notification: ' + update);
        });
 
-  }
   $scope.prefillValues = true;
   $scope.showCurl = false;
   $scope.toggleShowCurl = function () { $scope.showCurl = !$scope.showCurl; }
@@ -42,6 +31,9 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   //If user changes config from the editor
   $scope.$watch('formValuesPerSection', function() {
  if ($scope.formValuesPerSection) {
+      console.log('test', $scope.formValuesPerSection)
+      $scope.formValuesPerSection = $scope.formValuesPerSection.replace("\r", "");
+      console.log('test', $scope.formValuesPerSection)
       var flatValuesArray = $scope.formValuesPerSection.split("\n");
       $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
   }
