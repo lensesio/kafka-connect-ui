@@ -2585,7 +2585,7 @@ var supportedConnectorsTemplates = [{
  },
  {
   name: "mongo",
-  type: "Source",
+  type: "Sink",
   icon: "mongodb.png",
   class: "com.datamountaineer.streamreactor.connect.mongodb.sink.MongoSinkConnector",
   description: "A Connector to sink data from Kafka into MongoDB",
