@@ -15,6 +15,10 @@ header {
     text-decoration: none;
 }
 
+md-card {
+    box-shadow:none;
+}
+
 header h5 {
     margin:0px;
 }

@@ -25,7 +25,7 @@
     </div>
     <label ng-show="!missingEnvJS && clusters.length > 1  && !isHome"   style="color:#ccc; font-size:12px"><b>SELECT CLUSTER :</b></label>
     <md-input-container ng-show="!missingEnvJS && clusters.length > 1 && !isHome" class="selectCluster">
-      <md-select ng-model="connectEndPoint">
+      <md-select ng-model="connectEndPoint" aria-label="select cluster">
         <md-option ng-repeat="connectEndPoint in clusters track by $index"
                    ng-click="updateEndPoint(connectEndPoint.NAME)"
                    value="{{connectEndPoint.NAME}}" ng-selected="{{cluster.NAME == connectEndPoint.NAME}}"

@@ -51,7 +51,9 @@
                      ui-ace="{
                            useWrapMode: true,
                            mode: 'properties',
-                           firstLineNumber: 1
+                           showPrintMargin: false,
+                           firstLineNumber: 1,
+                           blockScrolling: Infinity
                     }"></div>
                 <!--Show Curl command-->
                 <div id="curlCommand" ng-if="showCurl"
