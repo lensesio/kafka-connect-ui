@@ -52,15 +52,7 @@ angularAPP.config(function ($routeProvider) {
       templateUrl: 'src/kafka-connect/select-type/sink-or-source.html',
       controller: 'SelectNewConnectorCtrl'
     })
-    .when('/cluster/:cluster/create-connector/:type/:name', {
-      templateUrl: 'src/kafka-connect/create-connector/create-connector.html',
-      controller: 'CreateConnectorCtrl'
-    })
-    .when('/cluster/:cluster/create-connector/:name', {
-      templateUrl: 'src/kafka-connect/create-connector/create-connector.html',
-      controller: 'CreateConnectorCtrl'
-    })
-    .when('/cluster/:cluster/create-connector/:type/:name/:tab', {
+    .when('/cluster/:cluster/create-connector/:className', {
       templateUrl: 'src/kafka-connect/create-connector/create-connector.html',
       controller: 'CreateConnectorCtrl'
     })
