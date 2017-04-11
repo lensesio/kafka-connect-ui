@@ -107,7 +107,7 @@ header h5 a {
     magin-top: -20px;
     min-height: 30px;
     font-size: 14px;
-    border-bottom: 1px solid rgba(0,0,0,0.12);
+    /* border-bottom: 1px solid rgba(0,0,0,0.12); */
 }
 
 md-chips.md-default-theme .md-chips, md-chips .md-chips {

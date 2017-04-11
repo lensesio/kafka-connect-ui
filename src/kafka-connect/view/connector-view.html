@@ -6,7 +6,7 @@
   <div flex-gt-sm="66" flex>
   {{connectorStatus = connectorDetails.connectorState[connectorDetails.name]; ""}}
 
-<md-card style="box-shadow: 0 0px 1px 0 rgba(0,0,0,.2);" ng-show="connectorDetails != undefined" class="view">
+<md-card ng-show="connectorDetails != undefined" class="view">
   <!--TOOLBAR-->
   <md-toolbar class="md-hue-2">
     <div class="md-toolbar-tools">
@@ -37,7 +37,7 @@
   </md-toolbar>
 
   <!--INFO BOX-->
-  <div class="connector-sum">
+  <div class="connector-sum" style="background-color:white" >
     <div layout="row"  layout-align="start center" layout-padding>
       <div><i class="fa fa-info-circle grey" aria-hidden="true"></i></div>
       <div>
