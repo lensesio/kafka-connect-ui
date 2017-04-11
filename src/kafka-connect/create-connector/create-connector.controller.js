@@ -104,10 +104,10 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                         $log.info(config.value.name + ' : ' + config.value.errors[0]);
                     }
                     //console.log("config.value -> ");
-                    if (config.definition.required == true) {
+                    if ( (config.definition.required == true) || (config.value.name.startsWith("topic")) ){
                       requiredConfigKeys.push(config.value.name);
                     }
-                    //console.log("Required/compulsory config keys: " + requiredConfigKeys);
+                    console.log("Required/compulsory config keys: " + requiredConfigKeys);
                     validConnectorConfigKeys.push(config.value.name);
                   });
                   //console.log("validConnectorConfigKeys -> " + validConnectorConfigKeys);
@@ -208,9 +208,11 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
     var type="Unknown";
     var a = pluginClass.split('.');
     if (a[a.length-1].toLowerCase().indexOf('sink') > 0) {
-    type="Sink"
+      type="Sink";
+      var myElements = [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true},{key:'topics',value: 'TopicName_'+ a[a.length-1], required: true}, {key:'tasks.max',value: 1, required: true}];
     } else if (a[a.length-1].toLowerCase().indexOf('source') > 0) {
-    type="Source"
+      type="Source";
+      var myElements =  [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true}, {key:'tasks.max',value: 1, required: true}];
     }
 
      var connector = {
@@ -225,7 +227,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
          id : "step1",
          sections : [
          {
-          elements : [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true},{key:'topics',value: 'TopicName_'+ a[a.length-1], required: true}, {key:'tasks.max',value: 1, required: true}]
+          elements : myElements
           }
          ]
        }
