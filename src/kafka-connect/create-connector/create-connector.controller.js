@@ -6,8 +6,8 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   KafkaConnectFactory.getConnectorPlugins().then(function(allPlugins) {
     var className;
 
-    for (var i in allPlugins.data) {
-      className = allPlugins.data[i].class;
+    for (var i in allPlugins) {
+      className = allPlugins[i].class;
 
       if (className === $routeParams.className) {
         getClassConfig(className)
