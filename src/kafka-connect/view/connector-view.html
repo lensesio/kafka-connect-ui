@@ -62,28 +62,26 @@
   <md-card-content style="padding-bottom: 0px;" >
     <div layout="row">
       <h4 style="margin-top: 0px;width:70px"><i class="grey" aria-hidden="true"></i> TASKS</h4>
-      <div layout="column">
         <p ng-show="showTaskSpinner"> Reloading configuration wont take more than 2 minutes. Please wait... </p>
-        <div style="float:left;" ng-hide="showTaskSpinner">
-          <div ng-repeat="task in connectorDetails.tasks" ng-click="showTaskDetails(task)"
-                   style="margin-bottom:5px;">
-            <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;    padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px; border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
-               ng-show="task.state == 'PAUSED'" class="fa fa-pause-circle grey" aria-hidden="true" aria-label="Running"></i>
-            <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
-               ng-show="task.state == 'RUNNING'" class="fa fa-cog green" aria-hidden="true" aria-label="Paused"></i>
-            <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
-               ng-show="task.state == 'FAILED'" class="fa fa-exclamation-circle red" aria-hidden="true" aria-label="Failed"></i>
-            <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
-               ng-show="task.state == 'UNASSIGNED'" class="fa fa-ban" aria-hidden="true" aria-label="Unassigned"></i>
-            <div style="float:left;font-size: 0.83em;border: 1px solid {{ task.id == selectedTask.taskStatus.id ? 'purple' : '#cccccc' }};; ;padding-left: 6px;padding-right: 6px;padding-top: 3px;padding-bottom: 3px;background: {{ task.id == selectedTask.taskStatus.id ? 'purple;color:white' : '' }}">
-              {{task.id}}
+        <div layout="column" ng-repeat="task in connectorDetails.tasks" ng-hide="showTaskSpinner" style="padding-right:10px; float:left;">
+            <div ng-click="showTaskDetails(task)"
+                 style="margin-bottom:5px;">
+                <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;    padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px; border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
+                   ng-show="task.state == 'PAUSED'" class="fa fa-pause-circle grey" aria-hidden="true" aria-label="Running"></i>
+                <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
+                   ng-show="task.state == 'RUNNING'" class="fa fa-cog green" aria-hidden="true" aria-label="Paused"></i>
+                <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
+                   ng-show="task.state == 'FAILED'" class="fa fa-exclamation-circle red" aria-hidden="true" aria-label="Failed"></i>
+                <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
+                   ng-show="task.state == 'UNASSIGNED'" class="fa fa-ban" aria-hidden="true" aria-label="Unassigned"></i>
+                <div style="float:left;font-size: 0.83em;border: 1px solid {{ task.id == selectedTask.taskStatus.id ? 'purple' : '#cccccc' }};; ;padding-left: 6px;padding-right: 6px;padding-top: 3px;padding-bottom: 3px;background: {{ task.id == selectedTask.taskStatus.id ? 'purple;color:white' : '' }}">
+                    {{task.id}}
+                </div>
+                <div style="float:left;border-top-right-radius: 0.25em;border-bottom-right-radius: 0.25em;font-size: 0.83em;border: 1px solid #cccccc; border-left:none;padding-left: 6px;padding-right: 10px;padding-top: 3px;padding-bottom: 2px;">
+                    <b>[{{task.worker_id}}] </b>
+                </div>
             </div>
-            <div style="float:left;border-top-right-radius: 0.25em;border-bottom-right-radius: 0.25em;font-size: 0.83em;border: 1px solid #cccccc; border-left:none;padding-left: 6px;padding-right: 10px;padding-top: 3px;padding-bottom: 2px;">
-              <b>[{{task.worker_id}}] </b>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
     <div ng-if="selectedTask" style="font-size:11px;padding-left: 10px;border: 1px solid #ccc;margin-top: -5px;margin-left: 70px;margin-bottom: 10px;width:70%">
       <md-button class="md-mini md-primary" ng-click="invalidateSelectedTask()" style="color:black;float:right;margin:0;">close</md-button>
@@ -108,15 +106,14 @@
     <!--TOPICS-->
     <div layout="row">
       <h4 style="margin-top: 0px;width:70px"><i class="grey" aria-hidden="true"></i> TOPICS</h4>
-      <!--fa fa-bullhorn-->
-      <div layout="column">
-        <h5 ng-show="connectorDetails.topics != undefined && connectorDetails.topics.length == 0" style="padding:0; margin:0px;">
-          No related topics found for this connector.
-        </h5>
+      <h5 ng-show="connectorDetails.topics != undefined && connectorDetails.topics.length == 0" style="padding:0; margin:0px;">
+        No related topics found for this connector.
+      </h5>
+      <div ng-repeat="topic in connectorDetails.topics" layout="column" style="padding-right:10px">
         <h5 ng-hide="connectorDetails.topics != undefined && connectorDetails.topics.length == 0" style="padding:0; margin:0px;">
           <!--{{ connectorDetails.topics }}-->
           <div style="float:left;">
-            <div ng-repeat="topic in connectorDetails.topics" >
+            <div>
               <img src="src/assets/icons/kafka.png" class="label-img" style="float:left;background-color: #ccc;width: 15px;height: 11px;display: inline;padding: 5px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;">
               <div style="float:left;border-top-right-radius: 0.25em;border-bottom-right-radius: 0.25em;border: 1px solid #cccccc; padding-left: 6px;padding-right: 10px;padding-top: 2px;padding-bottom: 3px;">
                 {{topic}}
@@ -125,6 +122,7 @@
           </div>
 
         </h5>
+        <!--
         <md-chips style="float:left;">
           <md-chip ng-if="kafkaTopicsUIEnabled" ng-repeat="topic in connectorDetails.topics">
             <a style="text-decoration:none;" ng-href="{{kafkaTopicsUI}}/#/topic/n/{{topic}}/"
@@ -139,6 +137,7 @@
             {{topic}}
           </md-chip>
         </md-chips>
+        -->
       </div>
     </div>
 

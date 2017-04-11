@@ -30,6 +30,7 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
      } else {
         $scope.selectedTask = getSelectedTask($scope.connectorDetails.detailedTasks, task);
      }
+     console.log(getSelectedTask($scope.connectorDetails.detailedTasks, task));
   };
 
   $scope.invalidateSelectedTask = function() {
