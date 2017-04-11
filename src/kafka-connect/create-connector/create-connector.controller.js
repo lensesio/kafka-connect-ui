@@ -63,10 +63,35 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
               name: "",
               config: {}
             };
+            var errorConfigs = [];
 
             flatValuesArray = $scope.formValuesPerSection.split('\n');
             config = NewConnectorFactory.getJSONConfigFlat(flatValuesArray);
-            var classname = $scope.connector.class;
+            //console.log(flatValuesArray);
+            // var classname = $scope.connector.class;
+            var classname = flatValuesArray.find(function (p) {
+                 console.log(p.indexOf("connector.class"));
+                 return (p.indexOf("connector.class=") == 0)
+            }).split('connector.class=').join('');
+            //console.log("classname is -> " + classname);
+            if (classname != $scope.connector.class) {
+                console.log("error in classname -> " + classname);
+                var errors = { errors : [ 'Classname "' + $scope.connector.class + '" is not defined' ] };
+                errorConfigs.push(errors);
+            }
+
+            //console.log("Error configs -> " + errorConfigs);
+            //console.log(errorConfigs.length == 0);
+
+            if(errorConfigs == 0) {
+                $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
+                $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
+                deferred.resolve(constants.VIEW_MESSAGE_CONNECTOR_VALID);
+            } else {
+                $scope.validConfig='';
+                deferred.reject(errorConfigs);
+            }
+            $scope.errorConfigs = errorConfigs;
 
             //STEP 1: Validate
             var validateConfigPromise = KafkaConnectFactory.validateConnectorConfig(classname, config);
@@ -75,7 +100,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   $log.info('Total validation errors from API => ' + data.error_count);
                   //STEP 2: Get errors if any
                   $scope.validConfig = '';
-                  var errorConfigs = [];
                   var validConnectorConfigKeys = [];
                   angular.forEach(data.configs, function (config) {
                     if (config.value.errors.length > 0) {
@@ -86,7 +110,8 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   });
                   angular.forEach(flatValuesArray, function (propertyLine) {
                     if (propertyLine.length > 0) {
-                      if ( (propertyLine.indexOf("=") == -1) | (propertyLine.length < 3) ) {                        var errors = { errors : [ 'Line "' + propertyLine + '" is not a valid property line' ] };
+                      if ( (propertyLine.indexOf("=") == -1) | (propertyLine.length < 3) ) {
+                        var errors = { errors : [ 'Line "' + propertyLine + '" is not a valid property line' ] };
                         errorConfigs.push(errors);
                       } else {
                           var key = propertyLine.substring(0, propertyLine.indexOf('='));
