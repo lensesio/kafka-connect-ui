@@ -67,13 +67,11 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
             flatValuesArray = $scope.formValuesPerSection.split('\n');
             config = NewConnectorFactory.getJSONConfigFlat(flatValuesArray);
-            //console.log(flatValuesArray);
-            // var classname = $scope.connector.class;
+
+            // Make sure the 'classname' is a valid one - as it can crash the connect services
             var classname = flatValuesArray.find(function (p) {
-                 //console.log(p.indexOf("connector.class"));
                  return (p.indexOf("connector.class=") == 0)
             }).split('connector.class=').join('');
-            //console.log("classname is -> " + classname);
             if (classname != $scope.connector.class) {
                 console.log("error in classname -> " + classname);
                 var errors = { errors : [ 'Classname "' + $scope.connector.class + '" is not defined' ] };
@@ -97,13 +95,22 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   //STEP 2: Get errors if any
                   $scope.validConfig = '';
                   var validConnectorConfigKeys = [];
+                  var requiredConfigKeys = [];
                   angular.forEach(data.configs, function (config) {
+                    //console.log("c-> " + config.value.name);
+                    //console.log(config);
                     if (config.value.errors.length > 0) {
                         errorConfigs.push(config.value);
                         $log.info(config.value.name + ' : ' + config.value.errors[0]);
                     }
+                    //console.log("config.value -> ");
+                    if (config.definition.required == true) {
+                      requiredConfigKeys.push(config.value.name);
+                    }
+                    //console.log("Required/compulsory config keys: " + requiredConfigKeys);
                     validConnectorConfigKeys.push(config.value.name);
                   });
+                  //console.log("validConnectorConfigKeys -> " + validConnectorConfigKeys);
                   angular.forEach(flatValuesArray, function (propertyLine) {
                     if (propertyLine.length > 0) {
                       if ( (propertyLine.indexOf("=") == -1) | (propertyLine.length < 3) ) {
@@ -125,6 +132,20 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                       }
                     }
                   });
+                  // Now check the other way around. Whether a required property is not set
+                  angular.forEach(requiredConfigKeys, function (requiredKey) {
+                    var x = flatValuesArray.find(function(p) {
+                      var result = (p.indexOf(requiredKey) == 0);
+                      console.log(result + "  " + p);
+                      return result
+                    });
+                    //console.log("x " + requiredKey + "   " +  x)
+                    if (x == undefined) {
+                      var errors = { errors : [ 'Required config "' + requiredKey + '" is not there' ] };
+                      errorConfigs.push(errors);
+                    };
+                  });
+
                   if(errorConfigs == 0) {
                       $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
                       $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
@@ -143,13 +164,12 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   console.log(flatKeysUsed);
                   console.log(errorConfigs);
                   */
-                }, function (data, reason) {
+                },
+                function error(data, reason) {
                   $log.error('Failure : ' + data);
                   deferred.reject(data);
-
                 });
                 return deferred.promise;
-
     }
 
   $scope.validateConnector = function () {
