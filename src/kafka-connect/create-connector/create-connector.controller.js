@@ -2,7 +2,7 @@
     $scope.connector in this controller is the connector object from supported connectors.
     Config is created on the fly using the `template` models.
  */
-angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http, $log, $routeParams, $location, $filter, KafkaConnectFactory, supportedConnectorsFactory,  NewConnectorFactory, env, constants) {
+angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http, $log, $routeParams, $location, $filter, KafkaConnectFactory, supportedConnectorsFactory,  NewConnectorFactory, env, constants, $q) {
   KafkaConnectFactory.getConnectorPlugins().then(function(allPlugins) {
     var className;
 
@@ -44,104 +44,101 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   });
 
 
-  //TODO save & Validate = duplicate code
-
-    $scope.validateConnector = function (object) {
+    function validateConnectorFn () {
+            var deferred = $q.defer();
+            var connectorCurlObject = {
+              name: "",
+              config: {}
+            };
 
             flatValuesArray = $scope.formValuesPerSection.split('\n');
-            var connectorCurlObject = {
-                       name: "",
-                       config: {}
-                  };
-               angular.forEach(flatValuesArray, function (propertyLine) {
-                 if (propertyLine.length > 2) {
-                   var key = propertyLine.substring(0, propertyLine.indexOf('='));
-                   var value = propertyLine.substring(propertyLine.indexOf('=') + 1);
-                   connectorCurlObject.config["" + key] = value;
-                 }
-               });
-
             config = NewConnectorFactory.getJSONConfigFlat(flatValuesArray);
             var classname = $scope.connector.class;
+
             //STEP 1: Validate
             var validateConfigPromise = KafkaConnectFactory.validateConnectorConfig(classname, config);
             validateConfigPromise.then(
                 function success(data) {
-                  $log.info('Total validation errors => ' + data.error_count);
+                  $log.info('Total validation errors from API => ' + data.error_count);
                   //STEP 2: Get errors if any
+                  $scope.validConfig = '';
                   var errorConfigs = [];
-                  $scope.validConfig = ''
+                  var validConnectorConfigKeys = [];
                   angular.forEach(data.configs, function (config) {
                     if (config.value.errors.length > 0) {
                         errorConfigs.push(config.value);
                         $log.info(config.value.name + ' : ' + config.value.errors[0]);
                     }
+                    validConnectorConfigKeys.push(config.value.name);
+                  });
+                  angular.forEach(flatValuesArray, function (propertyLine) {
+                    if (propertyLine.length > 0) {
+                      if ( (propertyLine.indexOf("=") == -1) | (propertyLine.length < 3) ) {                        var errors = { errors : [ 'Line "' + propertyLine + '" is not a valid property line' ] };
+                        errorConfigs.push(errors);
+                      } else {
+                          var key = propertyLine.substring(0, propertyLine.indexOf('='));
+                          var value = propertyLine.substring(propertyLine.indexOf('=') + 1);
+                          if (validConnectorConfigKeys.indexOf( key.toLowerCase() ) == -1) {
+                            var errors = { errors : [ 'Config "' + key + '" is not supported' ] };
+                            errorConfigs.push(errors);
+                          } else
+                          if (value.length == 0) {
+                            var errors = { errors : [ 'Config "' + key + '" requires a value' ] };
+                            errorConfigs.push(errors);
+                          } else {
+                            connectorCurlObject.config["" + key] = value;
+                          }
+                      }
+                    }
                   });
                   if(errorConfigs == 0) {
                       $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
+                      deferred.resolve(constants.VIEW_MESSAGE_CONNECTOR_VALID);
+                  } else {
+                      deferred.reject(errorConfigs);
                   }
-
                   $scope.errorConfigs = errorConfigs;
 
+                  /* debug
+                  var flatKeysUsed = [];
+                  angular.forEach(flatValuesArray, function (propertyLine) {
+                      flatKeysUsed.push(propertyLine.split("=" , 1) + "");
+                  });
+                  console.log(validConnectorConfigKeys);
+                  console.log(flatKeysUsed);
+                  console.log(errorConfigs);
+                  */
                 }, function (data, reason) {
                   $log.error('Failure : ' + data);
+                  deferred.reject(data);
+
                 });
+                return deferred.promise;
+
     }
+
+  $scope.validateConnector = function () {
+    validateConnectorFn();
+  }
 
 
   $scope.validateAndCreateConnector = function () {
-        flatValuesArray = $scope.formValuesPerSection.split('\n');
-        var connectorCurlObject = {
-                   name: "",
-                   config: {}
-              };
-           angular.forEach(flatValuesArray, function (propertyLine) {
-             if (propertyLine.length > 2) {
-               var key = propertyLine.substring(0, propertyLine.indexOf('='));
-               var value = propertyLine.substring(propertyLine.indexOf('=') + 1);
-               connectorCurlObject.config["" + key] = value;
-             }
-           });
 
-        config = NewConnectorFactory.getJSONConfigFlat(flatValuesArray);
-        var classname = $scope.connector.class;
-
-        //STEP 1: Validate
-        var validateConfigPromise = KafkaConnectFactory.validateConnectorConfig(classname, config);
-
-
-        validateConfigPromise.then(
+          validateConnectorFn().then(
             function success(data) {
-              $log.info('Total validation errors => ' + data.error_count);
-
-              //STEP 2: Get errors if any
-              var errorConfigs = [];
-              angular.forEach(data.configs, function (config) {
-                if (config.value.errors.length > 0) {
-                    errorConfigs.push(config.value);
-                    $log.info(config.value.name + ' : ' + config.value.errors[0]);
-                }
-              });
-
-              //STEP 3: If no errors, create the connector
-              if(errorConfigs.length == 0) {
-                var config2 = NewConnectorFactory.getJSONConfig(flatValuesArray);
-                KafkaConnectFactory.postNewConnector(config2).then(
-                   function successCallback(response) {
-                       console.log("POSTING " + JSON.stringify(response));
-                       $location.path("#/connector/" + response.name); //TODO location doesn't work, move to controller
-                       $rootScope.newConnectorChanges = true;
-
-
-                   });
-              } else {
-                $scope.errorConfigs = errorConfigs;
-              }
-
+              console.log("I will now post the connector");
+              KafkaConnectFactory.postNewConnector(NewConnectorFactory.getJSONConfig(flatValuesArray)).then(
+                function successCallback(response) {
+                   console.log("POSTING " + JSON.stringify(response));
+                   $location.path("#/connector/" + response.name); //TODO location doesn't work, move to controller
+                   $rootScope.newConnectorChanges = true;
+                });
             }, function (data, reason) {
-              $log.error('Failure : ' + data);
-            });
+              console.log("I can NOT post the connector - as validation errors exist");
+          });
+
     }
+
 
   $scope.querySearch = function(query){
         return $http.get(env.KAFKA_REST() + '/topics')

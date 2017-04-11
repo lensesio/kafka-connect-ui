@@ -73,7 +73,7 @@
                     <md-button ng-hide="connector.isUndefined || toggleEditor " ng-disabled="forms.cForm.$invalid" ng-click="previousTab()">
                         <i class="fa fa-angle-double-left" aria-hidden="true"></i> Back
                     </md-button>
-                    <md-button ng-click="validateConnector(formValuesPerSection)">
+                    <md-button ng-click="validateConnector()">
                         Validate
                     </md-button>
                     <md-button ng-disabled="forms.cForm.$invalid" ng-click="validateAndCreateConnector()">
