@@ -70,7 +70,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
             //console.log(flatValuesArray);
             // var classname = $scope.connector.class;
             var classname = flatValuesArray.find(function (p) {
-                 console.log(p.indexOf("connector.class"));
+                 //console.log(p.indexOf("connector.class"));
                  return (p.indexOf("connector.class=") == 0)
             }).split('connector.class=').join('');
             //console.log("classname is -> " + classname);
@@ -86,10 +86,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
             if(errorConfigs == 0) {
                 $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
                 $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
-                deferred.resolve(constants.VIEW_MESSAGE_CONNECTOR_VALID);
-            } else {
-                $scope.validConfig='';
-                deferred.reject(errorConfigs);
             }
             $scope.errorConfigs = errorConfigs;
 
