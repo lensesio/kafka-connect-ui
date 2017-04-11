@@ -97,6 +97,7 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
   }
 
   $scope.aceLoaded = function (_editor) {
+    console.log("Ace loaded");
     $scope.editor = _editor;
     $scope.editor.$blockScrolling = Infinity;
     $scope.acePropertyFileSession = _editor.getSession();

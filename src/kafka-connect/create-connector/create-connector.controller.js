@@ -31,15 +31,28 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   $scope.isDisabledTab = function(index) { return (index == $scope.selectedTabIndex) ? 'false' : 'true'; }
 
 
+  $scope.aceLoaded = function (_editor) {
+    console.log("Ace for create-connector loaded");
+    $scope.editor = _editor;
+    $scope.editor.$blockScrolling = Infinity;
+    $scope.acePropertyFileSession = _editor.getSession();
+    var lines = 15;//$scope.connectorDetails.connectorDetailsInString.split("\n").length;
+    _editor.setOptions({
+      minLines: lines,
+      maxLines: lines,
+      highlightActiveLine: false
+    });
+  };
+
 
   //If user changes config from the editor
   $scope.$watch('formValuesPerSection', function() {
  if ($scope.formValuesPerSection) {
-      console.log('test', $scope.formValuesPerSection)
+      //console.log('test', $scope.formValuesPerSection)
       $scope.formValuesPerSection = $scope.formValuesPerSection.replace("\r", "");
-      console.log('test', $scope.formValuesPerSection)
+      //console.log('test', $scope.formValuesPerSection)
       var flatValuesArray = $scope.formValuesPerSection.split("\n");
-      $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
+      validateConnectorFn();
   }
   });
 
@@ -93,6 +106,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   });
                   if(errorConfigs == 0) {
                       $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
+                      $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
                       deferred.resolve(constants.VIEW_MESSAGE_CONNECTOR_VALID);
                   } else {
                       deferred.reject(errorConfigs);
@@ -134,6 +148,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                    $rootScope.newConnectorChanges = true;
                 });
             }, function (data, reason) {
+              $scope.validConfig = "Please fix the below issues";
               console.log("I can NOT post the connector - as validation errors exist");
           });
 

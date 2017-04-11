@@ -47,13 +47,13 @@
                 <!--Show Property file-->
                 <div id="propertyFile" ng-hide="showCurl"
                      ng-model="formValuesPerSection" ng-readonly="false"
-                     style="background-color:rgba(0, 128, 0, 0.0392157);"
                      ui-ace="{
                            useWrapMode: true,
                            mode: 'properties',
                            showPrintMargin: false,
                            firstLineNumber: 1,
-                           blockScrolling: Infinity
+                           blockScrolling: Infinity,
+                           onLoad: aceLoaded
                     }"></div>
                 <!--Show Curl command-->
                 <div id="curlCommand" ng-if="showCurl"
@@ -73,11 +73,8 @@
                     <md-button ng-hide="connector.isUndefined || toggleEditor " ng-disabled="forms.cForm.$invalid" ng-click="previousTab()">
                         <i class="fa fa-angle-double-left" aria-hidden="true"></i> Back
                     </md-button>
-                    <md-button ng-click="validateConnector()">
-                        Validate
-                    </md-button>
-                    <md-button ng-disabled="forms.cForm.$invalid" ng-click="validateAndCreateConnector()">
-                        Validate and Create
+                    <md-button ng-disabled="errorConfigs.length != 0" ng-click="validateAndCreateConnector()">
+                        Create
                     </md-button>
                 </md-card-actions>
 
