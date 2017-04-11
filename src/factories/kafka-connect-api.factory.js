@@ -101,7 +101,7 @@ angularAPP.service('KafkaConnectFactory', function ($rootScope, $http, $location
          .error(function (responseError) {
               var msg = "Failed at method [" + method + "] with error: \n" + JSON.stringify(responseError);
               $log.error(msg);
-              if (responseError.error_code == 404) {
+              if (angular.isObject(responseError) && responseError.error_code == 404) {
                 $rootScope.notExists = true;
               }
               deferred.reject(msg);

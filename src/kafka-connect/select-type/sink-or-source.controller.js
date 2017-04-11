@@ -1,5 +1,7 @@
-angularAPP.controller('SelectNewConnectorCtrl', function ($scope, $http, $log, $rootScope, KafkaConnectFactory, supportedConnectorsFactory, env  ) {
+angularAPP.controller('SelectNewConnectorCtrl', function ($scope, $http, $log, $rootScope, KafkaConnectFactory, supportedConnectorsFactory, env) {
   $log.info("SelectNewConnector controller");
+
+  var classpathMap = {};
 
   $scope.cluster = env.getSelectedCluster().NAME;
 
@@ -9,14 +11,15 @@ angularAPP.controller('SelectNewConnectorCtrl', function ($scope, $http, $log, $
     $scope.sinks = supportedConnectors.filter(supportedConnectorsFactory.matchesType('Sink'));
   }
 
-  $scope.classesInClasspath = [];
   $scope.unsupportedConnectors = [];
   $scope.hasUnsupportedConnectors = false;
 
+  $scope.isClassInClasspath = isClassInClasspath;
 
-  KafkaConnectFactory.getConnectorPlugins(true).then(function (allPlugins) {
+  KafkaConnectFactory.getConnectorPlugins().then(function (allPlugins) {
     angular.forEach(allPlugins, function (plugin) {
-      $scope.classesInClasspath.push(plugin.class);
+      classpathMap[plugin.class] = true;
+
       if (supportedConnectorsFactory.getAllClassFromTemplate().indexOf(plugin.class) == -1) {
         $scope.hasUnsupportedConnectors = true;
           var type="Unknown";
@@ -44,4 +47,13 @@ angularAPP.controller('SelectNewConnectorCtrl', function ($scope, $http, $log, $
   }, function (update) {
     $log.info('Got notification: ' + update);
   });
+
+  /**
+   * @description Determines if the specified class name is in the classpath
+   * @param {String} className
+   * @returns {Boolean}
+   */
+  function isClassInClasspath(className) {
+    return angular.isDefined(classpathMap[className]);
+  }
 });

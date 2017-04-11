@@ -3,18 +3,22 @@
     Config is created on the fly using the `template` models.
  */
 angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http, $log, $routeParams, $location, $filter, KafkaConnectFactory, supportedConnectorsFactory,  NewConnectorFactory, env, constants) {
-      $http.get(env.KAFKA_CONNECT() + '/connector-plugins').then(function(allPlugins){
-            angular.forEach(allPlugins.data, function (plugin) {
-              if (plugin.class.indexOf($routeParams.name) > 0) {
-               getClassConfig(plugin.class)
-              }
-            });
-      },
-      function (reason) {
-         $log.error('Failed: ' + reason);
-       }, function (update) {
-         $log.info('Got notification: ' + update);
-       });
+  KafkaConnectFactory.getConnectorPlugins().then(function(allPlugins) {
+    var className;
+
+    for (var i in allPlugins) {
+      className = allPlugins[i].class;
+
+      if (className === $routeParams.className) {
+        getClassConfig(className)
+        break;
+      }
+    }
+  }, function (reason) {
+    $log.error('Failed: ' + reason);
+  }, function (update) {
+    $log.info('Got notification: ' + update);
+  });
 
   $scope.prefillValues = true;
   $scope.showCurl = false;

@@ -18,7 +18,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "bower install"
+    "postinstall": "bower install",
+    "build": "grunt && cd dist && tar cvzf kafka-connect-ui.tar.gz ."
   },
   "repository": {
     "type": "git",
