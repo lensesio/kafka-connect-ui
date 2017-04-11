@@ -2,7 +2,7 @@
     $scope.connector in this controller is the connector object from supported connectors.
     Config is created on the fly using the `template` models.
  */
-angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http, $log, $routeParams, $location, $filter, KafkaConnectFactory, supportedConnectorsFactory,  NewConnectorFactory, env, constants) {
+angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http, $log, $routeParams, $location, $filter, KafkaConnectFactory, supportedConnectorsFactory,  NewConnectorFactory, env, constants, $q) {
   KafkaConnectFactory.getConnectorPlugins().then(function(allPlugins) {
     var className;
 
@@ -31,117 +31,170 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   $scope.isDisabledTab = function(index) { return (index == $scope.selectedTabIndex) ? 'false' : 'true'; }
 
 
+  $scope.aceLoaded = function (_editor) {
+    console.log("Ace for create-connector loaded");
+    $scope.editor = _editor;
+    $scope.editor.$blockScrolling = Infinity;
+    $scope.acePropertyFileSession = _editor.getSession();
+    var lines = 15;//$scope.connectorDetails.connectorDetailsInString.split("\n").length;
+    _editor.setOptions({
+      minLines: lines,
+      maxLines: lines,
+      highlightActiveLine: false
+    });
+  };
+
 
   //If user changes config from the editor
   $scope.$watch('formValuesPerSection', function() {
  if ($scope.formValuesPerSection) {
-      console.log('test', $scope.formValuesPerSection)
+      //console.log('test', $scope.formValuesPerSection)
       $scope.formValuesPerSection = $scope.formValuesPerSection.replace("\r", "");
-      console.log('test', $scope.formValuesPerSection)
+      //console.log('test', $scope.formValuesPerSection)
       var flatValuesArray = $scope.formValuesPerSection.split("\n");
-      $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
+      validateConnectorFn();
   }
   });
 
 
-  //TODO save & Validate = duplicate code
-
-    $scope.validateConnector = function (object) {
+    function validateConnectorFn () {
+            var deferred = $q.defer();
+            var connectorCurlObject = {
+              name: "",
+              config: {}
+            };
+            var errorConfigs = [];
 
             flatValuesArray = $scope.formValuesPerSection.split('\n');
-            var connectorCurlObject = {
-                       name: "",
-                       config: {}
-                  };
-               angular.forEach(flatValuesArray, function (propertyLine) {
-                 if (propertyLine.length > 2) {
-                   var key = propertyLine.substring(0, propertyLine.indexOf('='));
-                   var value = propertyLine.substring(propertyLine.indexOf('=') + 1);
-                   connectorCurlObject.config["" + key] = value;
-                 }
-               });
-
             config = NewConnectorFactory.getJSONConfigFlat(flatValuesArray);
-            var classname = $scope.connector.class;
+
+            // Make sure the 'classname' is a valid one - as it can crash the connect services
+            var classname = flatValuesArray.find(function (p) {
+                 return (p.indexOf("connector.class=") == 0)
+            }).split('connector.class=').join('');
+            if (classname != $scope.connector.class) {
+                console.log("error in classname -> " + classname);
+                var errors = { errors : [ 'Classname "' + $scope.connector.class + '" is not defined' ] };
+                errorConfigs.push(errors);
+            }
+
+            //console.log("Error configs -> " + errorConfigs);
+            //console.log(errorConfigs.length == 0);
+
+            if(errorConfigs == 0) {
+                $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
+                $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
+            }
+            $scope.errorConfigs = errorConfigs;
+
             //STEP 1: Validate
             var validateConfigPromise = KafkaConnectFactory.validateConnectorConfig(classname, config);
             validateConfigPromise.then(
                 function success(data) {
-                  $log.info('Total validation errors => ' + data.error_count);
+                  $log.info('Total validation errors from API => ' + data.error_count);
                   //STEP 2: Get errors if any
-                  var errorConfigs = [];
-                  $scope.validConfig = ''
+                  $scope.validConfig = '';
+                  var validConnectorConfigKeys = [];
+                  var requiredConfigKeys = [];
                   angular.forEach(data.configs, function (config) {
+                    //console.log("c-> " + config.value.name);
+                    //console.log(config);
                     if (config.value.errors.length > 0) {
                         errorConfigs.push(config.value);
                         $log.info(config.value.name + ' : ' + config.value.errors[0]);
                     }
+                    //console.log("config.value -> ");
+                    if ( (config.definition.required == true) || (config.value.name.startsWith("topic")) ){
+                      requiredConfigKeys.push(config.value.name);
+                    }
+                    console.log("Required/compulsory config keys: " + requiredConfigKeys);
+                    validConnectorConfigKeys.push(config.value.name);
                   });
+                  //console.log("validConnectorConfigKeys -> " + validConnectorConfigKeys);
+                  angular.forEach(flatValuesArray, function (propertyLine) {
+                    if (propertyLine.length > 0) {
+                      if ( (propertyLine.indexOf("=") == -1) | (propertyLine.length < 3) ) {
+                        var errors = { errors : [ 'Line "' + propertyLine + '" is not a valid property line' ] };
+                        errorConfigs.push(errors);
+                      } else {
+                          var key = propertyLine.substring(0, propertyLine.indexOf('='));
+                          var value = propertyLine.substring(propertyLine.indexOf('=') + 1);
+                          if (validConnectorConfigKeys.indexOf( key.toLowerCase() ) == -1) {
+                            var errors = { errors : [ 'Config "' + key + '" is not supported' ] };
+                            errorConfigs.push(errors);
+                          } else
+                          if (value.length == 0) {
+                            var errors = { errors : [ 'Config "' + key + '" requires a value' ] };
+                            errorConfigs.push(errors);
+                          } else {
+                            connectorCurlObject.config["" + key] = value;
+                          }
+                      }
+                    }
+                  });
+                  // Now check the other way around. Whether a required property is not set
+                  angular.forEach(requiredConfigKeys, function (requiredKey) {
+                    var x = flatValuesArray.find(function(p) {
+                      var result = (p.indexOf(requiredKey) == 0);
+                      console.log(result + "  " + p);
+                      return result
+                    });
+                    //console.log("x " + requiredKey + "   " +  x)
+                    if (x == undefined) {
+                      var errors = { errors : [ 'Required config "' + requiredKey + '" is not there' ] };
+                      errorConfigs.push(errors);
+                    };
+                  });
+
                   if(errorConfigs == 0) {
                       $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
+                      $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
+                      deferred.resolve(constants.VIEW_MESSAGE_CONNECTOR_VALID);
+                  } else {
+                      deferred.reject(errorConfigs);
                   }
-
                   $scope.errorConfigs = errorConfigs;
 
-                }, function (data, reason) {
+                  /* debug
+                  var flatKeysUsed = [];
+                  angular.forEach(flatValuesArray, function (propertyLine) {
+                      flatKeysUsed.push(propertyLine.split("=" , 1) + "");
+                  });
+                  console.log(validConnectorConfigKeys);
+                  console.log(flatKeysUsed);
+                  console.log(errorConfigs);
+                  */
+                },
+                function error(data, reason) {
                   $log.error('Failure : ' + data);
+                  deferred.reject(data);
                 });
+                return deferred.promise;
     }
+
+  $scope.validateConnector = function () {
+    validateConnectorFn();
+  }
 
 
   $scope.validateAndCreateConnector = function () {
-        flatValuesArray = $scope.formValuesPerSection.split('\n');
-        var connectorCurlObject = {
-                   name: "",
-                   config: {}
-              };
-           angular.forEach(flatValuesArray, function (propertyLine) {
-             if (propertyLine.length > 2) {
-               var key = propertyLine.substring(0, propertyLine.indexOf('='));
-               var value = propertyLine.substring(propertyLine.indexOf('=') + 1);
-               connectorCurlObject.config["" + key] = value;
-             }
-           });
 
-        config = NewConnectorFactory.getJSONConfigFlat(flatValuesArray);
-        var classname = $scope.connector.class;
-
-        //STEP 1: Validate
-        var validateConfigPromise = KafkaConnectFactory.validateConnectorConfig(classname, config);
-
-
-        validateConfigPromise.then(
+          validateConnectorFn().then(
             function success(data) {
-              $log.info('Total validation errors => ' + data.error_count);
-
-              //STEP 2: Get errors if any
-              var errorConfigs = [];
-              angular.forEach(data.configs, function (config) {
-                if (config.value.errors.length > 0) {
-                    errorConfigs.push(config.value);
-                    $log.info(config.value.name + ' : ' + config.value.errors[0]);
-                }
-              });
-
-              //STEP 3: If no errors, create the connector
-              if(errorConfigs.length == 0) {
-                var config2 = NewConnectorFactory.getJSONConfig(flatValuesArray);
-                KafkaConnectFactory.postNewConnector(config2).then(
-                   function successCallback(response) {
-                       console.log("POSTING " + JSON.stringify(response));
-                       $location.path("#/connector/" + response.name); //TODO location doesn't work, move to controller
-                       $rootScope.newConnectorChanges = true;
-
-
-                   });
-              } else {
-                $scope.errorConfigs = errorConfigs;
-              }
-
+              console.log("I will now post the connector");
+              KafkaConnectFactory.postNewConnector(NewConnectorFactory.getJSONConfig(flatValuesArray)).then(
+                function successCallback(response) {
+                   console.log("POSTING " + JSON.stringify(response));
+                   $location.path("#/connector/" + response.name); //TODO location doesn't work, move to controller
+                   $rootScope.newConnectorChanges = true;
+                });
             }, function (data, reason) {
-              $log.error('Failure : ' + data);
-            });
+              $scope.validConfig = "Please fix the below issues";
+              console.log("I can NOT post the connector - as validation errors exist");
+          });
+
     }
+
 
   $scope.querySearch = function(query){
         return $http.get(env.KAFKA_REST() + '/topics')
@@ -155,9 +208,11 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
     var type="Unknown";
     var a = pluginClass.split('.');
     if (a[a.length-1].toLowerCase().indexOf('sink') > 0) {
-    type="Sink"
+      type="Sink";
+      var myElements = [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true},{key:'topics',value: 'TopicName_'+ a[a.length-1], required: true}, {key:'tasks.max',value: 1, required: true}];
     } else if (a[a.length-1].toLowerCase().indexOf('source') > 0) {
-    type="Source"
+      type="Source";
+      var myElements =  [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true}, {key:'tasks.max',value: 1, required: true}];
     }
 
      var connector = {
@@ -172,7 +227,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
          id : "step1",
          sections : [
          {
-          elements : [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true},{key:'topics',value: 'TopicName_'+ a[a.length-1], required: true}, {key:'tasks.max',value: 1, required: true}]
+          elements : myElements
           }
          ]
        }

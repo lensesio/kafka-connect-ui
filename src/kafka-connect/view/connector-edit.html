@@ -5,7 +5,7 @@
              ng-style="{'background-color':aceBackgroundColor }"
              name="json"
              ng-model="connectorDetails.connectorDetailsInString"
-             ui-ace="{ mode: 'json', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged, blockScrolling: Infinity }"
+             ui-ace="{ mode: 'json', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged, showPrintMargin: false, blockScrolling: Infinity }"
              valid-json>
         </div>
 
@@ -33,10 +33,11 @@
 
             {{isDisabled = (actionsDisabled || form.json.$error.validJson ? true : false); ""}}
 
+            <!--
             <md-button ng-show="!connectorConfigurationEditable" ng-disabled="isDisabled"
                        ng-click="validateConnector(connectorDetails, _editor);"
                        class="md-raised">Validate</md-button>
-
+            -->
             <md-button ng-show="!connectorConfigurationEditable" ng-disabled="isDisabled"
                        ng-click="updateConnector(connectorDetails.name, $event, _editor);"
                        class="md-raised"> <i class="fa fa-floppy-o" aria-hidden="true"></i>  Validate & Save</md-button>

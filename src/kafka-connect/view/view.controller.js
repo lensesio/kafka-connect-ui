@@ -14,8 +14,23 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
   $scope.actionsDisabled = true;
   init();
 
+  function deepEqual(x, y) {
+    const ok = Object.keys, tx = typeof x, ty = typeof y;
+    return x && y && tx === 'object' && tx === ty ? (
+      ok(x).length === ok(y).length &&
+        ok(x).every(key => deepEqual(x[key], y[key]))
+    ) : (x === y);
+  }
+
   $scope.showTaskDetails = function (task) {
-     $scope.selectedTask = getSelectedTask($scope.connectorDetails.detailedTasks, task);
+     // So that it closes the panel if it is clicked a second time
+     if (deepEqual($scope.selectedTask , getSelectedTask($scope.connectorDetails.detailedTasks, task))) {
+       console.log("Closing selected Task - as was clicked");
+       $scope.selectedTask = null;
+     } else {
+        $scope.selectedTask = getSelectedTask($scope.connectorDetails.detailedTasks, task);
+     }
+     console.log(getSelectedTask($scope.connectorDetails.detailedTasks, task));
   };
 
   $scope.invalidateSelectedTask = function() {
@@ -82,6 +97,7 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
   }
 
   $scope.aceLoaded = function (_editor) {
+    console.log("Ace loaded");
     $scope.editor = _editor;
     $scope.editor.$blockScrolling = Infinity;
     $scope.acePropertyFileSession = _editor.getSession();

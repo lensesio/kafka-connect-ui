@@ -26,7 +26,7 @@
                                  ng-readonly="true"
                                  ng-style="{'background-color':aceBackgroundColor }"
                                  ng-model="propertiesStr"
-                                 ui-ace="{ mode: 'properties', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged }"
+                                 ui-ace="{ mode: 'properties', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged, blockScrolling: Infinity }"
                                  valid-json>
                             </div>
                         </md-content>
@@ -39,7 +39,7 @@
                                  ng-readonly="true"
                                  ng-style="{'background-color':aceBackgroundColor }"
                                  ng-model="jsons"
-                                 ui-ace="{ mode: 'batchfile', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged }"
+                                 ui-ace="{ mode: 'batchfile', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged, blockScrolling: Infinity }"
                                  valid-json>
                             </div>
                         </md-content>
@@ -51,7 +51,7 @@
                                  ng-readonly="true"
                                  ng-style="{'background-color':aceBackgroundColor }"
                                  ng-model="curlsStr"
-                                 ui-ace="{ mode: 'batchfile', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged }"
+                                 ui-ace="{ mode: 'batchfile', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged, blockScrolling: Infinity }"
                                  valid-json>
                             </div>
                         </md-content>
