@@ -104,12 +104,12 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                         $log.info(config.value.name + ' : ' + config.value.errors[0]);
                     }
                     //console.log("config.value -> ");
-                    if ( (config.definition.required == true) || (config.value.name.startsWith("topic")) ){
+                    if ( (config.definition.required == true) || ( (config.value.name.startsWith("topic")) && (config.definition.documentation != "") ) ) {
                       requiredConfigKeys.push(config.value.name);
                     }
-                    console.log("Required/compulsory config keys: " + requiredConfigKeys);
                     validConnectorConfigKeys.push(config.value.name);
                   });
+                  console.log("Required/compulsory config keys: " + requiredConfigKeys);
                   //console.log("validConnectorConfigKeys -> " + validConnectorConfigKeys);
                   angular.forEach(flatValuesArray, function (propertyLine) {
                     if (propertyLine.length > 0) {
@@ -136,7 +136,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   angular.forEach(requiredConfigKeys, function (requiredKey) {
                     var x = flatValuesArray.find(function(p) {
                       var result = (p.indexOf(requiredKey) == 0);
-                      console.log(result + "  " + p);
                       return result
                     });
                     //console.log("x " + requiredKey + "   " +  x)
@@ -203,13 +202,21 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
         })
       }; //for the autocomplete
 
+  $scope.simpleName = function(connectorName) {
+    if ((connectorName != undefined) && (connectorName.length > 10)) {
+        return connectorName.replace('SourceConnector', '').replace('SinkConnector', '');
+    } else {
+        return "";
+    }
+  };
 
   function getClassConfig (pluginClass){
     var type="Unknown";
     var a = pluginClass.split('.');
     if (a[a.length-1].toLowerCase().indexOf('sink') > 0) {
       type="Sink";
-      var myElements = [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true},{key:'topics',value: 'TopicName_'+ a[a.length-1], required: true}, {key:'tasks.max',value: 1, required: true}];
+      //var myElements = [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true},{key:'topics',value: 'TopicName_'+ a[a.length-1], required: true}, {key:'tasks.max',value: 1, required: true}];
+      var myElements = [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true}, {key:'tasks.max',value: 1, required: true}];
     } else if (a[a.length-1].toLowerCase().indexOf('source') > 0) {
       type="Source";
       var myElements =  [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true}, {key:'tasks.max',value: 1, required: true}];

@@ -9,7 +9,7 @@
             <md-toolbar ng-show="!displayingControlTopics" class="md-hue-2">
                 <div class="md-toolbar-tools">
                     <h4>
-                        <span>New Connector ({{connector.type}}): {{connector.name}}</span>
+                        <span>Create New Connector </span> <!--({{connector.type}}): {{connector.name}}</span>-->
                     </h4>
                     <span flex></span>
                 </div>
@@ -22,7 +22,8 @@
                         <img img ng-src="src/assets/icons/{{connector.icon}}" style="width:30px;height:30px;" />
                     </div>
                     <div>
-                        <h3 style="font-size:12px;padding:0px; margin:0px">{{connector.name}}</h3>
+                        <h3 ng-show="connector.type!='Sink'" style="font-size:12px;padding:0px; margin:0px">{{simpleName(connector.name)}} <i class="fa fa-long-arrow-right" aria-hidden="true"></i> Kafka</h3>
+                        <h3 ng-show="connector.type=='Sink'" style="font-size:12px;padding:0px; margin:0px"> Kafka <i class="fa fa-long-arrow-right" aria-hidden="true"></i> {{simpleName(connector.name)}} </h3>
                         <p style="font-size:12px;padding:0px; margin:0px">{{connector.description}}</p>
                         <p style="font-size:12px;padding:0px; margin:5px 0 0 0;" class="grey">class: {{connector.class}}</p>
                     </div>
