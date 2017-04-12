@@ -215,10 +215,18 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
       var myElements =  [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true}, {key:'tasks.max',value: 1, required: true}];
     }
 
+     // Find the correct connector Icon
+     var connectorIcon = "connector.jpg";
+     angular.forEach(supportedConnectorsTemplates, function (template) {
+        if (template.class == pluginClass) {
+            connectorIcon = template.icon;
+        }
+     });
+
      var connector = {
       name: a[a.length-1],
       class: pluginClass,
-      icon: "connector.jpg",
+      icon: connectorIcon,
       isUndefined: true,
       type: type,
       template : [
