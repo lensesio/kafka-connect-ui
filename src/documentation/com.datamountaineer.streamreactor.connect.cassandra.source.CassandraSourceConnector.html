@@ -1,0 +1,24 @@
+<hr>
+Certified connector by DataStax.
+
+<h5>Step 1: Decide whether to use BULK or INCREMENTAL import mode</h5>
+<ul>
+    <li><b>Bulk</b> Each table is selected in full each time it is polled.</li>
+    <li><b>Incremental</b> Each table is queried with lower and upper bounds to extract deltas.
+        In incremental mode the column used to identify new or delta rows has to be provided.
+    </li>
+</ul>
+
+<h5>Step 2: Fill in the KEY space where the Cassandra data live in</h5>
+
+<h5>Step 3: Decide which fields are of interest and use KCQL to define them</h5>
+
+To insert every single field from a Cassandra table into Kafka use:
+<pre>
+    connect.cassandra.source.kcql=INSERT INTO TOPIC1 SELECT * FROM TOPIC1 PK myTimeUUICol
+</pre>
+
+<hr>
+Also make sure you set up authentication if that is in use. You can also set buffer and fetch size
+and other advanced options. Read more
+<a href="http://docs.datamountaineer.com/en/latest/cassandra-source.html" target="_blank">here</a>

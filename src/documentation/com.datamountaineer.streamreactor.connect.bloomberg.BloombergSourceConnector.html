@@ -1,0 +1,28 @@
+<hr>
+Kafka Connect Bloomberg is a Source connector to subscribe to Bloomberg feeds via the Bloomberg labs open API and write to Kafka
+<b>Requires: </b> An active Bloomberg subscription
+<hr>
+
+<h5>Step 1: Decide on ticker subscriptions</h5>
+The format is TICKER:FIELD,FIELD,..; e.g.AAPL US Equity:LAST_PRICE;IBM US Equity:BID
+<pre>
+    connect.bloomberg.subscriptions=AAPL US Equity:LAST_PRICE,BID,ASK;IBM US Equity:BID,ASK,HIGH,LOW,OPEN
+</pre>
+
+<hr>
+<h5>Step 2: Set the correct authentication</h5>
+The mode to authentication against the Bloomberg server. Either APPLICATION_ONLY or USER_AND_APPLICATION.
+<pre>
+    connect.bloomberg.authentication.mode=APPLICATION_ONLY
+</pre>
+
+<hr>
+<h5>Step 3: Connect to the correct end-point</h5>
+After setting the host and port, select the Bloomberg service to connect to. Can be //blp/mkdata or //blp/refdata.
+<pre>
+    connect.bloomberg.service.uri=//blp/mkdata
+</pre>
+
+<hr>
+Further documentation available
+<a href="http://docs.datamountaineer.com/en/latest/bloomberg.html" target="_blank">here</a>

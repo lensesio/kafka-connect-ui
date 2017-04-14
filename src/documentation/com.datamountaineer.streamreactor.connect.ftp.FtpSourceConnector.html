@@ -1,0 +1,37 @@
+<hr>
+<h5>Decide on Key <i>style</i></h5>
+The format of the keys is configurable through
+<code>ftp.keystyle=string|struct</code>. It can be a string with the file name, or a FileInfo structure with name: string and offset: long. The offset is always 0 for files that are updated as a whole, and hence only relevant for tailed files.
+<hr>
+
+<h5>Tail versus updates</h5>
+Tailed files are only allowed to grow. Bytes that have been appended to it since a last inspection are yielded. Preceding bytes are not allowed to change;
+Updated files can grow, shrink and change anywhere. The entire contents are yielded.<br/><br/>
+To <code>tail</code> files in a remote location use:
+<pre>
+    connect.ftp.monitor.tail=ftpFolderX/*.csv:topicX,ftpFolderY/*.csv:topicY
+</pre>
+To <code>update</code> entire files in a remote location use:
+<pre>
+    connect.ftp.monitor.update=ftpFolderX/*.csv:topicX,ftpFolderY/*.csv:topicY
+</pre>
+
+<hr>
+<h5>Decide how frequently to poll</h5>
+This is defined via an iso8086 definition of time. For example to poll every 1 minute use:
+<pre>
+    connect.ftp.refresh=PT1M
+</pre>
+<hr>
+
+<h5>Ignore old files</h5>
+Usually when connecting into an FTP location you are mostly interested in files that became available in the past X days.
+To speed things up and completely ignore files that have not changed the past 14 days use:
+<pre>
+    connect.ftp.file.maxage=P14D
+</pre>
+
+<hr>
+More documentation available
+<a href="https://github.com/datamountaineer/stream-reactor/blob/master/kafka-connect-ftp/README.md"
+   target="_blank">here</a>
