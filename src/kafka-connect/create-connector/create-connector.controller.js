@@ -106,7 +106,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                         $log.info(config.value.name + ' : ' + config.value.errors[0]);
                     }
                     //console.log("config.value -> ");
-                    if ( (config.definition.required == true) || ( (config.value.name.startsWith("topic")) && (config.definition.documentation != "") ) ) {
+                    if ( (config.definition.required == true) || ( (config.value.name.indexOf("topic") == 0) && (config.definition.documentation != "") ) ) {
                       requiredConfigKeys.push(config.value.name);
                     }
                     validConnectorConfigKeys.push(config.value.name);
