@@ -12,11 +12,11 @@
     <div class="md-toolbar-tools">
         <span style="font-size: 20px;margin-right:10px;">
         <i ng-show="connectorStatus == 'PAUSED'" class="fa fa-pause-circle grey" aria-label="Paused" aria-hidden="true"></i>
-        <i ng-show="connectorStatus == 'RUNNING'" class="fa fa-cogs green" aria-label="Running" aria-hidden="true"></i>
+        <i ng-show="connectorStatus == 'RUNNING'" class="fa fa-cog green" aria-label="Running" aria-hidden="true"></i>
         <i ng-show="connectorStatus == 'FAILED'" class="fa fa-exclamation-circle red" aria-label="Failed" aria-hidden="true"></i>
         <i ng-show="connectorStatus == 'UNASSIGNED'" class="fa fa-ban" aria-label="Unassigned" aria-hidden="true"></i>
         </span>
-      <h4>{{connectorDetails.isSource ? 'SOURCE : ' : 'SINK : '}} {{connectorDetails.name}}</h4>
+      <h4>{{connectorDetails.name}}</h4>
       <span flex></span>
 
       <md-button ng-show="connectorStatus !='PAUSED'"   ng-disabled="showTaskSpinner" ng-click="pauseConnector(connectorDetails.name);" >
@@ -39,18 +39,18 @@
   <!--INFO BOX-->
   <div class="connector-sum" style="background-color:white" >
     <div layout="row"  layout-align="start center" layout-padding>
-      <div><i class="fa fa-info-circle grey" aria-hidden="true"></i></div>
       <div>
-        <div ng-show="connectorDetails.isSource">
-          Connector <b>{{connectorDetails.name}}</b> gets data from
+        <h3 ng-show="connectorDetails.isSource" style="font-size:12px;padding:0px; margin:0px">
           <span class="label" ng-style="{'background-color':connectorDetails.color}">{{connectorDetails.type}}</span>
-          and the status is <span class="grey">{{connectorStatus}}</span>
-        </div>
-        <div ng-show="!connectorDetails.isSource">
-          Connector <b>{{connectorDetails.name}}</b> writes kafka data to
+          <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+          Kafka is <code>{{connectorStatus}}</code>
+        </h3>
+        <h3 ng-show="!connectorDetails.isSource" style="font-size:12px;padding:0px; margin:0px">
+          Kafka
+          <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
           <span class="label" ng-style="{'background-color':connectorDetails.color}">{{connectorDetails.type}}</span>
-          and the status is <span class="grey">{{connectorStatus}}</span>
-        </div>
+          is <code>{{connectorStatus}}</code>
+        </h3>
       </div>
     </div>
   </div>
@@ -70,11 +70,11 @@
                    ng-show="task.state == 'PAUSED'" class="fa fa-pause-circle grey" aria-hidden="true" aria-label="Running"></i>
                 <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
                    ng-show="task.state == 'RUNNING'" class="fa fa-cog green" aria-hidden="true" aria-label="Paused"></i>
-                <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
+                <i style="float:left;color:indianred;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
                    ng-show="task.state == 'FAILED'" class="fa fa-exclamation-circle red" aria-hidden="true" aria-label="Failed"></i>
                 <i style="float:left;color:#f5f5f5;background-color: #ccc;width: 15px;height: 11px;display: inline;padding-left: 7px;padding-right: 3px;padding-top: 4px;padding-bottom: 6px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;"
                    ng-show="task.state == 'UNASSIGNED'" class="fa fa-ban" aria-hidden="true" aria-label="Unassigned"></i>
-                <div style="float:left;font-size: 0.83em;border: 1px solid {{ task.id == selectedTask.taskStatus.id ? 'purple' : '#cccccc' }};; ;padding-left: 6px;padding-right: 6px;padding-top: 3px;padding-bottom: 3px;background: {{ task.id == selectedTask.taskStatus.id ? 'purple;color:white' : '' }}">
+                <div style="float:left;font-size: 0.83em;border: 1px solid {{ task.id == selectedTask.taskStatus.id ? 'green' : '#cccccc' }};; ;padding-left: 6px;padding-right: 6px;padding-top: 3px;padding-bottom: 3px;background: {{ task.id == selectedTask.taskStatus.id ? 'green;color:white' : '' }}">
                     {{task.id}}
                 </div>
                 <div style="float:left;border-top-right-radius: 0.25em;border-bottom-right-radius: 0.25em;font-size: 0.83em;border: 1px solid #cccccc; border-left:none;padding-left: 6px;padding-right: 10px;padding-top: 3px;padding-bottom: 2px;">
@@ -83,7 +83,7 @@
             </div>
         </div>
     </div>
-    <div ng-if="selectedTask" style="font-size:11px;padding-left: 10px;border: 1px solid #ccc;margin-top: -5px;margin-left: 70px;margin-bottom: 10px;width:70%">
+    <div ng-if="selectedTask" style="font-size:11px;padding-left: 10px;border: 1px solid #ccc;margin-top: -5px;margin-left: 70px;margin-bottom: 10px;width:90%">
       <md-button class="md-mini md-primary" ng-click="invalidateSelectedTask()" style="color:black;float:right;margin:0;">close</md-button>
 
       <h5 style="margin-top:5px;margin-bottom:5px;">Task {{selectedTask.taskStatus.id}} is {{selectedTask.taskStatus.state}}</h5>
@@ -116,7 +116,7 @@
             <div>
               <img src="src/assets/icons/kafka.png" class="label-img" style="float:left;background-color: #ccc;width: 15px;height: 11px;display: inline;padding: 5px;      border-top-left-radius: 0.25em;border-top-right-radius: 0;border-bottom-right-radius: 0;border-bottom-left-radius: 0.25em;;vertical-align: middle;">
               <div style="float:left;border-top-right-radius: 0.25em;border-bottom-right-radius: 0.25em;border: 1px solid #cccccc; padding-left: 6px;padding-right: 10px;padding-top: 2px;padding-bottom: 3px;">
-                {{topic}}
+                {{getCleanTopic(topic);}}
               </div>
             </div>
           </div>

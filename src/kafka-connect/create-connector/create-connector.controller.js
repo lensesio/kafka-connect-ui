@@ -22,6 +22,8 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
   $scope.prefillValues = true;
   $scope.showCurl = false;
+  $scope.showDocumentation = false;
+  $scope.docs = '';
   $scope.toggleShowCurl = function () { $scope.showCurl = !$scope.showCurl; }
 
   $scope.nextTab = function() { $scope.selectedTabIndex = ($scope.selectedTabIndex == $scope.maxNumberOfTabs) ? 0 : $scope.selectedTabIndex + 1; };
@@ -204,7 +206,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
   $scope.simpleName = function(connectorName) {
     if ((connectorName != undefined) && (connectorName.length > 10)) {
-        return connectorName.replace('SourceConnector', '').replace('SinkConnector', '');
+        return connectorName.replace('SourceConnector', '').replace('SinkConnector', '').replace('Stream','');
     } else {
         return "";
     }
@@ -215,18 +217,20 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
     var a = pluginClass.split('.');
     if (a[a.length-1].toLowerCase().indexOf('sink') > 0) {
       type="Sink";
-      //var myElements = [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true},{key:'topics',value: 'TopicName_'+ a[a.length-1], required: true}, {key:'tasks.max',value: 1, required: true}];
-      var myElements = [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true}, {key:'tasks.max',value: 1, required: true}];
+      var myElements = [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true},{key:'topics',value: 'TopicName_'+ a[a.length-1], required: true}, {key:'tasks.max',value: 1, required: true}];
     } else if (a[a.length-1].toLowerCase().indexOf('source') > 0) {
       type="Source";
       var myElements =  [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true}, {key:'tasks.max',value: 1, required: true}];
     }
 
-     // Find the correct connector Icon
+     // Find the correct connector Icon & documentation
      var connectorIcon = "connector.jpg";
      angular.forEach(supportedConnectorsTemplates, function (template) {
         if (template.class == pluginClass) {
             connectorIcon = template.icon;
+            $http.get('src/documentation/' + template.docs).then(function(response){
+                $scope.docs = response.data;
+            });
         }
      });
 
@@ -323,6 +327,10 @@ $scope.getAllConfig = function (pluginClass){
     }
     $scope.showAllConfig = false;
   }
+}
+
+$scope.showConnectorDocumentation = function(pluginClass) {
+    $scope.showDocumentation = !$scope.showDocumentation;
 }
 
 });
