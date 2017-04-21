@@ -1,0 +1,8 @@
+This simple <code>File</code> connector requires defining a local file or folder path and it will continuously tail
+that location and consume it into a Kafka topic.
+<hr>
+<h5>Example 1 : Tail all files /var/log into Kafka topic <code>tailed-logs</code></h5>
+<pre>
+  file=/var/log/
+  topic=tailed-logs
+</pre>

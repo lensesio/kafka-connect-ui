@@ -1,0 +1,30 @@
+<hr>
+
+<h5>Step 1 : Get Token API keys</h5>
+
+<p>In order to make authorized calls to Twitter’s APIs, you must first obtain an OAuth access token on behalf of an
+    authenticated application</p>
+<p>Get your token at <a href="https://apps.twitter.com/" target="_blank">apps.twitter.com</a>
+    or read some <a href="https://dev.twitter.com/oauth/overview/application-owner-access-tokens">detailed
+        instructions</a></p>
+<hr>
+
+<h5>Step 2 : Decide data of interest from Twitter</h5>
+<p>
+    This connector can track <code>terms</code> and/or <code>locations</code> and/or <code>follow</code> Twitter users
+</p>
+To track the term <code>#Kafka</code> use:
+<pre>
+    track.terms=#Kafka
+</pre>
+To track a particular user, use <a target="_blank" href="https://tweeterid.com">tweeterid</a>:
+<pre>
+    track.follow=25073877
+</pre>
+To track a particular geo bounding box (i.e. San Francisco):
+<pre>
+    track.follow=-122.75,36.8,-121.75,37.8
+</pre>
+
+<hr>
+Read the connector manual <a href="https://github.com/Eneco/kafka-connect-twitter" target="_blank">README.md</a>

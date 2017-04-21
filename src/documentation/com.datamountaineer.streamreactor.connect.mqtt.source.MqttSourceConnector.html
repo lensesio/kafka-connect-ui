@@ -1,0 +1,24 @@
+<hr>
+<h5>Step 1: Decide on quality of service</h5>
+QoS level is an agreement between sender and receiver of a message regarding the guarantees of delivering a message. There are 3 QoS levels in MQTT:
+<ul>
+    <li><b>0</b> - At most once</li>
+    <li><b>1</b> - At least once</li>
+    <li><b>2</b> - Exactly once</li>
+</ul>
+<pre>
+    connect.mqtt.service.quality=2
+</pre>
+
+<h5>Step 2: Decide which fields we want to bring in </h5>
+<pre>
+    connect.mqtt.source.kcql=INSERT INTO position-reports SELECT * FROM /ais
+</pre>
+
+<h5>Step 3: Decide on authentication</h5>
+The MQTT connector support user/pass based auth and also CA certificate based auth
+
+<hr>
+More documentation available
+<a href="http://docs.datamountaineer.com/en/latest/mqtt.html"
+   target="_blank">here</a>

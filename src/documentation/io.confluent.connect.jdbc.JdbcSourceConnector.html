@@ -1,0 +1,31 @@
+<hr>
+This Kafka Connector can pull data from an RDBMS system into Kafka.
+<h5>Use the incremental mode</h5>
+To continuously pull new entries from a DB into Kafka we can either use the <code>timestamp</code> or
+<code>incrementing</code> mode.
+    timestamp.column.name=modified
+    incrementing.column.name=id</code> set
+
+<pre>
+    connection.url=jdbc:postgresql://postgres.example.com/test_db?user=bob&password=secret&ssl=true
+    query=SELECT users.id, users.name, transactions.timestamp, transactions.user_id, transactions.payment FROM users JOIN transactions ON (users.id = transactions.user_id)
+    mode=timestamp
+    timestamp.column.name=timestamp
+    topic.prefix=sql-topic-
+</pre>
+
+If <code>incremental</code> is selected, also define
+}, {
+key: 'incrementing.column.name',
+value: 'id',
+element: 'input',
+label: 'Topic',
+tooltip: '',
+type: 'text',
+placeholder: 'ie.id',
+required: true,
+flex: "50"
+}, {
+
+Documentation available
+<a href="http://docs.confluent.io/current/connect/connect-jdbc/docs/index.html>here</a>

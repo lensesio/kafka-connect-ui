@@ -1,0 +1,24 @@
+This connector allows polling either FX (Foreign Exchange) or STOCK symbols or both.
+<hr>
+<h5>Step 1 : Decide on FX symbols to collect</h5>
+<p>To track FX rates $USD <i class="fa fa-long-arrow-right" aria-hidden="true"></i> £GBP and $USD
+    <i class="fa fa-long-arrow-right" aria-hidden="true"></i> €EURO and €EURO
+    <i class="fa fa-long-arrow-right" aria-hidden="true"></i> £GBP into topic
+    <code>currency-rates</code> use:
+</p>
+<pre>
+  connect.yahoo.source.fx.subscriptions=USDGBP=X,USDEUR=X,EURGBP=X
+  connect.yahoo.source.fx.topic=currency-rates
+</pre>
+
+<hr>
+<h5>Step 2 : Decide on stock symbols to collect</h5>
+<p>To track the stock prices of GOOGLE, APPLE and MICROSOFT into topic <code>stocks-topic</code> use:</p>
+<pre>
+  connect.yahoo.source.stocks.subscriptions=GOOGL,MSFT,AAPL
+  connect.yahoo.source.stocks.topic=stocks-topics
+</pre>
+<hr>
+By default polls every 20 seconds the Yahoo Finance APIs.<br/>
+You can override the advanced options. Integration tests and live examples
+<a href="http://coyote.landoop.com/connect/kafka-connect-yahoo/" target="_blank">here</a>

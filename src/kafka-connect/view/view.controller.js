@@ -33,6 +33,14 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
      console.log(getSelectedTask($scope.connectorDetails.detailedTasks, task));
   };
 
+  $scope.getCleanTopic = function (topic) {
+    if (topic instanceof Array) {
+        return topic.join(' ').split(':')[topic.length];
+    } else {
+        return topic;
+    }
+  };
+
   $scope.invalidateSelectedTask = function() {
     $scope.selectedTask = null;
   }

@@ -40,12 +40,19 @@
         <p  class="connectorname">{{connector.name}}</p>
 
         <!--Source-->
+        <i ng-if="!getTaskStates(connector)" class="fa fa-check-square" aria-hidden="true" style="color:green;"></i>
+        <i ng-if="getTaskStates(connector)" class="fa fa-exclamation-circle red" aria-hidden="true"></i>
+        &nbsp;
+        <b>{{connector.tasks.length}}</b>
+        <b>&times;</b>
+        &nbsp;
         <div ng-show="{{connector.isSource}}" class="descr-container">
-          <div class="descr">
-            <i ng-if="!getTaskStates(connector)" class="fa fa-check-square" aria-hidden="true" style="color:green;"></i>
-            <i ng-if="getTaskStates(connector)" class="fa fa-exclamation-circle red" aria-hidden="true"></i>
-            <b>{{connector.workers}}</b>
-            <b>&times;</b>
+        <div class="descr" style="text-align:right">
+          <!--<div class="descr">-->
+            <!--<i ng-if="!getTaskStates(connector)" class="fa fa-check-square" aria-hidden="true" style="color:green;"></i>-->
+            <!--<i ng-if="getTaskStates(connector)" class="fa fa-exclamation-circle red" aria-hidden="true"></i>-->
+            <!--<b>{{connector.workers}}</b>-->
+            <!--<b>&times;</b>-->
             <span class="label" ng-style="{'background-color':connector.color}">{{connector.type}}</span>
             <b><i class="fa fa-long-arrow-right" aria-hidden="true"></i></b>
             <img src="src/assets/icons/kafka.png" class="label-img" style="background-color: #ccc"/>
@@ -57,10 +64,10 @@
           <div class="descr">
             <span><img src="src/assets/icons/kafka.png" class="label-img" style="background-color: #ccc"/></span>
             <b><i class="fa fa-long-arrow-right" aria-hidden="true"></i></b>
-            <i ng-if="!getTaskStates(connector)" class="fa fa-check-square" aria-hidden="true" style="color:green;"></i>
-            <i ng-if="getTaskStates(connector)" class="fa fa-exclamation-circle red" aria-hidden="true"></i>
-            <b>{{connector.workers}}</b>
-            <b>&times;</b>
+            <!--<i ng-if="!getTaskStates(connector)" class="fa fa-check-square" aria-hidden="true" style="color:green;"></i>-->
+            <!--<i ng-if="getTaskStates(connector)" class="fa fa-exclamation-circle red" aria-hidden="true"></i>-->
+            <!--<b>{{connector.workers}}</b>-->
+            <!--<b>&times;</b>-->
             <span class="label" ng-style="{'background-color':connector.color}">{{connector.type}}</span>
           </div>
         </div>

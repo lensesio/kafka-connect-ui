@@ -18,7 +18,7 @@ angularAPP.factory('myHttpInterceptor', function($q, $injector, $log, $rootScope
       },
 
       'response': function(response) {
-         if(response.config.url.startsWith(env.KAFKA_CONNECT()) && env.enableInterceptorLogs) {
+         if(response.config.url.indexOf(env.KAFKA_CONNECT() == 0) && env.enableInterceptorLogs) {
             $log.debug("  curl -X  " + response.config.method + " " + response.config.url + " in [ " + (new Date().getTime() - start) + " ] msec");
             $log.info (response)
          }

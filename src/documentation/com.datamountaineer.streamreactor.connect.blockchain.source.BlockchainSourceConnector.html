@@ -1,0 +1,14 @@
+<hr>
+<p>
+    This connector provides a real time feed for new bitcoin blocks and transactions provided by www.blockhain.info<br>
+    JSon events are then pushed into a Kafka topic.
+</p>
+<p>
+    Since is a direct websocket connection the Source will only ever use one connector task at any point. There is
+    no point spawning more and then have duplicate data.
+</p>
+<p>
+    One thing to remember is the subscription API from blockchain doesn’t offer an option to start from a given
+    timestam. This means if the connect worker is down then you will miss some data.
+    The Sink connects to unconfirmed transaction!! Read more about the live data
+    <a href="https://blockchain.info/api/" target="_blank">here</a>

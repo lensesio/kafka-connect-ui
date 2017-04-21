@@ -40,7 +40,7 @@ header h5 a {
 .connectors-list .descr {
     float:right;
     padding-left: 10px;
-    min-width: 150px;
+    min-width: 120px;
     text-align: left;
     vertical-align: middle;
     margin-top: -7px;
@@ -103,7 +103,8 @@ header h5 a {
 }
 
 .connector-sum {
-    background: #f5f5f5;
+    /* background: #f5f5f5; */
+    background: white;
     magin-top: -20px;
     min-height: 30px;
     font-size: 14px;
