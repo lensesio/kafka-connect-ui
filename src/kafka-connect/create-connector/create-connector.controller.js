@@ -10,7 +10,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
       className = allPlugins[i].class;
 
       if (className === $routeParams.className) {
-        getClassConfig(className)
+        getClassConfig(className);
         break;
       }
     }
@@ -24,13 +24,13 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   $scope.showCurl = false;
   $scope.showDocumentation = false;
   $scope.docs = '';
-  $scope.toggleShowCurl = function () { $scope.showCurl = !$scope.showCurl; }
+  $scope.toggleShowCurl = function () { $scope.showCurl = !$scope.showCurl; };
 
   $scope.nextTab = function() { $scope.selectedTabIndex = ($scope.selectedTabIndex == $scope.maxNumberOfTabs) ? 0 : $scope.selectedTabIndex + 1; };
   $scope.previousTab = function() {
     $scope.selectedTabIndex = ($scope.selectedTabIndex == $scope.maxNumberOfTabs) ? 0 : $scope.selectedTabIndex - 1;
-  }
-  $scope.isDisabledTab = function(index) { return (index == $scope.selectedTabIndex) ? 'false' : 'true'; }
+  };
+  $scope.isDisabledTab = function(index) { return (index == $scope.selectedTabIndex) ? 'false' : 'true'; };
 
 
   $scope.aceLoaded = function (_editor) {
@@ -50,9 +50,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   //If user changes config from the editor
   $scope.$watch('formValuesPerSection', function() {
  if ($scope.formValuesPerSection) {
-      //console.log('test', $scope.formValuesPerSection)
       $scope.formValuesPerSection = $scope.formValuesPerSection.replace("\r", "");
-      //console.log('test', $scope.formValuesPerSection)
       var flatValuesArray = $scope.formValuesPerSection.split("\n");
       validateConnectorFn();
   }

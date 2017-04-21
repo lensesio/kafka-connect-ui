@@ -354,8 +354,8 @@ var supportedConnectorsTemplates = [
 
 var defaultConnectorInfo = {
  name: "unknown",
- type: "",
+ type: "unknown",
  color: "",
  class: "",
- type: "unknown"
+ docs: "unknown.html"
 };
