@@ -119,11 +119,10 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                       } else {
                           var key = propertyLine.substring(0, propertyLine.indexOf('='));
                           var value = propertyLine.substring(propertyLine.indexOf('=') + 1);
-                          if (validConnectorConfigKeys.indexOf( key.toLowerCase() ) == -1) {
+                          if (validConnectorConfigKeys.indexOf(key) === -1) {
                             var errors = { errors : [ 'Config "' + key + '" is not supported' ] };
                             errorConfigs.push(errors);
-                          } else
-                          if (value.length == 0) {
+                          } else if (value.length === 0) {
                             var errors = { errors : [ 'Config "' + key + '" requires a value' ] };
                             errorConfigs.push(errors);
                           } else {
