@@ -76,16 +76,16 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                 console.log("error in classname -> " + classname);
                 var errors = { errors : [ 'Classname "' + $scope.connector.class + '" is not defined' ] };
                 errorConfigs.push(errors);
+
+                if(errorConfigs == 0) {
+                    $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
+                    $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
+                }
+                $scope.errorConfigs = errorConfigs;
             }
 
             //console.log("Error configs -> " + errorConfigs);
             //console.log(errorConfigs.length == 0);
-
-            if(errorConfigs == 0) {
-                $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
-                $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
-            }
-            $scope.errorConfigs = errorConfigs;
 
             //STEP 1: Validate
             var validateConfigPromise = KafkaConnectFactory.validateConnectorConfig(classname, config);
