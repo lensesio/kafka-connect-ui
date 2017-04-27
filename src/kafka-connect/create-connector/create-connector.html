@@ -38,6 +38,7 @@
             <md-card-content ng-hide="showDocumentation" style="padding-top: 2px">
                 <!--Show Property file-->
                 <div id="propertyFile" ng-hide="showCurl"
+                     ng-model-options="{ debounce: 500 }"
                      ng-model="formValuesPerSection" ng-readonly="false"
                      style="background-color:rgba(0, 128, 0, 0.0392157);"
                      ui-ace="{
