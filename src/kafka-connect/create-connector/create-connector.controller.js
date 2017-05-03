@@ -64,6 +64,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
               config: {}
             };
             var errorConfigs = [];
+            var warningConfigs = [];
 
             flatValuesArray = $scope.formValuesPerSection.split('\n');
             config = NewConnectorFactory.getJSONConfigFlat(flatValuesArray);
@@ -120,8 +121,8 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                           var key = propertyLine.substring(0, propertyLine.indexOf('='));
                           var value = propertyLine.substring(propertyLine.indexOf('=') + 1);
                           if (validConnectorConfigKeys.indexOf(key) === -1) {
-                            var errors = { errors : [ 'Config "' + key + '" is not supported' ] };
-                            errorConfigs.push(errors);
+                            var warning = { warnings : [ 'Warning: Config "' + key + '" is unknown' ] };
+                            warningConfigs.push(warning);
                           } else if (value.length === 0) {
                             var errors = { errors : [ 'Config "' + key + '" requires a value' ] };
                             errorConfigs.push(errors);
@@ -152,6 +153,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                       deferred.reject(errorConfigs);
                   }
                   $scope.errorConfigs = errorConfigs;
+                  $scope.warningConfigs = warningConfigs;
 
                   /* debug
                   var flatKeysUsed = [];

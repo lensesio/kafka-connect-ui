@@ -99,6 +99,11 @@
                         {{error}}<br>
                     </div>
                 </div>
+                <div ng-repeat="warningConfig in warningConfigs">
+                    <div ng-repeat="warning in warningConfig.warnings" style="color: orange">
+                        {{warning}}<br>
+                    </div>
+                </div>
             </md-card-content>
 
             <md-card-content ng-show="showDocumentation" style="padding-top: 2px">
