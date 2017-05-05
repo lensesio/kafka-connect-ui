@@ -73,7 +73,7 @@ var clusters = [
 For our [DM connectors](http://www.landoop.com/capabilities/kafka-connectors/)  we have a template of metadata within the `supported-connectors.js`. In any case you will be shown all the existing connectors in your classpath with all the required fields to set them up.
 
 ## Changelog
-[Here](https://github.com/Landoop/kafka-connect-ui/wiki/Release-Changelog)
+[Here](https://github.com/Landoop/kafka-connect-ui/releases)
 
 ## License
 
