@@ -50,7 +50,7 @@ var supportedConnectorsTemplates = [
   docs: "com.datamountaineer.streamreactor.connect.blockchain.source.BlockchainSourceConnector.html"
  },
  {
-  name: "SQL",
+  name: "Jdbc",
   icon: "database.png",
   description: "Stream data from SQL server into Kafka",
   type: "Source",
@@ -203,7 +203,7 @@ var supportedConnectorsTemplates = [
   docs: "com.datamountaineer.streamreactor.connect.hazelcast.sink.HazelCastSinkConnector.html",
  },
  {
-  name: "SQL",
+  name: "Jdbc",
   icon: 'database.png',
   description: 'Store Kafka data into SQL',
   type: "Sink",
