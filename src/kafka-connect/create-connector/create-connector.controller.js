@@ -51,7 +51,9 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   $scope.$watch('formValuesPerSection', function() {
  if ($scope.formValuesPerSection) {
       $scope.formValuesPerSection = $scope.formValuesPerSection.replace("\r", "");
-      var flatValuesArray = $scope.formValuesPerSection.split("\n");
+      var flatValuesArray = $scope.formValuesPerSection.split("\n").filter(function (config) {
+           return (config.charAt(0) !== "#");
+        });
       validateConnectorFn();
   }
   });
@@ -66,7 +68,9 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
             var errorConfigs = [];
             var warningConfigs = [];
 
-            flatValuesArray = $scope.formValuesPerSection.split('\n');
+            flatValuesArray = $scope.formValuesPerSection.split("\n").filter(function (config) {
+                 return (config.charAt(0) !== "#");
+              });
             config = NewConnectorFactory.getJSONConfigFlat(flatValuesArray);
 
             // Make sure the 'classname' is a valid one - as it can crash the connect services
