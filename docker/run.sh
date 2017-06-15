@@ -36,7 +36,7 @@ EOF
 
     cat <<EOF >>/kafka-connect-ui/env.js
    $OPEN_CURL
-     NAME: "connect-$NUM_CLUSTER",
+     NAME: "$cluster",
      KAFKA_CONNECT: "$CONNECT_PROXY-$NUM_CLUSTER"
    }
 EOF
