@@ -1,7 +1,5 @@
 #!/bin/sh
 
-CONNECT_PROXY=/api/kafka-connect
-
 if [[ -z "$CONNECT_URL" ]]; then
     echo "Kafka Connect URL was not set via CONNECT_URL environment variable."
     echo "We will fall back to default http://localhost:8083 which probably won't work."
@@ -28,16 +26,27 @@ var clusters = [
 EOF
     fi
 
+    CLUSTER_URL="$(echo "$cluster" | sed -e 's/;.*//')"
+    CLUSTER_NAME="$(echo "$cluster" | grep ';' | sed -e 's/.*;//')"
+    if [[ -z "$CLUSTER_NAME" ]]; then
+        # if no name is provided, use this
+        CLUSTER_NAME="kafka-connect-$NUM_CLUSTER"
+        CLUSTER_SANITIZED_NAME="${CLUSTER_NAME}"
+    else
+        # if a name is provided, sanitize it
+        CLUSTER_SANITIZED_NAME="${CLUSTER_NAME// /_}"
+        CLUSTER_SANITIZED_NAME="${CLUSTER_NAME//[^a-zA-Z0-9_.-]/}"
+    fi
     cat <<EOF >>/caddy/Caddyfile
-proxy $CONNECT_PROXY-$NUM_CLUSTER $cluster {
-    without $CONNECT_PROXY-$NUM_CLUSTER
+proxy /api/$CLUSTER_SANITIZED_NAME $CLUSTER_URL {
+    without /api/$CLUSTER_SANITIZED_NAME
 }
 EOF
 
     cat <<EOF >>/kafka-connect-ui/env.js
    $OPEN_CURL
-     NAME: "connect-$NUM_CLUSTER",
-     KAFKA_CONNECT: "$CONNECT_PROXY-$NUM_CLUSTER"
+     NAME: "$CLUSTER_NAME",
+     KAFKA_CONNECT: "/api/$CLUSTER_SANITIZED_NAME"
    }
 EOF
 
