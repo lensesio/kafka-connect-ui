@@ -27,8 +27,11 @@ Web UI will be available at `http://localhost:8000`
 ```
     git clone https://github.com/Landoop/kafka-connect-ui.git
     cd kafka-connect-ui
+    npm install -g bower
+    npm install -g http-server
     npm install
-    http-server .
+    bower install
+    http-server -p 8080 .
 ```
 Web UI will be available at `http://localhost:8080`
 
