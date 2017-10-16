@@ -10,6 +10,8 @@ fi
 
 CONNECT_URL="${CONNECT_URL:-http://localhost:8083}"
 
+cat /caddy/Caddyfile.template > /caddy/Caddyfile
+
 echo
 echo "Enabling proxy because Connect doesn't send CORS headers yet and setting up clusters."
 
