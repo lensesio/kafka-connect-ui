@@ -31,7 +31,12 @@
                         <img ng-src="src/assets/icons/{{source.icon}}" class="md-avatar" style="height: initial;"/>
                         <div class="md-list-item-text" >
                             <h3><b>{{source.name}}</b></h3>
-                            <p style="font-size:12px;">{{source.description}}</p>
+                            <p style="font-size:12px;">
+                                {{source.description}}
+                            </p>
+                            <p style="font-size:10px;">
+                                class: {{source.class}}
+                            </p>
                         </div>
                     </md-list-item>
                 </md-list>
@@ -45,7 +50,12 @@
                         <img ng-src="src/assets/icons/{{sink.icon}}" class="md-avatar" style="width:40px;height:40px;" />
                         <div class="md-list-item-text">
                             <h3><b>{{sink.name}}</b></h3>
-                            <p style="font-size:12px;">{{sink.description}}</p>
+                            <p style="font-size:12px;">
+                                {{sink.description}}
+                            </p>
+                            <p style="font-size:10px;">
+                                class: {{sink.class}}
+                            </p>
                         </div>
                     </md-list-item>
                 </md-list>
