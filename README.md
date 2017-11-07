@@ -19,6 +19,10 @@ docker run --rm -it -p 8000:8000 \
 
 The CONNECT_URL can be a comma separated array of Connect worker endpoints. E.g: CONNECT_URL=http://connect.1.url,http://connect.2.url"
 
+Additionally you can assign custom names to your Connect clusters by appending a semicolon and the cluster name after the endpoint URL. E.g:
+
+```"CONNECT_URL=http://connect.1.url;dev cluster,http://connect.2.url;production cluster"```
+ 
 Web UI will be available at `http://localhost:8000`
 
 
