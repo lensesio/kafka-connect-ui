@@ -1,0 +1,12 @@
+Third Party JS libraries included in KAFKA CONNECT UI (v1.0)
+-----------------------------------------------------
+angular                                     : MIT                 - https://github.com/angular/angular.js
+angular-animate                             : MIT                 - https://github.com/angular/angular.js
+angular-aria                                : MIT                 - https://github.com/angular/angular.js
+angular-google-chart                        : MIT                 - https://github.com/angular-google-chart/angular-google-chart
+angular-route                               : MIT                 - https://github.com/angular/angular.js
+angular-ui-ace                              : MIT                 - https://github.com/angular-ui/ui-ace
+angular-utils-pagination                    : MIT                 - https://github.com/michaelbromley/angularUtils-pagination
+angular-messages                            : MIT                 - https://github.com/angular/bower-angular-messages
+bootstrap                                   : MIT                 - https://github.com/twbs/bootstrap
+font-awesome                                : OFL 1.1             - http://fontawesome.io

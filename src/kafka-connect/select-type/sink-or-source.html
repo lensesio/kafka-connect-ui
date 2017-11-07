@@ -25,13 +25,15 @@
                 <md-list class="dense" flex ng-if="sources.length > 0">
                     <md-subheader class="md-no-sticky">Sources</md-subheader>
                     <md-list-item ng-repeat="source in sources | filter : search2"
-                                  class="md-2-line"
-                                  ng-if="isClassInClasspath(source.class)"
-                                  ng-href="#/cluster/{{ cluster }}/create-connector/{{ source.class }}">
-                        <img ng-src="src/assets/icons/{{source.icon}}" class="md-avatar" style="height: initial;"/>
-                        <div class="md-list-item-text" >
-                            <h3><b>{{source.name}}</b></h3>
-                            <p style="font-size:12px;">{{source.description}}</p>
+                                  class="md-2-line createConnectorList"
+                                  ng-if="isClassInClasspath(source.class)">
+                                  <a ng-href="#/cluster/{{ cluster }}/create-connector/{{ source.class }}"><img ng-src="src/assets/icons/{{source.icon}}" class="md-avatar" style="height: initial;"/></a>
+                        <div class="md-list-item-text">
+                            <h3><b><a ng-href="#/cluster/{{ cluster }}/create-connector/{{ source.class }}">{{source.name}}</a></b></h3>
+                            <p style="font-size:12px;">
+                              <span ng-if="source.author">Author: {{source.author}} </span><span ng-if="source.docs && source.author">| <a target="_blank"href="{{source.docs}}">docs</a></span>
+                              <span ng-if="!source.author && !source.docs">{{source.class}}</span>
+                            </p>
                         </div>
                     </md-list-item>
                 </md-list>
@@ -39,13 +41,15 @@
                 <md-list class="dense" flex ng-if="sinks.length > 0" >
                     <md-subheader class="md-no-sticky">Sinks</md-subheader>
                     <md-list-item ng-repeat="sink in sinks  | filter : search2"
-                                  class="md-2-line"
-                                  ng-if="isClassInClasspath(sink.class)"
-                                  ng-href="#/cluster/{{ cluster }}/create-connector/{{ sink.class }}">
-                        <img ng-src="src/assets/icons/{{sink.icon}}" class="md-avatar" style="width:40px;height:40px;" />
+                                  class="md-2-line createConnectorList"
+                                  ng-if="isClassInClasspath(sink.class)">
+                        <a ng-href="#/cluster/{{ cluster }}/create-connector/{{ sink.class }}"><img ng-src="src/assets/icons/{{sink.icon}}" class="md-avatar" style="width:40px;height:40px;" /></a>
                         <div class="md-list-item-text">
-                            <h3><b>{{sink.name}}</b></h3>
-                            <p style="font-size:12px;">{{sink.description}}</p>
+                            <h3><b><a ng-href="#/cluster/{{ cluster }}/create-connector/{{ sink.class }}">{{sink.name}}</a></b></h3>
+                            <p style="font-size:12px;">
+                                <span ng-if="sink.author">Author: {{sink.author}} </span><span ng-if="sink.docs && sink.author">| <a target="_blank"href="{{sink.docs}}">docs</a></span>
+                                <span ng-if="!sink.author && !sink.docs">{{source.class}}</span>                                
+                            </p>
                         </div>
                     </md-list-item>
                 </md-list>
