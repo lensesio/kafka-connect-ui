@@ -82,7 +82,7 @@ var supportedConnectorsTemplates = [
     uiEnabled: true,
     color: "#a65674",
     class: "com.datamountaineer.streamreactor.connect.bloomberg.BloombergSourceConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/bloomberg.html",
+    docs: "//docs.datamountaineer.com/en/latest/bloomberg.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -93,7 +93,7 @@ var supportedConnectorsTemplates = [
     uiEnabled: true,
     color: "pink",
     class: "com.datamountaineer.streamreactor.connect.jms.source.JMSSourceConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/jms-source.html",
+    docs: "//docs.datamountaineer.com/en/latest/jms-source.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -104,7 +104,7 @@ var supportedConnectorsTemplates = [
     uiEnabled: true,
     color: "#5B346C",
     class: "com.datamountaineer.streamreactor.connect.mqtt.source.MqttSourceConnector",
-    docs: "com.datamountaineer.streamreactor.connect.mqtt.source.MqttSourceConnector.html",
+    docs: "//docs.datamountaineer.com/en/latest/mqtt.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -115,7 +115,7 @@ var supportedConnectorsTemplates = [
     color: "#4A3A41",
     uiEnabled: true,
     class: "com.datamountaineer.streamreactor.connect.rethink.source.ReThinkSourceConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/mqtt.html",
+    docs: "//docs.datamountaineer.com/en/latest/rethink-source.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -126,7 +126,7 @@ var supportedConnectorsTemplates = [
     color: "#3A3A3A",
     uiEnabled: true,
     class: "com.datamountaineer.streamreactor.connect.coap.source.CoapSourceConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/coap-source.html",
+    docs: "//docs.datamountaineer.com/en/latest/coap-source.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -168,7 +168,7 @@ var supportedConnectorsTemplates = [
     type: "Sink",
     uiEnabled: true,
     class: "com.datamountaineer.streamreactor.connect.elastic.ElasticSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/elastic.html",
+    docs: "//docs.datamountaineer.com/en/latest/elastic.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -179,7 +179,7 @@ var supportedConnectorsTemplates = [
     type: "Sink",
     uiEnabled: true,
     class: "com.datamountaineer.streamreactor.connect.elastic5.ElasticSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/elastic5.html",
+    docs: "//docs.datamountaineer.com/en/latest/elastic5.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -190,7 +190,7 @@ var supportedConnectorsTemplates = [
     type: "Sink",
     uiEnabled: true,
     class: "com.datamountaineer.streamreactor.connect.mqtt.sink.MqttSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/mqtt-sink.html",
+    docs: "//docs.datamountaineer.com/en/latest/mqtt-sink.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -201,7 +201,7 @@ var supportedConnectorsTemplates = [
     type: "Sink",
     color: "#1a9f85",
     class: "com.datamountaineer.streamreactor.connect.cassandra.sink.CassandraSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/cassandra-sink.html",
+    docs: "//docs.datamountaineer.com/en/latest/cassandra-sink.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -212,7 +212,7 @@ var supportedConnectorsTemplates = [
     type: "Sink",
     color: "#0090BA",
     class: "com.datamountaineer.streamreactor.connect.influx.InfluxSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/influx.html",
+    docs: "//docs.datamountaineer.com/en/latest/influx.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -223,7 +223,7 @@ var supportedConnectorsTemplates = [
     color: "#609959",
     uiEnabled: true,
     class: "com.datamountaineer.streamreactor.connect.mongodb.sink.MongoSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/mongo-sink.html",
+    docs: "//docs.datamountaineer.com/en/latest/mongo-sink.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -234,7 +234,7 @@ var supportedConnectorsTemplates = [
     uiEnabled: true,
     color: "#002A36",
     class: "com.datamountaineer.streamreactor.connect.hazelcast.sink.HazelCastSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/hazelcast.html",
+    docs: "//docs.datamountaineer.com/en/latest/hazelcast.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -265,7 +265,7 @@ var supportedConnectorsTemplates = [
     color: "#3A3A3A",
     uiEnabled: true,
     class: "com.datamountaineer.streamreactor.connect.azure.documentdb.sink.DocumentDbSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/azuredocdb-sink.html",
+    docs: "//docs.datamountaineer.com/en/latest/azuredocdb-sink.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -276,7 +276,7 @@ var supportedConnectorsTemplates = [
     uiEnabled: true,
     color: "#D8291F",
     class: "com.datamountaineer.streamreactor.connect.redis.sink.RedisSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/redis.html",
+    docs: "//docs.datamountaineer.com/en/latest/redis.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -287,7 +287,7 @@ var supportedConnectorsTemplates = [
     uiEnabled: true,
     color: "#549998",
     class: "com.datamountaineer.streamreactor.connect.kudu.sink.KuduSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/kudu.html",
+    docs: "//docs.datamountaineer.com/en/latest/kudu.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -298,7 +298,7 @@ var supportedConnectorsTemplates = [
     uiEnabled: true,
     color: "#879171",
     class: "com.datamountaineer.streamreactor.connect.jms.sink.JMSSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/jms.html",
+    docs: "//docs.datamountaineer.com/en/latest/jms.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -318,7 +318,7 @@ var supportedConnectorsTemplates = [
     description: 'A sink connector to write Kafka data into VoltDB',
     color: "#e8371b",
     class: "com.datamountaineer.streamreactor.connect.voltdb.VoltSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/voltdb.html",
+    docs: "//docs.datamountaineer.com/en/latest/voltdb.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -339,7 +339,7 @@ var supportedConnectorsTemplates = [
     color: "#3A3A3A",
     uiEnabled: true,
     class: "com.datamountaineer.streamreactor.connect.coap.sink.CoapSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/coap-sink.html",
+    docs: "//docs.datamountaineer.com/en/latest/coap-sink.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -350,7 +350,7 @@ var supportedConnectorsTemplates = [
     uiEnabled: true,
     color: "#6d1c7c",
     class: "com.datamountaineer.streamreactor.connect.hbase.HbaseSinkConnector",
-    docs: "com.datamountaineer.streamreactor.connect.hbase.HbaseSinkConnector.html",
+    docs: "//docs.datamountaineer.com/en/latest/hbase.html",
     author:'Landoop - Stream Reactor'
   },
   {
@@ -361,7 +361,7 @@ var supportedConnectorsTemplates = [
     uiEnabled: true,
     color: "#4A3A41",
     class: "com.datamountaineer.streamreactor.connect.rethink.sink.ReThinkSinkConnector",
-    docs: "http://docs.datamountaineer.com/en/latest/hbase.html",
+    docs: "//docs.datamountaineer.com/en/latest/rethink.html",
     author:'Landoop - Stream Reactor'
   },
   {
