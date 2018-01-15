@@ -24,7 +24,7 @@
 
                 <md-list class="dense" flex ng-if="sources.length > 0">
                     <md-subheader class="md-no-sticky">Sources</md-subheader>
-                    <md-list-item ng-repeat="source in sources | filter : search2"
+                    <md-list-item ng-repeat="source in sources | filter : search2 track by $index"
                                   class="md-2-line createConnectorList"
                                   ng-if="isClassInClasspath(source.class)">
                                   <a ng-href="#/cluster/{{ cluster }}/create-connector/{{ source.class }}"><img ng-src="src/assets/icons/{{source.icon}}" class="md-avatar" style="height: initial;"/></a>
@@ -40,7 +40,7 @@
 
                 <md-list class="dense" flex ng-if="sinks.length > 0" >
                     <md-subheader class="md-no-sticky">Sinks</md-subheader>
-                    <md-list-item ng-repeat="sink in sinks  | filter : search2"
+                    <md-list-item ng-repeat="sink in sinks  | filter : search2 track by $index"
                                   class="md-2-line createConnectorList"
                                   ng-if="isClassInClasspath(sink.class)">
                         <a ng-href="#/cluster/{{ cluster }}/create-connector/{{ sink.class }}"><img ng-src="src/assets/icons/{{sink.icon}}" class="md-avatar" style="width:40px;height:40px;" /></a>

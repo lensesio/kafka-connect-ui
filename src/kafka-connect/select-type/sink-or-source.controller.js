@@ -22,25 +22,31 @@ angularAPP.controller('SelectNewConnectorCtrl', function ($scope, $http, $log, $
 
       if (supportedConnectorsFactory.getAllClassFromTemplate().indexOf(plugin.class) == -1) {
         $scope.hasUnsupportedConnectors = true;
-          var type="Unknown";
-          var a = plugin.class.split('.');
-          if (a[a.length-1].toLowerCase().indexOf('sink') > 0) {
-          type="Sink"
-          } else if (a[a.length-1].toLowerCase().indexOf('source') > 0) {
-          type="Source"
-          }
+        var splitClass = plugin.class.split('.');
+        var calcName = splitClass[splitClass.length - 1];
+
          var o = {
-            name: a[a.length-1],
+            name: calcName,
             class: plugin.class,
             icon: "connector.jpg",
             isUndefined: true,
-            type: type
+            
         }
-        if (type == "Source")
+        if(!plugin.type) {
+          o.type = calcName.toLowerCase().indexOf('sink') > 0 ? 'Sink' : 'Source'
+        } else {
+          o.type = plugin.type.toLowerCase().indexOf('sink') > 0 ? 'Sink' : 'Source'
+        }
+        if (o.type == "Source")
         $scope.sources.push(o);
         else
         $scope.sinks.push(o);
       }
+      else {
+        if(plugin.version){
+            connectorPlugin.version = plugin.version !== 'null' ? plugin.version : 'N/A';
+        }
+    }
     });
   }, function (reason) {
     $log.error('Failed: ' + reason);
