@@ -42,11 +42,6 @@ angularAPP.controller('SelectNewConnectorCtrl', function ($scope, $http, $log, $
         else
         $scope.sinks.push(o);
       }
-      else {
-        if(plugin.version){
-            connectorPlugin.version = plugin.version !== 'null' ? plugin.version : 'N/A';
-        }
-    }
     });
   }, function (reason) {
     $log.error('Failed: ' + reason);
