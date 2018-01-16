@@ -360,7 +360,7 @@ var supportedConnectorsTemplates = [
     description: 'A sink connector to write Kafka data into VoltDB',
     color: "#e8371b",
     class: "com.datamountaineer.streamreactor.connect.voltdb.VoltSinkConnector",
-    docs: "6.3.15. VoltDB",
+    docs: "//lenses.stream/connectors/sink/voltdb.html",
     author:'Landoop - Stream Reactor'
   },
   {
