@@ -27,8 +27,8 @@
                         <p style="font-size:12px;padding:0px; margin:0px">{{connector.description}}</p>
                         <p style="font-size:12px;padding:0px; margin:5px 0 0 0;" class="grey">
                             <span ng-bind="::connector.class"></span>
-                            <span ng-if="docs">
-                                | <a ng-href="{{ docs }}" target="_blank">docs</a>
+                            <span ng-if="::docs">
+                                | <a ng-href="{{:: docs }}" target="_blank">docs</a>
                             </span>
                         </p>
                     </div>

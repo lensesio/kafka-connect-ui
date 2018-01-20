@@ -22,7 +22,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
   $scope.prefillValues = true;
   $scope.showCurl = false;
-  $scope.docs = '';
   $scope.toggleShowCurl = function () { $scope.showCurl = !$scope.showCurl; };
 
   $scope.nextTab = function() { $scope.selectedTabIndex = ($scope.selectedTabIndex == $scope.maxNumberOfTabs) ? 0 : $scope.selectedTabIndex + 1; };
