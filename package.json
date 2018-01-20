@@ -30,7 +30,7 @@
     "kafka connect"
   ],
   "author": "Landoop team",
-  "license": "BSL",
+  "license": "BSL-1.0",
   "bugs": {
     "url": "https://github.com/Landoop/kafka-connect-ui/issues"
   },

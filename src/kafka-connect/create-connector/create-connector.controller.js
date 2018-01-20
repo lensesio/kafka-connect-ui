@@ -22,7 +22,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
   $scope.prefillValues = true;
   $scope.showCurl = false;
-  $scope.showDocumentation = false;
   $scope.docs = '';
   $scope.toggleShowCurl = function () { $scope.showCurl = !$scope.showCurl; };
 
@@ -231,9 +230,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
      angular.forEach(supportedConnectorsTemplates, function (template) {
         if (template.class == pluginClass) {
             connectorIcon = template.icon;
-            $http.get('src/documentation/' + template.docs).then(function(response){
-                $scope.docs = response.data;
-            });
+            $scope.docs = template.docs;
         }
      });
 
@@ -330,10 +327,6 @@ $scope.getAllConfig = function (pluginClass){
     }
     $scope.showAllConfig = false;
   }
-}
-
-$scope.showConnectorDocumentation = function(pluginClass) {
-    $scope.showDocumentation = !$scope.showDocumentation;
 }
 
 });
