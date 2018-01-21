@@ -1,13 +1,11 @@
 <form class="form" name="form">
     <div ng-class="{'has-error':form.json.$invalid, 'has-success':!form.code.$invalid}">
-        <div id="propertyFile" style="min-height:7em"
-             ng-readonly="connectorConfigurationEditable"
-             ng-style="{'background-color':aceBackgroundColor }"
-             name="json"
-             ng-model="connectorDetails.connectorDetailsInString"
-             ui-ace="{ mode: 'json', firstLineNumber: 1, onLoad: aceLoaded, onChange: aceChanged, showPrintMargin: false, blockScrolling: Infinity }"
-             valid-json>
-        </div>
+        <configuration-editor
+            name="connectorDetails.name"
+            ng-model="model"
+            ng-model-options="{ debounce: 500 }"
+            ng-readonly="connectorConfigurationEditable">
+        </configuration-editor>
 
         <br>
 

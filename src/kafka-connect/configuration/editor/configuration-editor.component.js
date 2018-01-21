@@ -3,9 +3,15 @@
 
   /**
    * Configuration editor
+   * @param {String} [name] Connector name; denotes edit mode
+   * @param {Boolean} [ngReadonly]
    * @requires ngModel
    */
   angularAPP.component('configurationEditor', {
+    bindings: {
+      name: '<?',
+      ngReadonly: '<?',
+    },
     controller: ConfigurationEditorController,
     require: {
       ngModelController: 'ngModel',
@@ -15,17 +21,12 @@
 
   /**
    * Controller for `configurationEditor` component
-   * @requires uiAceOptionsFactoryService
    */
-  function ConfigurationEditorController(uiAceOptionsFactoryService) {
+  function ConfigurationEditorController() {
     var self = this;
-
-    // Properties
-    self.uiAceJsonOptions = uiAceOptionsFactoryService.getOptions();
 
     // Methods
     self.$onInit = $onInit;
-    self.onGetSetJson = onGetSetJson;
     self.onModelChange = onModelChange;
 
     /**
@@ -34,16 +35,11 @@
     function $onInit() {
       self.ngModelController.$render = function() {
         self.model = self.ngModelController.$modelValue;
-      }
-    }
 
-    /**
-     * Handler called when JSON configuration model is retrieved or set
-     * @param {String} [model] JSON string on set; otherwise undefined
-     * @returns {String|Object}
-     */
-    function onGetSetJson(model) {
-      return angular.isDefined(model) ? (self.model = angular.fromJson(model)) : angular.toJson(self.model, true);
+        if (self.name) {
+          delete self.model.name;
+        }
+      }
     }
 
     /**

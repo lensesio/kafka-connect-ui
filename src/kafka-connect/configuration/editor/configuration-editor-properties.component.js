@@ -6,14 +6,20 @@
 
   /**
    * Properties-based configuration editor
+   * @param {String} [name] Connector name; denotes edit mode
+   * @param {Boolean} [ngReadonly]
    * @requires ngModel
    */
   angularAPP.component('configurationEditorProperties', {
+    bindings: {
+      name: '<?',
+      ngReadonly: '<?',
+    },
     controller: ConfigurationEditorPropertiesController,
     require: {
       ngModelController: 'ngModel',
     },
-    templateUrl: 'src/kafka-connect/configuration/editor/configuration-editor-properties.html',
+    template: '<div ng-change="$ctrl.onModelChange()" ng-model="$ctrl.model" ng-readonly="$ctrl.ngReadonly" ui-ace="$ctrl.uiAceOptions"></div>',
   });
 
   /**
@@ -38,18 +44,21 @@
     function $onInit() {
       self.ngModelController.$render = function() {
         var model = self.ngModelController.$modelValue;
+        var config = self.name ? model : model.config;
         var properties;
         
         if (angular.isUndefined(model)) {
           return;
         }
 
-        properties = [
-          PROPERTY_NAME + PROPERTY_DELIMITER + model[PROPERTY_NAME],
-        ];
+        properties = [];
 
-        for (var key in model.config) {
-          properties.push(key + PROPERTY_DELIMITER + model.config[key]);
+        if (!self.name) { // include name on creation
+          properties.push(PROPERTY_NAME + PROPERTY_DELIMITER + model[PROPERTY_NAME]);
+        }
+
+        for (var key in config) {
+          properties.push(key + PROPERTY_DELIMITER + config[key]);
         }
 
         self.model = properties.join('\n');
@@ -60,10 +69,8 @@
      * Handler called when properties model changes
      */
     function onModelChange() {
-      var result = {
-        name: '',
-        config: {},
-      };
+      var config = {};
+      var name;
 
       self.model.match(/[^\r\n]+/g).forEach(function(line) {
         line = line.trim();
@@ -75,13 +82,16 @@
         line = line.split(PROPERTY_DELIMITER);
 
         if (PROPERTY_NAME === line[0]) {
-          result[PROPERTY_NAME] = line[1] || '';
+          name = line[1] || '';
         } else {
-          result.config[line[0]] = line[1] || '';
+          config[line[0]] = line[1] || '';
         }
       });
 
-      self.ngModelController.$setViewValue(result);
+      self.ngModelController.$setViewValue(self.name ? config : {
+        name: name,
+        config: config,
+      });
     }
   }
 

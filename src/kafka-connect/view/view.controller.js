@@ -88,10 +88,9 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
   $scope.toggleEditor = function () {
     $scope.connectorConfigurationEditable = !$scope.connectorConfigurationEditable;
     if (!$scope.connectorConfigurationEditable) {
-        $scope.aceBackgroundColor = "rgba(0, 128, 0, 0.04)";
         $scope.showSyntaxValidation = true;
+        $scope.model = angular.copy($scope.connectorDetails.config); // clone dirty model
     } else {
-        $scope.aceBackgroundColor = "#fff";
         $scope.validConfig = "";
         $scope.showSyntaxValidation = false;
         invalidateEditorMarkers();
@@ -101,22 +100,11 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
 
   $scope.cancelEditor = function() {
     $scope.connectorDetails.connectorDetailsInString = $scope.connectorDetailsInStringBefore;
+    $scope.model = $scope.connectorDetails.config; // replace dirty model with pristine
     $scope.toggleEditor();
   }
 
-  $scope.aceLoaded = function (_editor) {
-    console.log("Ace loaded");
-    $scope.editor = _editor;
-    $scope.editor.$blockScrolling = Infinity;
-    $scope.acePropertyFileSession = _editor.getSession();
-    var lines = $scope.connectorDetails.connectorDetailsInString.split("\n").length;
-    _editor.setOptions({
-      minLines: lines,
-      maxLines: lines,
-      highlightActiveLine: false
-    });
-  };
-
+  // todo: determine if this is neeeded
   $scope.aceChanged = function (_editor) {
     $scope.editor = _editor;
     $scope.editor.$blockScrolling = Infinity;
@@ -154,6 +142,7 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
         $scope.connectorDetails = connectorDetails;
         $scope.aceReady = true;
         $scope.connectorDetailsInStringBefore = angular.toJson(connectorDetails.config, true);
+        $scope.model = connectorDetails.config;
         $scope.showTaskSpinner = false;
         $scope.showConfigSpinner = false;
         $rootScope.loading = false;

@@ -3,14 +3,18 @@
 
   /**
    * Renders configuration cURL command
+   * @param {String} [name] Connector name; denotes edit mode
    * @requires ngModel
    */
   angularAPP.component('configurationEditorCurl', {
+    bindings: {
+      name: '<?',
+    },
     controller: ConfigurationEditorCurlController,
     require: {
       ngModelController: 'ngModel',
     },
-    templateUrl: 'src/kafka-connect/configuration/editor/configuration-editor-curl.html',
+    template: '<div ng-model="$ctrl.model" ng-readonly="true" ui-ace="$ctrl.uiAceOptions"></div>',
   });
 
   /**
@@ -38,8 +42,8 @@
     function $onInit() {
       self.ngModelController.$render = function() {
         self.model = [
-          'curl -X POST',
-          env.KAFKA_CONNECT() + '/connectors',
+          'curl -X ' + (self.name ? 'PUT' : 'POST'),
+          env.KAFKA_CONNECT() + '/connectors' + (self.name ? '/' + self.name + '/config' : ''),
           "-H 'Content-Type: application/json'",
           "-H 'Accept: application/json'",
           "-d '" + angular.toJson(self.ngModelController.$modelValue, true) + "'",

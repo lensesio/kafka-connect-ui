@@ -2,21 +2,24 @@
   <md-tab label="Properties">
     <md-tab-body>
       <configuration-editor-properties
+        name="$ctrl.name"
         ng-change="$ctrl.onModelChange()"
-        ng-model="$ctrl.model">
+        ng-model="$ctrl.model"
+        ng-readonly="$ctrl.ngReadonly">
       </configuration-editor-properties>
     </md-tab-body>
   </md-tab>
   <md-tab label="JSON">
-    <div
+    <configuration-editor-json
       ng-change="$ctrl.onModelChange()"
-      ng-model="$ctrl.onGetSetJson"
-      ng-model-options="{ getterSetter: true }"
-      style="background-color:rgba(0, 128, 0, 0.0392157);"
-      ui-ace="$ctrl.uiAceJsonOptions">
-    </div>
+      ng-model="$ctrl.model"
+      ng-readonly="$ctrl.ngReadonly">
+    </configuration-editor-json>
   </md-tab>
   <md-tab label="cURL">
-    <configuration-editor-curl ng-model="$ctrl.model"></configuration-editor-curl>
+    <configuration-editor-curl
+      name="$ctrl.name"
+      ng-model="$ctrl.model">
+    </configuration-editor-curl>
   </md-tab>
 </md-tabs>
