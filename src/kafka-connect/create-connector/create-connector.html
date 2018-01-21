@@ -36,41 +36,13 @@
                 </div>
             </div>
 
-            <!-- Either show the configuration - or documentation -->
             <md-card-content style="padding-top: 2px">
-                <!--Show Property file-->
-                <div id="propertyFile" ng-hide="showCurl"
-                     ng-model-options="{ debounce: 500 }"
-                     ng-model="formValuesPerSection" ng-readonly="false"
-                     style="background-color:rgba(0, 128, 0, 0.0392157);"
-                     ui-ace="{
-                           useWrapMode: true,
-                           mode: 'properties',
-                           showPrintMargin: false,
-                           firstLineNumber: 1,
-                           blockScrolling: Infinity,
-                           onLoad: aceLoaded
-                    }"></div>
-                <!--Show Curl command-->
-                <div id="curlCommand" ng-if="showCurl"
-                     ng-model="curlCommand" ng-readonly="true"
-                     style="background-color:rgba(0, 128, 0, 0.0392157);"
-                     ui-ace="{
-                           useWrapMode: true,
-                           showGutter: false,
-                           showPrintMargin: false,
-                           theme:'chrome',
-                           mode: 'batchfile',
-                           firstLineNumber: 1,
-                           highlightActiveLine: false,
-                           highlightGutterLine: false,
-                           onLoad: aceLoaded
-                         }"></div>
+                <configuration-editor
+                    ng-model="model"
+                    ng-model-options="{ debounce: 500 }">
+                </configuration-editor>
                 <md-toolbar class="md-hue-2" style="background-color: transparent;color:#333;height: 20px;">
                     <div class="md-toolbar-tools">
-                        <md-checkbox ng-model="showCurl" aria-label="Show cURL command">
-                            <span style="font-size:16px;">Show cURL command</span>
-                        </md-checkbox>
                         <md-checkbox ng-click="getAllConfig(connector.class)" ng-hide='showAllConfig' layout-align="left" aria-label="Show all config">
                             <span style="font-size:16px;">Show Optional fields</span>
                         </md-checkbox>

@@ -13,6 +13,27 @@ angularAPP.factory('NewConnectorFactory', function (supportedConnectorsFactory, 
         return undefined
     },
 
+    flattenConnectorTemplate: function(connector) {
+      var result = {
+        name: '',
+        config: {},
+      };
+
+      connector.template.forEach(function(step) {
+        step.sections.forEach(function(section) {
+          section.elements.forEach(function(element) {
+            if ('name' === element.key) {
+              result.name = element.value;
+            } else {
+              result.config[element.key] = element.value;
+            }
+          });
+        });
+      });
+
+      return result;
+    },
+
     flattenConnectorKeyValues: function (connector) {
        //3 nested lists: Steps -> Sections -> Elements
           var sectionsPerStep = connector.template.map(function (step) {

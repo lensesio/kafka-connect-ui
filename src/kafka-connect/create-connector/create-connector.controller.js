@@ -21,29 +21,12 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
   });
 
   $scope.prefillValues = true;
-  $scope.showCurl = false;
-  $scope.toggleShowCurl = function () { $scope.showCurl = !$scope.showCurl; };
 
   $scope.nextTab = function() { $scope.selectedTabIndex = ($scope.selectedTabIndex == $scope.maxNumberOfTabs) ? 0 : $scope.selectedTabIndex + 1; };
   $scope.previousTab = function() {
     $scope.selectedTabIndex = ($scope.selectedTabIndex == $scope.maxNumberOfTabs) ? 0 : $scope.selectedTabIndex - 1;
   };
   $scope.isDisabledTab = function(index) { return (index == $scope.selectedTabIndex) ? 'false' : 'true'; };
-
-
-  $scope.aceLoaded = function (_editor) {
-    console.log("Ace for create-connector loaded");
-    $scope.editor = _editor;
-    $scope.editor.$blockScrolling = Infinity;
-    $scope.acePropertyFileSession = _editor.getSession();
-    var lines = 15;//$scope.connectorDetails.connectorDetailsInString.split("\n").length;
-    _editor.setOptions({
-      minLines: lines,
-      maxLines: lines,
-      highlightActiveLine: false
-    });
-  };
-
 
   //If user changes config from the editor
   $scope.$watch('formValuesPerSection', function() {
@@ -59,10 +42,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
     function validateConnectorFn () {
             var deferred = $q.defer();
-            var connectorCurlObject = {
-              name: "",
-              config: {}
-            };
             var errorConfigs = [];
             var warningConfigs = [];
 
@@ -82,7 +61,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
                 if(errorConfigs == 0) {
                     $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
-                    $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
                 }
                 $scope.errorConfigs = errorConfigs;
             }
@@ -129,7 +107,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                             var errors = { errors : [ 'Config "' + key + '" requires a value' ] };
                             errorConfigs.push(errors);
                           } else {
-                            connectorCurlObject.config["" + key] = value;
+                            // valid
                           }
                       }
                     }
@@ -149,7 +127,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
                   if(errorConfigs == 0) {
                       $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
-                      $scope.curlCommand = NewConnectorFactory.getCurlCommand(flatValuesArray);
                       deferred.resolve(constants.VIEW_MESSAGE_CONNECTOR_VALID);
                   } else {
                       deferred.reject(errorConfigs);
@@ -283,9 +260,9 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
        $scope.connector = angular.copy(connector);
        $scope.maxNumberOfTabs = 1
        $scope.selectedTabIndex = 1
+       $scope.model = NewConnectorFactory.flattenConnectorTemplate(connector);
        var configValues = NewConnectorFactory.flattenConnectorKeyValues($scope.connector);
        $scope.formValuesPerSection = configValues.join("\n");
-       $scope.curlCommand = NewConnectorFactory.getCurlCommand(configValues);
     });
   }
 
