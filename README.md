@@ -23,21 +23,20 @@ Additionally you can assign custom names to your Connect clusters by appending a
 
 ```"CONNECT_URL=http://connect.1.url;dev cluster,http://connect.2.url;production cluster"```
  
-Web UI will be available at `http://localhost:8000`
+Web UI will be available at [localhost:8000](http://localhost:8000/)
 
 
 ## Build from source
 
 ```
-    git clone https://github.com/Landoop/kafka-connect-ui.git
-    cd kafka-connect-ui
-    npm install -g bower
-    npm install -g http-server
-    npm install
-    bower install
-    http-server -p 8080 .
+git clone https://github.com/Landoop/kafka-connect-ui.git
+cd kafka-connect-ui
+npm install -g bower http-server
+npm install
+http-server -p 8080 .
 ```
-Web UI will be available at `http://localhost:8080`
+
+Web UI will be available at [localhost:8080](http://localhost:8080/)
 
 ### Nginx config
 
