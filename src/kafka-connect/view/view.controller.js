@@ -3,15 +3,12 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
   $rootScope.selectedConnector = $routeParams.runningConnector;
   var runningConnector = $routeParams.runningConnector;
   var selectedConnector =  $routeParams.runningConnector;
-  $scope.invalidSyntaxMessage = constants.VIEW_EDITOR_INVALID_SYNTAX;
   $scope.kafkaTopicsUI = env.KAFKA_TOPICS_UI();
   $scope.kafkaTopicsUIEnabled = env.KAFKA_TOPICS_UI_ENABLED();
-  $scope.aceReady = false;
-  $scope.connectorConfigurationEditable = true;
+  $scope.isEditing = false;
   $rootScope.rebalancing = true;
   $scope.showConfigSpinner = false;
   $scope.showTaskSpinner = false;
-  $scope.actionsDisabled = true;
   init();
 
   function deepEqual(x, y) {
@@ -60,18 +57,6 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
     $rootScope.newConnectorChanges = true;
   };
 
-  $scope.validateConnector = function (object, _editor) {
-      $scope.validConfig = "";
-      KafkaConnectFactory.validateConnectorConfig(object.config["connector.class"], $scope.connectorDetails.connectorDetailsInString).then(
-        function(data) {
-          $scope.errorConfigs = parseValidationErrors(data);
-          $scope.aceValidate(_editor);
-          if($scope.errorConfigs.length == 0) {
-              $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
-          }
-      });
-  };
-
   $scope.updateConnector = function (connectorName, event, _editor) {
     $mdDialog.show(dialog('UPDATE', event)).then(function() {
         $scope.invalidateSelectedTask();
@@ -86,62 +71,26 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
   };
 
   $scope.toggleEditor = function () {
-    $scope.connectorConfigurationEditable = !$scope.connectorConfigurationEditable;
-    if (!$scope.connectorConfigurationEditable) {
-        $scope.showSyntaxValidation = true;
+    $scope.isEditing = !$scope.isEditing;
+
+    if ($scope.isEditing) {
         $scope.model = angular.copy($scope.connectorDetails.config); // clone dirty model
     } else {
-        $scope.validConfig = "";
-        $scope.showSyntaxValidation = false;
-        invalidateEditorMarkers();
         $scope.errorConfigs = null;
     }
   };
 
   $scope.cancelEditor = function() {
-    $scope.connectorDetails.connectorDetailsInString = $scope.connectorDetailsInStringBefore;
     $scope.model = $scope.connectorDetails.config; // replace dirty model with pristine
+    $scope.form.$setPristine();
     $scope.toggleEditor();
   }
-
-  // todo: determine if this is neeeded
-  $scope.aceChanged = function (_editor) {
-    $scope.editor = _editor;
-    $scope.editor.$blockScrolling = Infinity;
-    var aceContent = $scope.acePropertyFileSession.getDocument().getValue();
-    $scope.connectorDetails.connectorDetailsInString = aceContent;
-  };
-
-  var  markerRange;
-  $scope.aceValidate = function (_editor) {
-      var Range = ace.require('ace/range').Range;
-      invalidateEditorMarkers();
-      var errorLines = calculateErrorLines();
-      $scope.errorIds = [];
-      angular.forEach(errorLines, function (errorline) {
-        markerRange = new Range(errorline, 1, errorline, 2);
-        markerRange.id =  $scope.acePropertyFileSession.addMarker( markerRange, "myMarker", "fullLine", "ace_error");
-        $scope.errorIds.push(markerRange.id );
-      });
-   };
-
-  $scope.$watch('connectorDetails.connectorDetailsInString', function() {
-       if($scope.connectorDetails != undefined && $scope.connectorDetailsInStringBefore != undefined) {
-            if($scope.connectorDetails.connectorDetailsInString.trim() == $scope.connectorDetailsInStringBefore.trim()) {
-                $scope.actionsDisabled = true
-            } else {
-                $scope.actionsDisabled = false;
-            }
-       }
-  });
 
   function init() {
    $log.info("initializing controller state..")
    connectorObjects.getConnector(selectedConnector).then(
       function success(connectorDetails) {
         $scope.connectorDetails = connectorDetails;
-        $scope.aceReady = true;
-        $scope.connectorDetailsInStringBefore = angular.toJson(connectorDetails.config, true);
         $scope.model = connectorDetails.config;
         $scope.showTaskSpinner = false;
         $scope.showConfigSpinner = false;
@@ -152,32 +101,35 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
   }
 
   function updateConnector(connectorDetails, _editor) {
-      $scope.validConfig = "";
-      var connectorDetailsInString = connectorDetails.connectorDetailsInString;
+    var name = connectorDetails.name;
+    var validationRequest = angular.copy($scope.model);
 
-      KafkaConnectFactory
-            .validateConnectorConfig(connectorDetails.config["connector.class"], connectorDetailsInString)
-            .then(function successCallback(data) {
-                  var errorConfigs = parseValidationErrors(data);
-                  if(errorConfigs.length == 0) {
-                        $scope.toggleEditor();
-                        $scope.showConfigSpinner = true;
-                        $scope.showTaskSpinner = true;
-                        KafkaConnectFactory
-                               .putConnectorConfig(connectorDetails.name, connectorDetailsInString)
-                               .then(function successCallback(data) { //TODO we ignore the response completely
-                                  $scope.showConfigSpinner = false;
-                                  $rootScope.newConnectorChanges = true;
-                                  $timeout (function () { init(); }, 10000);
-                               }, function errorCallback(response) {
-                                  $scope.showConfigSpinner = false;
-                                  $scope.showTaskSpinner = false;
-                               });
-                  } else {
-                      $scope.errorConfigs = errorConfigs
-                      $scope.aceValidate(_editor);
-                  }
+    validationRequest.name = name;
+
+    KafkaConnectFactory
+      .validateConnectorConfig(connectorDetails.config["connector.class"], validationRequest)
+      .then(function (data) {
+        var errorConfigs = parseValidationErrors(data);
+
+        if (errorConfigs.length == 0) {
+          $scope.toggleEditor();
+          $scope.showConfigSpinner = true;
+          $scope.showTaskSpinner = true;
+          KafkaConnectFactory
+            .putConnectorConfig(name, $scope.model)
+            .then(function successCallback(data) { //TODO we ignore the response completely
+              $scope.showConfigSpinner = false;
+              $rootScope.newConnectorChanges = true;
+              $scope.form.$setPristine();
+              $timeout (function () { init(); }, 10000);
+            }, function errorCallback(response) {
+              $scope.showConfigSpinner = false;
+              $scope.showTaskSpinner = false;
             });
+        } else {
+          $scope.errorConfigs = errorConfigs
+        }
+      });
   }
 
   function deleteConnector(connector) {
@@ -232,25 +184,4 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
     }
     return dialog;
   }
-
-  function invalidateEditorMarkers() {
-    angular.forEach($scope.errorIds, function (errorId) {
-        $scope.acePropertyFileSession.removeMarker(errorId);
-    });
-  }
-
-  function calculateErrorLines() {
-      var errorLines = [];
-      var keys = Object.keys(angular.fromJson($scope.connectorDetails.connectorDetailsInString));
-      angular.forEach($scope.errorConfigs, function(error){
-          var line = keys.indexOf(error.name) + 1;
-          if (line != 0)
-          errorLines.push(line);
-      });
-      return errorLines;
-  }
 });
-
-
-
-

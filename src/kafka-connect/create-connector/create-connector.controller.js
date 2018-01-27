@@ -48,7 +48,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
             }
 
             // Make sure the 'classname' is a valid one - as it can crash the connect services
-            var classname = model.config['connector.class'];
+            var classname = model['connector.class'];
             if (classname != $scope.connector.class) {
                 console.log("error in classname -> " + classname);
                 var errors = { errors : [ 'Classname "' + $scope.connector.class + '" is not defined' ] };
@@ -61,7 +61,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
             }
 
             //STEP 1: Validate
-            KafkaConnectFactory.validateConnectorConfig(classname, model.config).then(
+            KafkaConnectFactory.validateConnectorConfig(classname, model).then(
                 function success(data) {
                   $log.info('Total validation errors from API => ' + data.error_count);
                   //STEP 2: Get errors if any
@@ -80,7 +80,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   });
                   console.log("Required/compulsory config keys: " + requiredConfigKeys);
 
-                  angular.forEach(model.config, function (value, key) {
+                  angular.forEach(model, function (value, key) {
                     if (validConnectorConfigKeys.indexOf(key) === -1) {
                       var warning = { warnings : [ 'Warning: Config "' + key + '" is unknown' ] };
                       warningConfigs.push(warning);
@@ -91,7 +91,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   });
                   // Now check the other way around. Whether a required property is not set
                   angular.forEach(requiredConfigKeys, function (requiredKey) {
-                    if (!model.config[requiredKey]) {
+                    if (!model[requiredKey]) {
                       var errors = { errors : [ 'Required config "' + requiredKey + '" is not there' ] };
                       errorConfigs.push(errors);
                     };
@@ -114,20 +114,17 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
     }
 
   $scope.validateAndCreateConnector = function () {
-
-          validateConnectorFn().then(
-            function success(data) {
-              console.log("I will now post the connector");
-              KafkaConnectFactory.postNewConnector($scope.model).then(
-                function successCallback(response) {
-                   console.log("POSTING " + JSON.stringify(response));
-                   $location.path("#/connector/" + response.name); //TODO location doesn't work, move to controller
-                   $rootScope.newConnectorChanges = true;
-                });
-            }, function (data, reason) {
-              $scope.validConfig = "Please fix the below issues";
-              console.log("I can NOT post the connector - as validation errors exist");
-          });
+    validateConnectorFn().then(function () {
+      KafkaConnectFactory.postNewConnector(KafkaConnectFactory.transformNewConnectorRequestFromConfig($scope.model)).then(
+        function successCallback(response) {
+           console.log("POSTING " + JSON.stringify(response));
+           $location.path("#/connector/" + response.name); //TODO location doesn't work, move to controller
+           $rootScope.newConnectorChanges = true;
+        });
+    }, function () {
+      $scope.validConfig = "Please fix the below issues";
+      console.log("I can NOT post the connector - as validation errors exist");
+    });
 
     }
 
@@ -240,8 +237,8 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
           definition = config.definition;
           name = definition.name;
 
-          if (angular.isUndefined($scope.model.config[name])) {
-            optionalConfig[name] = model.config[name] = definition.default_value ? definition.default_value : '';
+          if (angular.isUndefined($scope.model[name])) {
+            optionalConfig[name] = model[name] = definition.default_value ? definition.default_value : '';
           }
         });
 
@@ -255,7 +252,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
       var model = angular.copy($scope.model);
 
       angular.forEach(optionalConfig, function (value, key) {
-        delete model.config[key];
+        delete model[key];
       });
 
       $scope.model = model;

@@ -14,24 +14,17 @@ angularAPP.factory('NewConnectorFactory', function (supportedConnectorsFactory, 
     },
 
     flattenConnectorTemplate: function(connector) {
-      var result = {
-        name: '',
-        config: {},
-      };
+      var config = {};
 
       connector.template.forEach(function(step) {
         step.sections.forEach(function(section) {
           section.elements.forEach(function(element) {
-            if ('name' === element.key) {
-              result.name = element.value;
-            } else {
-              result.config[element.key] = element.value;
-            }
+            config[element.key] = element.value;
           });
         });
       });
 
-      return result;
+      return config;
     },
 
     flattenConnectorKeyValues: function (connector) {

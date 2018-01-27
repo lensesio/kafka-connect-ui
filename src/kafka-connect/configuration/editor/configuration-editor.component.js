@@ -26,20 +26,25 @@
     var self = this;
 
     // Methods
+    self.$onChanges = $onChanges;
     self.$onInit = $onInit;
     self.onModelChange = onModelChange;
+
+    /**
+     * Life-cycle handler called when one-way bindings change
+     * @param {Object} changes
+     */
+    function $onChanges(changes) {
+      if (angular.isObject(changes.name)) {
+        renderModel(angular.copy(self.ngModelController.$modelValue)); // ensure model re-renders
+      }
+    }
 
     /**
      * Initializes the configuration editor component
      */
     function $onInit() {
-      self.ngModelController.$render = function() {
-        self.model = self.ngModelController.$modelValue;
-
-        if (self.name) {
-          delete self.model.name;
-        }
-      }
+      self.ngModelController.$render = renderModel;
     }
 
     /**
@@ -47,6 +52,22 @@
      */
     function onModelChange(model) {
       self.ngModelController.$setViewValue(self.model);
+    }
+
+    /**
+     * Renders the form model
+     * @param {Object} [model]
+     */
+    function renderModel(model) {
+      if (angular.isUndefined(model)) {
+        model = self.ngModelController.$modelValue;
+      }
+
+      if (self.name) {
+        delete model.name;
+      }
+
+      self.model = model;
     }
   }
 

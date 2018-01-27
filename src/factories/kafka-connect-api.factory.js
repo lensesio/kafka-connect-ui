@@ -42,6 +42,17 @@ angularAPP.service('KafkaConnectFactory', function ($rootScope, $http, $location
       var url = env.KAFKA_CONNECT() + '/connectors/' + connectorName + '/config';
       return req('GET', url);
     },
+    transformNewConnectorRequestFromConfig: function (config) {
+      var config = angular.copy(config);
+      var name = config.name;
+
+      delete config.name;
+
+      return {
+        name: name,
+        config: config,
+      };
+    },
     postNewConnector: function (connector) {
       var url = env.KAFKA_CONNECT() + '/connectors';
       return req('POST', url, connector);

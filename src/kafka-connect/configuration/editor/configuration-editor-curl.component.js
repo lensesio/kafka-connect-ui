@@ -20,9 +20,10 @@
   /**
    * Controller for `configurationEditorCurl` component
    * @requires env
+   * @requires KafkaConnectFactory
    * @requires uiAceOptionsFactoryService
    */
-  function ConfigurationEditorCurlController(env, uiAceOptionsFactoryService) {
+  function ConfigurationEditorCurlController(env, KafkaConnectFactory, uiAceOptionsFactoryService) {
     var self = this;
 
     // Properties
@@ -40,13 +41,24 @@
      * Initializes the configuration cURL component
      */
     function $onInit() {
-      self.ngModelController.$render = function() {
+      self.ngModelController.$render = function renderModel() {
+        var isCreating = !self.name;
+        var requestBody = self.ngModelController.$modelValue;
+
+        if (!requestBody) {
+          return;
+        }
+
+        if (isCreating) {
+          requestBody = KafkaConnectFactory.transformNewConnectorRequestFromConfig(requestBody);
+        }
+
         self.model = [
-          'curl -X ' + (self.name ? 'PUT' : 'POST'),
-          env.KAFKA_CONNECT() + '/connectors' + (self.name ? '/' + self.name + '/config' : ''),
+          'curl -X ' + (isCreating ? 'POST' : 'PUT'),
+          env.KAFKA_CONNECT() + '/connectors' + (isCreating ? '' : '/' + self.name + '/config'),
           "-H 'Content-Type: application/json'",
           "-H 'Accept: application/json'",
-          "-d '" + angular.toJson(self.ngModelController.$modelValue, true) + "'",
+          "-d '" + angular.toJson(requestBody, true) + "'",
         ].join(' \\\n  ');
       };
     }

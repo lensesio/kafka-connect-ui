@@ -151,16 +151,40 @@
     <div class="md-toolbar-tools">
       <h4 style="font-size:14px"> <span><i class="fa fa-file-text-o" aria-hidden="true"></i> CONFIGURATION</span></h4>
       <span flex></span>
-      <md-button ng-show="!connectorConfigurationEditable" ng-click="cancelEditor()"> <i class="fa fa-ban" aria-hidden="true"></i> Cancel </md-button>
-      <md-button ng-show="connectorConfigurationEditable" ng-disabled="showTaskSpinner || rebalancing" ng-click="toggleEditor()"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </md-button>
+      <md-button ng-show="isEditing" ng-click="cancelEditor()"> <i class="fa fa-ban" aria-hidden="true"></i> Cancel </md-button>
+      <md-button ng-show="!isEditing" ng-disabled="showTaskSpinner || rebalancing" ng-click="toggleEditor()"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit </md-button>
     </div>
   </md-toolbar>
 
-  <md-card-content>
-    <div layout="column">
-      <!-- Trick in order to control when ace is loaded - due to configuring height in the aceLoaded  -->
-      <div ng-if="aceReady" ng-include="'src/kafka-connect/view/connector-edit.html'"></div>
-    </div>
+  <md-card-content style="padding-top: 0">
+      <form class="form" name="form">
+        <configuration-editor
+          name="connectorDetails.name"
+          ng-model="model"
+          ng-readonly="!isEditing">
+        </configuration-editor>
+
+        <br>
+
+        <!--Validation Errors-->
+        <div ng-repeat="errorConfig in errorConfigs">
+          <div ng-repeat="error in errorConfig.errors" style="color: red">
+            - "{{errorConfig.name}}" : {{error}}<br>
+          </div>
+        </div>
+
+        <!--Action buttons-->
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button
+            ng-show="isEditing"
+            ng-disabled="form.$pristine"
+            ng-click="updateConnector(connectorDetails.name, $event, _editor);"
+            class="md-raised">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+            Validate & Save
+          </md-button>
+        </md-card-actions>
+    </form>
   </md-card-content>
 </md-card>
 
