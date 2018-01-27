@@ -44,13 +44,14 @@
     function $onInit() {
       self.ngModelController.$render = function() {
         var model = self.ngModelController.$modelValue;
-        var config = self.name ? model : model.config;
+        var config;
         var properties;
         
         if (angular.isUndefined(model)) {
           return;
         }
 
+        config = self.name ? model : model.config;
         properties = [];
 
         if (!self.name) { // include name on creation

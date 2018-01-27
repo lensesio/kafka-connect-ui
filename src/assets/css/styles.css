@@ -292,6 +292,12 @@ dir-pagination-controls .md-button {min-width:0;}
   cursor: pointer;
 }
 
+/* configuration editor */
+
 configuration-editor .ace_editor:not([readonly="readonly"]) {
   background-color: rgba(0, 128, 0, 0.04);
+}
+
+configuration-editor md-tab-content {
+  padding-top: 0;
 }

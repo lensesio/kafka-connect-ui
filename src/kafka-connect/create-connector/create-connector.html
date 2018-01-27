@@ -43,12 +43,13 @@
                 </configuration-editor>
                 <md-toolbar class="md-hue-2" style="background-color: transparent;color:#333;height: 20px;">
                     <div class="md-toolbar-tools">
-                        <md-checkbox ng-click="getAllConfig(connector.class)" ng-hide='showAllConfig' layout-align="left" aria-label="Show all config">
-                            <span style="font-size:16px;">Show Optional fields</span>
-                        </md-checkbox>
-                        <md-checkbox  ng-click="getAllConfig(connector.class)" ng-show='showAllConfig' layout-align="left" aria-label="Show all config">
-                            <span style="font-size:16px;">Show Required fields</span>
-                        </md-checkbox>
+                        <md-switch
+                            aria-label="Show required fields"
+                            ng-change="getAllConfig(connector.class)"
+                            ng-model="showAllConfig"
+                            style="font-size:16px;">
+                            Show required fields
+                        </md-switch>
                         <span flex></span>
                         <md-button ng-hide="connector.isUndefined || toggleEditor " ng-disabled="forms.cForm.$invalid" ng-click="previousTab()">
                             <i class="fa fa-angle-double-left" aria-hidden="true"></i> Back
