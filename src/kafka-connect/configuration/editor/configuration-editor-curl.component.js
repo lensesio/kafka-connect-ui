@@ -41,7 +41,7 @@
      * Initializes the configuration cURL component
      */
     function $onInit() {
-      self.ngModelController.$render = function renderModel() {
+      self.ngModelController.$render = function () {
         var isCreating = !self.name;
         var requestBody = self.ngModelController.$modelValue;
 

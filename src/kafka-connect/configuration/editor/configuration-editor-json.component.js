@@ -14,7 +14,7 @@
     require: {
       ngModelController: 'ngModel',
     },
-    template: '<div ng-change="$ctrl.onModelChange()" ng-model="$ctrl.model" ng-readonly="$ctrl.ngReadonly" ui-ace="$ctrl.uiAceOptions"></div>',
+    template: '<div ng-change="$ctrl.onModelChange()" ng-model="$ctrl.ngModelController.$viewValue" ng-readonly="$ctrl.ngReadonly" ui-ace="$ctrl.uiAceOptions"></div>',
   });
 
   /**
@@ -35,20 +35,26 @@
      * Initializes the configuration editor JSON component
      */
     function $onInit() {
-      self.ngModelController.$render = function() {
-        self.model = angular.toJson(self.ngModelController.$modelValue, true);
-      };
+      self.ngModelController.$formatters.push(function (value) {
+        if (value) {
+          return angular.toJson(value, true);
+        }
+      });
+
+      self.ngModelController.$parsers.push(function (value) {
+        try {
+          return angular.fromJson(value);
+        } catch (e) {
+          return undefined;
+        }
+      });
     }
 
     /**
      * Handler called when JSON model changes
      */
     function onModelChange() {
-      try {
-        self.ngModelController.$setViewValue(angular.fromJson(self.model));
-      } catch (e) {
-        // do nothing
-      }
+      self.ngModelController.$setViewValue(self.ngModelController.$viewValue);
     }
   }
 

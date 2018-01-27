@@ -37,48 +37,50 @@
             </div>
 
             <md-card-content style="padding-top: 0">
+              <form name="form">
                 <configuration-editor
                     ng-model="model"
                     ng-model-options="{ debounce: 500 }">
                 </configuration-editor>
                 <md-toolbar class="md-hue-2" style="background-color: transparent;color:#333;height: 20px;">
-                    <div class="md-toolbar-tools">
-                        <md-switch
-                            aria-label="Show required fields"
-                            ng-change="getAllConfig(connector.class)"
-                            ng-model="showAllConfig"
-                            style="font-size:16px;">
-                            Show required fields
-                        </md-switch>
-                        <span flex></span>
-                        <md-button ng-hide="connector.isUndefined || toggleEditor " ng-disabled="forms.cForm.$invalid" ng-click="previousTab()">
-                            <i class="fa fa-angle-double-left" aria-hidden="true"></i> Back
-                        </md-button>
-                        <md-button ng-disabled="errorConfigs.length != 0" ng-click="validateAndCreateConnector()">
-                            Create
-                        </md-button>
-                    </div>
+                  <div class="md-toolbar-tools">
+                    <md-switch
+                      aria-label="Show required fields"
+                      ng-change="getAllConfig(connector.class)"
+                      ng-model="showAllConfig"
+                      style="font-size:16px;">
+                      Show required fields
+                    </md-switch>
+                    <span flex></span>
+                    <md-button ng-hide="connector.isUndefined || toggleEditor " ng-disabled="forms.cForm.$invalid" ng-click="previousTab()">
+                      <i class="fa fa-angle-double-left" aria-hidden="true"></i> Back
+                    </md-button>
+                    <md-button
+                      ng-disabled="errorConfigs.length != 0 || form.$invalid"
+                      ng-click="validateAndCreateConnector()">
+                      Create
+                    </md-button>
+                  </div>
                 </md-toolbar>
-                <md-card-actions layout="row" layout-align="left">
-                </md-card-actions>
-                <!--{{forms.cForm.$error}}-->
+              </form>
 
-                <!--Validation OK-->
-                <div class="green">{{validConfig}}</div>
+              <!--Validation OK-->
+              <div class="green">{{validConfig}}</div>
 
-                <div class="green" ng-show="noextraconfig">There is no extra config</div>
+              <div class="green" ng-show="noextraconfig">There is no extra config</div>
 
-                <!--Validation not OK-->
-                <div ng-repeat="errorConfig in errorConfigs">
-                    <div ng-repeat="error in errorConfig.errors" style="color: red">
-                        {{error}}<br>
-                    </div>
-                </div>
-                <div ng-repeat="warningConfig in warningConfigs">
-                    <div ng-repeat="warning in warningConfig.warnings" style="color: orange">
-                        {{warning}}<br>
-                    </div>
-                </div>
+              <!--Validation not OK-->
+              <div class="red" ng-messages="form.$error">
+                <div ng-message="parse">Invalid syntax</div>
+              </div>
+              <div class="red" ng-repeat="errorConfig in errorConfigs">
+                <div ng-bind="error" ng-repeat="error in errorConfig.errors"></div>
+              </div>
+              <div ng-repeat="warningConfig in warningConfigs">
+                  <div ng-repeat="warning in warningConfig.warnings" style="color: orange">
+                      {{warning}}<br>
+                  </div>
+              </div>
             </md-card-content>
         </md-card>
     </div>

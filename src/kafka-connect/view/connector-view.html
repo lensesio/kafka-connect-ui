@@ -167,9 +167,12 @@
         <br>
 
         <!--Validation Errors-->
-        <div ng-repeat="errorConfig in errorConfigs">
-          <div ng-repeat="error in errorConfig.errors" style="color: red">
-            - "{{errorConfig.name}}" : {{error}}<br>
+        <div class="red" ng-messages="form.$error">
+          <div ng-message="parse">Invalid syntax</div>
+        </div>
+        <div class="red" ng-repeat="errorConfig in errorConfigs">
+          <div ng-repeat="error in errorConfig.errors">
+            - "{{errorConfig.name}}" : {{error}}
           </div>
         </div>
 
@@ -177,7 +180,7 @@
         <md-card-actions layout="row" layout-align="end center">
           <md-button
             ng-show="isEditing"
-            ng-disabled="form.$pristine"
+            ng-disabled="form.$pristine || form.$invalid"
             ng-click="updateConnector(connectorDetails.name, $event, _editor);"
             class="md-raised">
             <i class="fa fa-floppy-o" aria-hidden="true"></i>

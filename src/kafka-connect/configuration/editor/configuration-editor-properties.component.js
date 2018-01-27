@@ -17,7 +17,7 @@
     require: {
       ngModelController: 'ngModel',
     },
-    template: '<div ng-change="$ctrl.onModelChange()" ng-model="$ctrl.model" ng-readonly="$ctrl.ngReadonly" ui-ace="$ctrl.uiAceOptions"></div>',
+    template: '<div ng-change="$ctrl.onModelChange()" ng-model="$ctrl.ngModelController.$viewValue" ng-readonly="$ctrl.ngReadonly" ui-ace="$ctrl.uiAceOptions"></div>',
   });
 
   /**
@@ -40,8 +40,7 @@
      * Initializes the configuration editor properties component
      */
     function $onInit() {
-      self.ngModelController.$render = function() {
-        var model = self.ngModelController.$modelValue;
+      self.ngModelController.$formatters.push(function (model) {
         var properties;
         
         if (angular.isUndefined(model)) {
@@ -54,29 +53,39 @@
           properties.push(key + PROPERTY_DELIMITER + model[key]);
         }
 
-        self.model = properties.join('\n');
-      };
+        return properties.join('\n');
+      });
+
+      self.ngModelController.$parsers.push(function (value) {
+        var config = {};
+        var line;
+        var lines = value.match(/[^\r\n]+/g);
+
+        for (var i in lines) {
+          line = lines[i].trim();
+
+          if (!line || '#' === line.charAt(0)) {
+            continue;
+          }
+
+          line = line.split(PROPERTY_DELIMITER);
+
+          if (2 !== line.length) {
+            return; // parse error
+          }
+
+          config[line[0]] = line[1] || '';
+        }
+
+        return config;
+      });
     }
 
     /**
      * Handler called when properties model changes
      */
     function onModelChange() {
-      var config = {};
-      var name;
-
-      self.model.match(/[^\r\n]+/g).forEach(function(line) {
-        line = line.trim();
-
-        if ('#' === line.charAt(0)) {
-          return;
-        }
-
-        line = line.split(PROPERTY_DELIMITER);
-        config[line[0]] = line[1] || '';
-      });
-
-      self.ngModelController.$setViewValue(config);
+      self.ngModelController.$setViewValue(self.ngModelController.$viewValue);
     }
   }
 
