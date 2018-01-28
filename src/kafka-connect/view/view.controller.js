@@ -1,4 +1,4 @@
-angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $routeParams, $timeout, $log, $location, $mdDialog, KafkaConnectFactory, connectorObjects, constants, env) {
+angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $routeParams, $timeout, $log, $location, $mdDialog, KafkaConnectFactory, connectorObjects, env) {
 
   $rootScope.selectedConnector = $routeParams.runningConnector;
   var runningConnector = $routeParams.runningConnector;

@@ -2,7 +2,7 @@
     $scope.connector in this controller is the connector object from supported connectors.
     Config is created on the fly using the `template` models.
  */
-angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http, $log, $routeParams, $location, $filter, KafkaConnectFactory, supportedConnectorsFactory,  NewConnectorFactory, env, constants, $q) {
+angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http, $log, $routeParams, $location, KafkaConnectFactory, NewConnectorFactory, env, constants, $q) {
   var optionalConfig;
 
   KafkaConnectFactory.getConnectorPlugins().then(function(allPlugins) {

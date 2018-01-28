@@ -27,19 +27,6 @@ angularAPP.factory('NewConnectorFactory', function (supportedConnectorsFactory, 
       return config;
     },
 
-    flattenConnectorKeyValues: function (connector) {
-       //3 nested lists: Steps -> Sections -> Elements
-          var sectionsPerStep = connector.template.map(function (step) {
-              var sections = step.sections.map(function (section) {
-                  return section.elements.map(function (element) {
-                      return element.key + '=' + element.value;// + '\n';
-                  })
-               });
-               return [].concat.apply([], sections); //All sections flatten
-           });
-          return [].concat.apply([], sectionsPerStep); //All steps flatten;
-    },
-
     //TODO how it returns??
     updateConnectorFromModelValues: function(flattenValues, connector) {
        angular.forEach(flattenValues, function(item) {
@@ -61,16 +48,6 @@ angularAPP.factory('NewConnectorFactory', function (supportedConnectorsFactory, 
           var connectorCurlObject = makeConfigFromConfigValuesArray(configValues);
           delete connectorCurlObject.config.name;
           return prepareCurlCommandString(connectorCurlObject);
-    },
-
-    getJSONConfig: function (configValues) {
-          var connectorCurlObject = makeConfigFromConfigValuesArray(configValues);
-          delete connectorCurlObject.config.name;
-          return connectorCurlObject;
-    },
-
-    getJSONConfigFlat : function (configValues) {
-          return makeConfigFromConfigValuesArray(configValues).config;
     },
 
     //Not in use
