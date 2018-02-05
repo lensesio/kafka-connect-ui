@@ -1,0 +1,24 @@
+<md-tabs md-dynamic-height>
+  <md-tab label="Properties">
+    <md-tab-body>
+      <configuration-editor-properties
+        ng-change="$ctrl.onModelChange()"
+        ng-model="$ctrl.model"
+        ng-readonly="$ctrl.ngReadonly">
+      </configuration-editor-properties>
+    </md-tab-body>
+  </md-tab>
+  <md-tab label="JSON">
+    <configuration-editor-json
+      ng-change="$ctrl.onModelChange()"
+      ng-model="$ctrl.model"
+      ng-readonly="$ctrl.ngReadonly">
+    </configuration-editor-json>
+  </md-tab>
+  <md-tab label="cURL">
+    <configuration-editor-curl
+      name="$ctrl.name"
+      ng-model="$ctrl.model">
+    </configuration-editor-curl>
+  </md-tab>
+</md-tabs>
