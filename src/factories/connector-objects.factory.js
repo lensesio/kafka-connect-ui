@@ -1,4 +1,4 @@
-angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedConnectorsFactory, $q, $rootScope) {
+angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedConnectorsFactory, $q, $rootScope, configurationTopicsFilter, configurationTypeFilter) {
 
 
     return {
@@ -12,9 +12,7 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
                return enhanceConnector(connector);
           });
        },
-       getTopics : function(connectorConfig) {
-           return extractTopicsFromConfig(connectorConfig);
-       },
+       getTopics: configurationTopicsFilter,
        getConnectorTemplate : function(connectorConfig) {
            return supportedConnectorsFactory.getSupportedConnectorObj(connectorConfig["connector.class"]);
        }
@@ -47,7 +45,7 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
                 type: connectorUiInfo.name,
                 color: connectorUiInfo.color,
                 connectorState: connectorStatus.connector,//getConnectorStatus(connectorName),
-                topics: extractTopicsFromConfig(connectorConfig),
+                topics: configurationTopicsFilter(connectorConfig),
                 workers: connectorConfig["tasks.max"],
                 tasks: connectorStatus.tasks,//getTaskStatus(connectorName).tasks,
                 detailedTasks: getTaskDetails(connectorName),
@@ -59,19 +57,7 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
       }
 
       function isSource(connector) {
-        var connectorUiInfo = supportedConnectorsFactory.getSupportedConnectorObj(connector.config["connector.class"]);
-        if (connectorUiInfo.type != '')
-          return (connectorUiInfo.type == 'Source')
-          else {
-            var isSource='';
-            var a = connector.config["connector.class"].split('.');
-            if (a[a.length-1].toLowerCase().indexOf('sink') > 0) {
-              isSource=false;
-            } else if (a[a.length-1].toLowerCase().indexOf('source') > 0) {
-              isSource=true;
-            }
-          return isSource
-          }
+        return 'Source' === configurationTypeFilter(connector.config);
       }
 
       function enhanceConnectors(connectors) {
@@ -86,30 +72,6 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
                  })
           })
          return allConnectorsWithMetadata;
-      }
-
-      function extractTopicsFromConfig(connectorConfig) {
-        var topics = [];
-        angular.forEach(connectorConfig, function (value, key) {
-            // adding extra logic to capture information about FTP Source connectors
-            if (key.indexOf("connect.ftp.monitor") != -1) {
-                var setup = value.split(": ");
-                topics.push(setup)
-            }
-            if (key.indexOf("topic") != -1) {
-              if( key !== 'connect.jms.sink.export.route.topics' &&  key !== 'connect.jms.topics') { // hardcoded exclude of this jms sink, source key
-                var tArray = value.split(",");
-                if(tArray.length > 1) {
-                  angular.forEach(tArray, function (t) {
-                    topics.push(t)
-                  })
-                } else {
-                  topics.push(value);
-                }
-              }
-            }
-        });
-        return topics;
       }
 
       function getTaskDetails(connectorName) {
