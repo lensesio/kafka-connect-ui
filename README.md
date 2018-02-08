@@ -70,8 +70,25 @@ var clusters = [
      KAFKA_CONNECT: "http://kafka-connect.local.url",
    }
 ]
+         
 
 ```
+## JDBC Source connector error while using for Oracle DB
+...
+
+To resolve the following error on the Landoop kafka connect UI while configuring the properties for JDBC connector 
+
+     Invalid value java.sql.SQLException: No suitable driver found for jdbc:oracle:thinxxxxxxxxx
+     
+Please add the ojdbc7.jar (jar that is compatibile to your Oracle DB) in the following path :
+
+            /opt/confluent/share/java/kafka-connect-jdbc
+            
+ And re-start the server. Now you should be able to create the connector successfully.  
+ 
+ 
+ ...
+ 
 * Use `KAFKA_TOPICS_UI` and `KAFKA_TOPICS_UI_ENABLED` to navigate to the relevant topic when you have [kafka-topics-ui](https://github.com/Landoop/kafka-topics-ui) installed.
 * Use `COLOR` to set different header colors for each set up cluster.
 
