@@ -3,12 +3,12 @@
 
   /**
    * Renders configuration cURL command
-   * @param {String} [name] Connector name; denotes edit mode
+   * @param {String} [connectorName] Connector name; denotes edit mode
    * @requires ngModel
    */
   angularAPP.component('configurationEditorCurl', {
     bindings: {
-      name: '<?',
+      connectorName: '<?',
     },
     controller: ConfigurationEditorCurlController,
     require: {
@@ -42,7 +42,7 @@
      */
     function $onInit() {
       self.ngModelController.$render = function () {
-        var isCreating = !self.name;
+        var isCreating = !self.connectorName;
         var requestBody = self.ngModelController.$modelValue;
 
         if (!requestBody) {
@@ -55,7 +55,7 @@
 
         self.model = [
           'curl -X ' + (isCreating ? 'POST' : 'PUT'),
-          env.KAFKA_CONNECT() + '/connectors' + (isCreating ? '' : '/' + self.name + '/config'),
+          env.KAFKA_CONNECT() + '/connectors' + (isCreating ? '' : '/' + self.connectorName + '/config'),
           "-H 'Content-Type: application/json'",
           "-H 'Accept: application/json'",
           "-d '" + angular.toJson(requestBody, true) + "'",

@@ -47,21 +47,8 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
               model = $scope.model;
             }
 
-            // Make sure the 'classname' is a valid one - as it can crash the connect services
-            var classname = model['connector.class'];
-            if (classname != $scope.connector.class) {
-                console.log("error in classname -> " + classname);
-                var errors = { errors : [ 'Classname "' + $scope.connector.class + '" is not defined' ] };
-                errorConfigs.push(errors);
-
-                if(errorConfigs == 0) {
-                    $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
-                }
-                $scope.errorConfigs = errorConfigs;
-            }
-
             //STEP 1: Validate
-            KafkaConnectFactory.validateConnectorConfig(classname, model).then(
+            KafkaConnectFactory.validateConnectorConfig($scope.connector.class, model).then(
                 function success(data) {
                   $log.info('Total validation errors from API => ' + data.error_count);
                   //STEP 2: Get errors if any

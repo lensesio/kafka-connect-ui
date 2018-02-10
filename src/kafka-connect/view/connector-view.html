@@ -159,17 +159,21 @@
   <md-card-content style="padding-top: 0">
       <form class="form" name="form">
         <configuration-editor
-          name="connectorDetails.name"
+          connector-name="connectorDetails.name"
+          name="configuration"
           ng-model="model"
-          ng-readonly="!isEditing">
+          ng-readonly="!isEditing"
+          validate-configuration-classname="::connectorDetails.config['connector.class']">
         </configuration-editor>
 
         <br>
 
         <!--Validation Errors-->
-        <div class="red" ng-messages="form.$error">
-          <div ng-message="parse">Invalid syntax</div>
-        </div>
+        <configuration-validation-messages
+          connector-class="::connectorDetails.config['connector.class']"
+          form="form"
+          model-name="configuration">
+        </configuration-validation-messages>
         <div class="red" ng-repeat="errorConfig in errorConfigs">
           <div ng-repeat="error in errorConfig.errors">
             - "{{errorConfig.name}}" : {{error}}

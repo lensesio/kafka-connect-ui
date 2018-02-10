@@ -39,8 +39,10 @@
             <md-card-content style="padding-top: 0">
               <form name="form">
                 <configuration-editor
+                  name="configuration"
                   ng-model="model"
-                  ng-model-options="{ debounce: 500 }">
+                  ng-model-options="{ debounce: 500 }"
+                  validate-configuration-classname="::connector.class">
                 </configuration-editor>
                 <md-toolbar class="md-hue-2" style="background-color: transparent;color:#333;height: 20px;">
                   <div class="md-toolbar-tools">
@@ -70,9 +72,11 @@
               <div class="green" ng-show="noextraconfig">There is no extra config</div>
 
               <!--Validation not OK-->
-              <div class="red" ng-messages="form.$error">
-                <div ng-message="parse">Invalid syntax</div>
-              </div>
+              <configuration-validation-messages
+                connector-class="::connector.class"
+                form="form"
+                model-name="configuration">
+              </configuration-validation-messages>
               <div class="red" ng-repeat="errorConfig in errorConfigs">
                 <div ng-bind="error" ng-repeat="error in errorConfig.errors"></div>
               </div>
