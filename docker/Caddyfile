@@ -2,4 +2,4 @@
 tls off
 
 root /kafka-connect-ui
-log /access.log
+log stdout

@@ -1,19 +1,32 @@
 #!/bin/sh
 
 if [[ -z "$CONNECT_URL" ]]; then
-    echo "Kafka Connect URL was not set via CONNECT_URL environment variable."
-    echo "We will fall back to default http://localhost:8083 which probably won't work."
-    # We also change connect proxy in order to make it as visible as possible
-    # that the configuration is bad.
-    CONNECT_PROXY=http://localhost:8083
+    {
+        echo "Kafka Connect URL was not set via CONNECT_URL environment variable."
+        echo "We will fall back to default http://localhost:8083 which probably won't work."
+    } 1>&2
 fi
 
 CONNECT_URL="${CONNECT_URL:-http://localhost:8083}"
+PROXY="${PROXY:-true}"
+PROXY_SKIP_VERIFY="${PROXY_SKIP_VERIFY:-false}"
+INSECURE_PROXY=""
+CADDY_OPTIONS="${CADDY_OPTIONS:-}"
+PORT="${PORT:-8000}"
 
-cat /caddy/Caddyfile.template > /caddy/Caddyfile
+cat /caddy/Caddyfile.template |
+    sed -e "s/8000/$PORT/" > /caddy/Caddyfile
 
-echo
-echo "Enabling proxy because Connect doesn't send CORS headers yet and setting up clusters."
+if echo "$PROXY" | egrep -sq "true|TRUE|y|Y|yes|YES|1"; then
+    {
+        echo
+        echo "Enabling proxy. You can disable this via PROXY=false."
+    } 1>&2
+fi
+
+if echo "$PROXY_SKIP_VERIFY" | egrep -sq "true|TRUE|y|Y|yes|YES|1"; then
+    INSECURE_PROXY=insecure_skip_verify
+fi
 
 NUM_CLUSTER=0
 OLDIFS=""
@@ -39,22 +52,44 @@ EOF
         CLUSTER_SANITIZED_NAME="${CLUSTER_NAME// /_}"
         CLUSTER_SANITIZED_NAME="${CLUSTER_NAME//[^a-zA-Z0-9_.-]/}"
     fi
-    cat <<EOF >>/caddy/Caddyfile
+    if echo $PROXY | egrep -sq "true|TRUE|y|Y|yes|YES|1"; then
+        cat <<EOF >>/caddy/Caddyfile
 proxy /api/$CLUSTER_SANITIZED_NAME $CLUSTER_URL {
     without /api/$CLUSTER_SANITIZED_NAME
+    $INSECURE_PROXY
 }
 EOF
-
-    cat <<EOF >>/kafka-connect-ui/env.js
+        cat <<EOF >>/kafka-connect-ui/env.js
    $OPEN_CURL
      NAME: "$CLUSTER_NAME",
      KAFKA_CONNECT: "/api/$CLUSTER_SANITIZED_NAME"
    }
 EOF
-
+    else
+        cat <<EOF >>/kafka-connect-ui/env.js
+   $OPEN_CURL
+     NAME: "$CLUSTER_NAME",
+     KAFKA_CONNECT: "$CLUSTER_URL"
+   }
+EOF
+    fi
 done
 echo "]" >> /kafka-connect-ui/env.js
 
-echo
+if [[ -n "${CADDY_OPTIONS}" ]]; then
+    echo "Applying custom options to Caddyfile"
+    cat <<EOF >>/caddy/Caddyfile
+$CADDY_OPTIONS
+EOF
+fi
 
-exec /caddy/caddy -conf /caddy/Caddyfile
+{
+    # Here we emulate the output by Caddy. Why? Because we can't
+    # redirect caddy to stderr as the logging would also get redirected.
+    echo
+    echo "Activating privacy features... done."
+    echo "http://0.0.0.0:$PORT"
+} 1>&2
+
+
+exec /caddy/caddy -conf /caddy/Caddyfile -quiet
