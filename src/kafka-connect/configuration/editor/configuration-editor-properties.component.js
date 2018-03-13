@@ -61,7 +61,8 @@
         var line;
         var lines = value.match(/[^\r\n]+/g);
 
-        for (var i in lines) {
+        var lines_len = lines.length;
+        for (var i = 0; i < lines_len; i++) {
           line = lines[i].trim();
 
           if (!line || '#' === line.charAt(0)) {
