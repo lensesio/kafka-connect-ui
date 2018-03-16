@@ -57,6 +57,11 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
     $rootScope.newConnectorChanges = true;
   };
 
+  $scope.restartTask = function (connectorName, taskId) {
+    KafkaConnectFactory.restartTask(connectorName, taskId).then(function(data) { init(); });
+    $rootScope.newConnectorChanges = true;
+  };
+
   $scope.updateConnector = function (connectorName, event, _editor) {
     $mdDialog.show(dialog('UPDATE', event)).then(function() {
         $scope.invalidateSelectedTask();
