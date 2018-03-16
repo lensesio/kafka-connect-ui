@@ -1,10 +1,12 @@
 <md-tabs md-dynamic-height>
   <md-tab label="Properties">
-    <configuration-editor-properties
-      ng-change="$ctrl.onModelChange()"
-      ng-model="$ctrl.model"
-      ng-readonly="$ctrl.ngReadonly">
-    </configuration-editor-properties>
+    <md-tab-body>
+      <configuration-editor-properties
+        ng-change="$ctrl.onModelChange()"
+        ng-model="$ctrl.model"
+        ng-readonly="$ctrl.ngReadonly">
+      </configuration-editor-properties>
+    </md-tab-body>
   </md-tab>
   <md-tab label="JSON">
     <configuration-editor-json
