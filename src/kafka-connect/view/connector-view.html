@@ -85,6 +85,7 @@
     </div>
     <div ng-if="selectedTask" style="font-size:11px;padding-left: 10px;border: 1px solid #ccc;margin-top: -5px;margin-left: 70px;margin-bottom: 10px;width:90%">
       <md-button class="md-mini md-primary" ng-click="invalidateSelectedTask()" style="color:black;float:right;margin:0;">close</md-button>
+      <md-button class="md-mini md-primary" ng-click="restartTask(connectorDetails.name, selectedTask.taskStatus.id);" style="color:black;float:right;margin:0;">restart</md-button>
 
       <h5 style="margin-top:5px;margin-bottom:5px;">Task {{selectedTask.taskStatus.id}} is {{selectedTask.taskStatus.state}}</h5>
       <!--<h5 ng-if="selectedTask.taskStatus.state != 'UNASSIGNED'">CONFIG:</h5>-->

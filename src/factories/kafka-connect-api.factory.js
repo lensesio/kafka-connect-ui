@@ -73,6 +73,10 @@ angularAPP.service('KafkaConnectFactory', function ($rootScope, $http, $location
       var url = env.KAFKA_CONNECT() + '/connectors/' + connectorName + "/restart";
       return req('POST', url);
     },
+    restartTask: function (connectorName, taskId) {
+      var url = env.KAFKA_CONNECT() + '/connectors/' + connectorName + '/tasks/' + taskId + "/restart";
+      return req('POST', url);
+    },
     pauseConnector: function (connectorName) {
       var url = env.KAFKA_CONNECT() + '/connectors/' + connectorName + "/pause";
       return req('PUT', url);
