@@ -214,6 +214,17 @@ var supportedConnectorsTemplates = [
     author:'Landoop - Stream Reactor'
   },
   {
+    name: "Elastic 6",
+    color: "#5CB85C",
+    icon: "elastic.png",
+    description: "Write data from Kafka to Elastic Search",
+    type: "Sink",
+    uiEnabled: true,
+    class: "com.datamountaineer.streamreactor.connect.elastic6.ElasticSinkConnector",
+    docs: "//lenses.stream/connectors/sink/elastic6.html",
+    author:'Landoop - Stream Reactor'
+  },
+  {
     name: "MQTT",
     color: "#5CB85C",
     icon: "mqtt.png",
