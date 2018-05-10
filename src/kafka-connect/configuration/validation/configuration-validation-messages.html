@@ -1,0 +1,8 @@
+<div class="red">
+  <div ng-messages="$ctrl.form.$error">
+    <div ng-message="parse">Invalid syntax</div>
+  </div>
+  <div ng-messages="$ctrl.form[$ctrl.modelName].$error">
+    <div ng-bind-template="Classname '{{:: $ctrl.connectorClass }}' is not defined" ng-message="classname"></div>
+  </div>
+</div>

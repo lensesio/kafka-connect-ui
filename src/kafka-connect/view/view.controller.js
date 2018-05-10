@@ -112,7 +112,7 @@ angularAPP.controller('ConnectorDetailCtrl', function ($rootScope, $scope, $rout
     validationRequest.name = name;
 
     KafkaConnectFactory
-      .validateConnectorConfig(connectorDetails.config["connector.class"], validationRequest)
+      .validateConnectorConfig(connectorDetails.config['connector.class'], validationRequest)
       .then(function (data) {
         var errorConfigs = parseValidationErrors(data);
 

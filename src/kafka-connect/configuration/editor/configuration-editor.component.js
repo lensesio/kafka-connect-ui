@@ -3,13 +3,13 @@
 
   /**
    * Configuration editor
-   * @param {String} [name] Connector name; denotes edit mode
+   * @param {String} [connectorName] Connector name; denotes edit mode
    * @param {Boolean} [ngReadonly]
    * @requires ngModel
    */
   angularAPP.component('configurationEditor', {
     bindings: {
-      name: '<?',
+      connectorName: '<?',
       ngReadonly: '<?',
     },
     controller: ConfigurationEditorController,
@@ -35,7 +35,7 @@
      * @param {Object} changes
      */
     function $onChanges(changes) {
-      if (angular.isObject(changes.name)) {
+      if (angular.isObject(changes.connectorName)) {
         renderModel(angular.copy(self.ngModelController.$modelValue)); // ensure model re-renders
       }
     }
@@ -63,7 +63,7 @@
         model = self.ngModelController.$modelValue;
       }
 
-      if (self.name) {
+      if (self.connectorName) {
         delete model.name;
       }
 
