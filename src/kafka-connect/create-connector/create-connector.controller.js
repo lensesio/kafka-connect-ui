@@ -73,7 +73,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                         errorConfigs.push(config.value);
                         $log.info(config.value.name + ' : ' + config.value.errors[0]);
                     }
-                    if ( (config.definition.required == true) || ( (config.value.name.indexOf("topic") == 0) && (config.definition.documentation != "") ) ) {
+                    if ( ( config.definition && config.definition.required == true) || ( (config.value.name.indexOf("topic") == 0) && (config.definition.documentation != "") ) ) {
                       requiredConfigKeys.push(config.value.name);
                     }
                     validConnectorConfigKeys.push(config.value.name);
@@ -150,7 +150,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
     if (a[a.length-1].toLowerCase().indexOf('sink') > 0) {
       type="Sink";
       var myElements = [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true},{key:'topics',value: 'TopicName_'+ a[a.length-1], required: true}, {key:'tasks.max',value: 1, required: true}];
-    } else if (a[a.length-1].toLowerCase().indexOf('source') > 0) {
+    } else {
       type="Source";
       var myElements =  [{key:'name',value: a[a.length-1], required: true}, {key:'connector.class', value: pluginClass, required: true}, {key:'tasks.max',value: 1, required: true}];
     }
@@ -193,7 +193,8 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
     $http(request).then(function(data){
     angular.forEach(data.data.configs, function (config) {
-      if (config.definition.name !== 'name' && config.definition.name !== 'connector.class' && config.definition.required == true) {
+
+      if (config.definition && config.definition.name !== 'name' && config.definition.name !== 'connector.class' && config.definition.required == true) {
          connector.template[0].sections[0].elements.push({
            key: config.definition.name,
            value: config.definition.default_value ? config.definition.default_value : '',
@@ -235,9 +236,10 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
 
         data.data.configs.forEach(function (config) {
           definition = config.definition;
+          if(definition)
           name = definition.name;
 
-          if (angular.isUndefined($scope.model[name])) {
+          if (definition && angular.isUndefined($scope.model[name])) {
             optionalConfig[name] = model[name] = definition.default_value ? definition.default_value : '';
           }
         });

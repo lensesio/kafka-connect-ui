@@ -35,7 +35,7 @@ angularAPP.controller('SelectNewConnectorCtrl', function ($scope, $http, $log, $
         if(!plugin.type) {
           o.type = calcName.toLowerCase().indexOf('sink') > 0 ? 'Sink' : 'Source'
         } else {
-          o.type = plugin.type.toLowerCase().indexOf('sink') > 0 ? 'Sink' : 'Source'
+          o.type = plugin.type.toLowerCase() === 'sink' ? 'Sink' : 'Source'
         }
         if (o.type == "Source")
         $scope.sources.push(o);
