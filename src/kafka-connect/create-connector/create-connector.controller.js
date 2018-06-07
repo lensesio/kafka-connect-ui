@@ -69,7 +69,7 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   var validConnectorConfigKeys = [];
                   var requiredConfigKeys = [];
                   angular.forEach(data.configs, function (config) {
-                    if (config.value.errors.length > 0) {
+                    if (data.error_count && config.value.errors.length > 0) {
                         errorConfigs.push(config.value);
                         $log.info(config.value.name + ' : ' + config.value.errors[0]);
                     }
