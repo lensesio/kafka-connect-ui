@@ -73,9 +73,11 @@
               <div class="red" ng-messages="form.$error">
                 <div ng-message="parse">Invalid syntax</div>
               </div>
-              <div class="red" ng-repeat="errorConfig in errorConfigs">
-                <div ng-bind="error" ng-repeat="error in errorConfig.errors"></div>
-              </div>
+                <div class="red" ng-repeat="errorConfig in errorConfigs">
+                    <div ng-repeat="error in errorConfig.errors track by $index">
+                     {{errorConfig.name ? '"' + errorConfig.name + '" : ' : ''}} {{error}}
+                    </div>
+                </div>
               <div ng-repeat="warningConfig in warningConfigs">
                   <div ng-repeat="warning in warningConfig.warnings" style="color: orange">
                       {{warning}}<br>
