@@ -191,6 +191,9 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}
     };
 
+    if(connector.type === 'Sink'){
+      request.data = '{ "connector.class" : "' + pluginClass + '", "topics" : "TopicName_'+ connector.name +'" }'
+    }
     $http(request).then(function(data){
     angular.forEach(data.data.configs, function (config) {
 
