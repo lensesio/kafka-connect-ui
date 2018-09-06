@@ -61,13 +61,13 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
             }
 
             //STEP 1: Validate
+            $scope.validConfig = '';
+            var validConnectorConfigKeys = [];
+            var requiredConfigKeys = [];
             KafkaConnectFactory.validateConnectorConfig(classname, model).then(
                 function success(data) {
                   $log.info('Total validation errors from API => ' + data.error_count);
                   //STEP 2: Get errors if any
-                  $scope.validConfig = '';
-                  var validConnectorConfigKeys = [];
-                  var requiredConfigKeys = [];
                   angular.forEach(data.configs, function (config) {
                     if (data.error_count && config.value.errors.length > 0) {
                         errorConfigs.push(config.value);
@@ -89,13 +89,6 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                       errorConfigs.push(errors);
                     }
                   });
-                  // Now check the other way around. Whether a required property is not set
-                  angular.forEach(requiredConfigKeys, function (requiredKey) {
-                    if (!model[requiredKey]) {
-                      var errors = { errors : [ 'Required config "' + requiredKey + '" is not there' ] };
-                      errorConfigs.push(errors);
-                    };
-                  });
 
                   if(errorConfigs == 0) {
                       $scope.validConfig = constants.VIEW_MESSAGE_CONNECTOR_VALID;
@@ -107,7 +100,9 @@ angularAPP.controller('CreateConnectorCtrl', function ($scope, $rootScope, $http
                   $scope.warningConfigs = warningConfigs;
                 },
                 function error(data, reason) {
-                  $log.error('Failure : ' + data);
+                  const errorObject = JSON.parse(data.split('error:')[1])
+                  $scope.errorConfigs = [];
+                  $scope.errorConfigs.push({errors : [errorObject.message]})
                   deferred.reject(data);
                 });
                 return deferred.promise;
