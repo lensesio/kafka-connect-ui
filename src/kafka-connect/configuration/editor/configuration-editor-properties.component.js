@@ -58,6 +58,7 @@
 
       self.ngModelController.$parsers.push(function (value) {
         var config = {};
+        var delimiterIndex;
         var line;
         var lines = value.match(/[^\r\n]+/g);
 
@@ -69,13 +70,13 @@
             continue;
           }
 
-          line = line.split(PROPERTY_DELIMITER);
+          delimiterIndex = line.indexOf(PROPERTY_DELIMITER);
 
-          if (2 !== line.length) {
+          if (-1 === delimiterIndex) {
             return; // parse error
           }
 
-          config[line[0]] = line[1] || '';
+          config[line.substr(0, delimiterIndex)] = line.substr(1 + delimiterIndex);
         }
 
         return config;
