@@ -89,7 +89,7 @@ EOF
     # Here we emulate the output by Caddy. Why? Because we can't
     # redirect caddy to stderr as the logging would also get redirected.
     cat <<EOF
-Note: if you use a PORT lower than 1024, please note that kafka-topics-ui can
+Note: if you use a PORT lower than 1024, please note that kafka-connect-ui can
 now run under any user. In the future a non-root user may become the default.
 In this case you will have to explicitly allow binding to such ports, either by
 setting the root user or something like '--sysctl net.ipv4.ip_unprivileged_port_start=0'.
