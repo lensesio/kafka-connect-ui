@@ -18,7 +18,7 @@ ARG KAFKA_CONNECT_UI_URL="https://github.com/Landoop/kafka-connect-ui/releases/d
 RUN wget "$KAFKA_CONNECT_UI_URL" -O /kafka-connect-ui.tar.gz \
     && mkdir /kafka-connect-ui \
     && tar xzf /kafka-connect-ui.tar.gz -C /kafka-connect-ui --no-same-owner \
-    && rm -f /kafka-connect-ui.tar.gz
+    && rm -f /kafka-connect-ui.tar.gz \
     && rm -f /kafka-connect-ui/env.js \
     && ln -s /tmp/env.js /kafka-connect-ui/env.js
 
