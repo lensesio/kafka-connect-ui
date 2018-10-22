@@ -20,7 +20,7 @@ PORT="${PORT:-8000}"
     CONNECT_URL="${CONNECT_URL:-http://localhost:8083}"
 
     cat /caddy/Caddyfile.template |
-        sed -e "s/8000/$PORT/" > /caddy/Caddyfile
+        sed -e "s/8000/$PORT/" > /tmp/Caddyfile
 
     if echo "$PROXY" | egrep -sq "true|TRUE|y|Y|yes|YES|1"; then
         echo "Enabling proxy. You can disable this via PROXY=false."
@@ -38,7 +38,7 @@ PORT="${PORT:-8000}"
         let "NUM_CLUSTER+=1"
         if [[ "$NUM_CLUSTER" == 1 ]]; then
             OPEN_CURL="{"
-            cat <<EOF >/kafka-connect-ui/env.js
+            cat <<EOF >/tmp/env.js
 var clusters = [
 EOF
         fi
@@ -55,20 +55,20 @@ EOF
             CLUSTER_SANITIZED_NAME="${CLUSTER_NAME//[^a-zA-Z0-9_.-]/}"
         fi
         if echo $PROXY | egrep -sq "true|TRUE|y|Y|yes|YES|1"; then
-            cat <<EOF >>/caddy/Caddyfile
+            cat <<EOF >>/tmp/Caddyfile
 proxy /api/$CLUSTER_SANITIZED_NAME $CLUSTER_URL {
     without /api/$CLUSTER_SANITIZED_NAME
     $INSECURE_PROXY
 }
 EOF
-            cat <<EOF >>/kafka-connect-ui/env.js
+            cat <<EOF >>/tmp/env.js
    $OPEN_CURL
      NAME: "$CLUSTER_NAME",
      KAFKA_CONNECT: "/api/$CLUSTER_SANITIZED_NAME"
    }
 EOF
         else
-            cat <<EOF >>/kafka-connect-ui/env.js
+            cat <<EOF >>/tmp/env.js
    $OPEN_CURL
      NAME: "$CLUSTER_NAME",
      KAFKA_CONNECT: "$CLUSTER_URL"
@@ -76,11 +76,11 @@ EOF
 EOF
         fi
     done
-    echo "]" >> /kafka-connect-ui/env.js
+    echo "]" >> /tmp/env.js
 
     if [[ -n "${CADDY_OPTIONS}" ]]; then
         echo "Applying custom options to Caddyfile"
-        cat <<EOF >>/caddy/Caddyfile
+        cat <<EOF >>/tmp/Caddyfile
 $CADDY_OPTIONS
 EOF
     fi
@@ -88,10 +88,16 @@ EOF
 
     # Here we emulate the output by Caddy. Why? Because we can't
     # redirect caddy to stderr as the logging would also get redirected.
-    echo
-    echo "Activating privacy features... done."
-    echo "http://0.0.0.0:$PORT"
+    cat <<EOF
+Note: if you use a PORT lower than 1024, please note that kafka-connect-ui can
+now run under any user. In the future a non-root user may become the default.
+In this case you will have to explicitly allow binding to such ports, either by
+setting the root user or something like '--sysctl net.ipv4.ip_unprivileged_port_start=0'.
+
+Activating privacy features... done.
+http://0.0.0.0:$PORT
+EOF
 } 1>&2
 
 
-exec /caddy/caddy -conf /caddy/Caddyfile -quiet
+exec /caddy/caddy -conf /tmp/Caddyfile -quiet
