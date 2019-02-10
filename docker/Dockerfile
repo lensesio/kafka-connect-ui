@@ -13,7 +13,7 @@ RUN wget "https://github.com/mholt/caddy/releases/download/v0.10.11/caddy_v0.10.
     && rm -f /caddy.tgz
 
 # Add and Setup Kafka Connect UI
-ARG KAFKA_CONNECT_UI_VERSION="0.9.6"
+ARG KAFKA_CONNECT_UI_VERSION="0.9.7"
 ARG KAFKA_CONNECT_UI_URL="https://github.com/Landoop/kafka-connect-ui/releases/download/v.${KAFKA_CONNECT_UI_VERSION}/kafka-connect-ui-${KAFKA_CONNECT_UI_VERSION}.tar.gz"
 RUN wget "$KAFKA_CONNECT_UI_URL" -O /kafka-connect-ui.tar.gz \
     && mkdir /kafka-connect-ui \
