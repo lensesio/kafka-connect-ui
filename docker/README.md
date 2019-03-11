@@ -60,6 +60,11 @@ The only option for the UI, is the URL(s) of your Connect cluster(s).
   Usually the main reason for using this is when you run the
   container with `--net=host`, where you can't use docker's publish
   flag (`-p HOST_PORT:8000`).
+
+- `RELOAD[true|false]`
+
+    Whether to reload the caddy configuration in case it has been externally changed.  
+  
 - `CADDY_OPTIONS=[OPTIONS]`
   
   The webserver that powers the image is Caddy. Via this variable

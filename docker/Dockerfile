@@ -2,8 +2,10 @@ FROM alpine
 MAINTAINER Marios Andreopoulos <marios@landoop.com>
 
 WORKDIR /
+VOLUME ["/tmp"]
+
 # Add needed tools
-RUN apk add --no-cache ca-certificates wget \
+RUN apk add --no-cache ca-certificates wget inotify-tools \
     && echo "progress = dot:giga" | tee /etc/wgetrc
 
 # Add and Setup Caddy webserver
@@ -24,8 +26,9 @@ RUN wget "$KAFKA_CONNECT_UI_URL" -O /kafka-connect-ui.tar.gz \
 
 # Add configuration and runtime files
 ADD Caddyfile /caddy/Caddyfile.template
-ADD run.sh /
-RUN chmod +x /run.sh
+ADD run.sh wait.sh /
+
+RUN chmod +x /run.sh /wait.sh
 
 EXPOSE 8000
 
