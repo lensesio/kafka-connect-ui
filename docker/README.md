@@ -4,7 +4,7 @@
 
 This is a small docker image for Landoop's kafka-connect-ui.
 It serves the kafka-connect-ui from port 8000 by default.
-A live version can be found at <https://kafka-connect-ui.landoop.com>
+A live version can be found at <https://kafka-connect-ui.demo.lenses.io>
 
 The software is stateless and the only necessary option is your Kafka Connect
 URL:

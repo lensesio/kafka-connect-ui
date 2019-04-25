@@ -7,7 +7,7 @@
 This is a web tool for Kafka Connect for setting up and managing connectors for multiple connect clusters.
 
 ## Live Demo
-[kafka-connect-ui.landoop.com](http://kafka-connect-ui.landoop.com)
+[kafka-connect-ui.demo.lenses.io](http://kafka-connect-ui.demo.lenses.io)
 
 ## Run standalone with docker
 
