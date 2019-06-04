@@ -53,7 +53,7 @@
           properties.push(key + PROPERTY_DELIMITER + model[key]);
         }
 
-        return properties.join('\n');
+        return properties.sort().join('\n');
       });
 
       self.ngModelController.$parsers.push(function (value) {
