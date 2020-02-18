@@ -48,7 +48,7 @@
                             <h3><b><a ng-href="#/cluster/{{ cluster }}/create-connector/{{ sink.class }}">{{sink.name}}</a></b></h3>
                             <p style="font-size:12px;">
                                 <span ng-if="sink.author">Author: {{sink.author}} </span><span ng-if="sink.docs && sink.author">| <a target="_blank"href="{{sink.docs}}">docs</a></span>
-                                <span ng-if="!sink.author && !sink.docs">{{source.class}}</span>                                
+                                <span ng-if="!sink.author && !sink.docs">{{sink.class}}</span>                                
                             </p>
                         </div>
                     </md-list-item>
