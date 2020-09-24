@@ -74,6 +74,13 @@ The only option for the UI, is the URL(s) of your Connect cluster(s).
   
       -e "CADDY_OPTIONS=basicauth / [USER] [PASS]"
 
+- `RELATIVE_PROXY_URL=[true|false]`
+  
+  When proxying Connect, enabling this option will set the Connect endpoint in the UI
+  as a relative URL. This can help when running
+  Kafka Connect UI under a subpath of your server (e.g
+  `http://url:8000/kc-ui` instead of `http://url:8000/`).
+
 # Kafka Connect Configuration
 
 If you don't wish to proxy Connect's REST api, you should permit CORS via setting
