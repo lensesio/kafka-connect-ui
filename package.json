@@ -14,9 +14,11 @@
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-usemin": "^3.1.1",
+    "gulp": "^4.0.2",
     "jit-grunt": "^0.10.0"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "bower install",
     "build": "grunt && cd dist && tar cvzf kafka-connect-ui.tar.gz ."
@@ -34,5 +36,9 @@
   "bugs": {
     "url": "https://github.com/Landoop/kafka-connect-ui/issues"
   },
-  "homepage": "https://github.com/Landoop/kafka-connect-ui#readme"
+  "homepage": "https://github.com/Landoop/kafka-connect-ui#readme",
+  "resolutions": {
+    "graceful-fs": "^4.2.4"
+  }
 }
+
