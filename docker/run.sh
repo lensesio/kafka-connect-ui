@@ -4,6 +4,7 @@ PROXY="${PROXY:-true}"
 PROXY_SKIP_VERIFY="${PROXY_SKIP_VERIFY:-false}"
 INSECURE_PROXY=""
 CADDY_OPTIONS="${CADDY_OPTIONS:-}"
+RELATIVE_PROXY_URL="${RELATIVE_PROXY_URL:-false}"
 PORT="${PORT:-8000}"
 
 {
@@ -61,10 +62,16 @@ proxy /api/$CLUSTER_SANITIZED_NAME $CLUSTER_URL {
     $INSECURE_PROXY
 }
 EOF
+            if echo "$RELATIVE_PROXY_URL" | egrep -sq "true|TRUE|y|Y|yes|YES|1"; then
+                CLUSTER_URL="api/$CLUSTER_SANITIZED_NAME"
+            else
+                CLUSTER_URL="/api/$CLUSTER_SANITIZED_NAME"
+            fi
+
             cat <<EOF >>/tmp/env.js
    $OPEN_CURL
      NAME: "$CLUSTER_NAME",
-     KAFKA_CONNECT: "/api/$CLUSTER_SANITIZED_NAME"
+     KAFKA_CONNECT: "$CLUSTER_URL"
    }
 EOF
         else
