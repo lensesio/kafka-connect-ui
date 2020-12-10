@@ -14,7 +14,6 @@
     "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-usemin": "^3.1.1",
-    "gulp": "^4.0.2",
     "jit-grunt": "^0.10.0"
   },
   "scripts": {
