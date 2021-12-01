@@ -1,6 +1,8 @@
 #!/bin/sh
 
 PROXY="${PROXY:-true}"
+RELOAD="${RELOAD:-false}"
+
 PROXY_SKIP_VERIFY="${PROXY_SKIP_VERIFY:-false}"
 INSECURE_PROXY=""
 CADDY_OPTIONS="${CADDY_OPTIONS:-}"
@@ -106,5 +108,13 @@ http://0.0.0.0:$PORT
 EOF
 } 1>&2
 
+if echo "$RELOAD" | egrep -sq "true|TRUE|y|Y|yes|YES|1"; then
+    echo "Enabling watch on caddy config file."
+    ./wait.sh&
+    exec /caddy/caddy -conf /tmp/Caddyfile -quiet
+else
+    exec /caddy/caddy -conf /tmp/Caddyfile -quiet
+fi
 
-exec /caddy/caddy -conf /tmp/Caddyfile -quiet
+
+
