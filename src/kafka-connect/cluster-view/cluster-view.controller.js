@@ -19,7 +19,7 @@ angularAPP.controller('ClusterViewCtrl', function ($scope, $log, $http, env, con
                 var template = connectorObjects.getConnectorTemplate(connector.config);
                 var topics = connectorObjects.getTopics(connector.config);
                 var workers = connector.config["tasks.max"];
-                var isSource = template.type == 'Source';
+                var isSource = template.type == 'Source' || connector.type === 'source';
                 var type = template.name;
                 var color = template.color;
 //                var html = createCustomHTMLContent(isSource, workers, type, color);
