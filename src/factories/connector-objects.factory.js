@@ -57,7 +57,7 @@ angularAPP.factory('connectorObjects', function (KafkaConnectFactory, supportedC
       }
 
       function isSource(connector) {
-        return 'Source' === configurationTypeFilter(connector.config);
+        return 'Source' === configurationTypeFilter(connector.config) || 'source' === connector.type;
       }
 
       function enhanceConnectors(connectors) {
