@@ -7,10 +7,20 @@ RUN apk add --no-cache ca-certificates wget \
     && echo "progress = dot:giga" | tee /etc/wgetrc
 
 # Add and Setup Caddy webserver
-RUN wget "https://github.com/caddyserver/caddy/releases/download/v0.10.11/caddy_v0.10.11_linux_amd64.tar.gz" -O /caddy.tgz \
+RUN ARCH=$(uname -m) \
+    && if [ "$ARCH" = "x86_64" ]; then \
+        CADDY_URL="https://github.com/caddyserver/caddy/releases/download/v0.11.5/caddy_v0.11.5_linux_amd64.tar.gz"; \
+    elif [ "$ARCH" = "aarch64" ]; then \
+        CADDY_URL="https://github.com/caddyserver/caddy/releases/download/v0.11.5/caddy_v0.11.5_linux_arm64.tar.gz"; \
+    else \
+        echo "Unsupported architecture: $ARCH"; \
+        exit 1; \
+    fi \
+    && wget "$CADDY_URL" -O /caddy.tgz \
     && mkdir caddy \
-    && tar xzf caddy.tgz -C /caddy --no-same-owner \
+    && tar xzf /caddy.tgz -C /caddy --no-same-owner \
     && rm -f /caddy.tgz
+
 
 # Add and Setup Kafka Connect UI
 ARG KAFKA_CONNECT_UI_VERSION="0.9.7"
